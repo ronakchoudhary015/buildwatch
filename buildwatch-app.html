@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Buildwatch — Jyoti Garden House</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0E0D0A;--surface:#1A1916;--surface2:#242220;--border:#2E2C28;--border2:#3A3835;
+  --text:#F0EDE6;--text2:#9B9890;--text3:#6B6860;
+  --amber:#F5A623;--amber-dim:#C47F17;--amber-bg:rgba(245,166,35,0.08);--amber-border:rgba(245,166,35,0.2);
+  --green:#2DB87A;--green-bg:rgba(45,184,122,0.08);
+  --red:#E05A4A;--red-bg:rgba(224,90,74,0.08);
+  --radius:12px;
+}
+html{font-size:16px;-webkit-font-smoothing:antialiased}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden}
+#login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;}
+.login-box{width:100%;max-width:400px;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:40px 32px;}
+.login-logo{display:flex;align-items:center;gap:12px;margin-bottom:32px;}
+.login-logo-icon{width:44px;height:44px;background:#111009;border-radius:10px;border:1px solid var(--amber-border);display:flex;align-items:center;justify-content:center;}
+.login-logo-icon svg{width:24px;height:24px;}
+.login-logo-text{font-size:22px;font-weight:700;letter-spacing:-0.5px;}
+.login-logo-text span{color:var(--amber);}
+.login-title{font-size:20px;font-weight:600;margin-bottom:6px;}
+.login-sub{font-size:13px;color:var(--text2);margin-bottom:28px;line-height:1.5;}
+.field{margin-bottom:16px;}
+.field label{display:block;font-size:12px;font-weight:500;color:var(--text2);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.06em;}
+.field input,.field select,.field textarea{width:100%;background:var(--surface2);border:1px solid var(--border2);border-radius:8px;padding:12px 14px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:border-color .2s;}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--amber);}
+.field input::placeholder,.field textarea::placeholder{color:var(--text3);}
+.field select option{background:var(--surface2);}
+.field textarea{resize:vertical;min-height:80px;}
+.btn{width:100%;padding:13px;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s;}
+.btn-primary{background:var(--amber);color:#0E0D0A;}
+.btn-primary:hover{background:#f0aa28;}
+.btn-primary:disabled{opacity:0.6;cursor:not-allowed;}
+.btn-secondary{background:var(--surface2);color:var(--text);border:1px solid var(--border2);}
+.btn-secondary:hover{border-color:var(--amber);color:var(--amber);}
+.btn-sm{width:auto;padding:8px 16px;font-size:13px;}
+.error-msg{font-size:12px;color:var(--red);margin-top:8px;display:none;}
+#app{display:none;min-height:100vh;flex-direction:column;}
+.nav{position:sticky;top:0;z-index:100;background:var(--surface);border-bottom:1px solid var(--border);padding:0 20px;height:56px;display:flex;align-items:center;justify-content:space-between;}
+.nav-logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:16px;}
+.nav-logo-icon{width:30px;height:30px;background:#111009;border-radius:7px;border:1px solid var(--amber-border);display:flex;align-items:center;justify-content:center;}
+.nav-logo-icon svg{width:16px;height:16px;}
+.nav-logo span{color:var(--amber);}
+.nav-right{display:flex;align-items:center;gap:10px;}
+.nav-role{font-size:11px;font-weight:500;color:var(--amber);background:var(--amber-bg);border:1px solid var(--amber-border);padding:4px 10px;border-radius:100px;text-transform:uppercase;letter-spacing:0.06em;}
+.nav-user{font-size:13px;color:var(--text2);}
+.nav-logout{font-size:12px;color:var(--text3);cursor:pointer;padding:4px 8px;border-radius:6px;transition:color .2s;}
+.nav-logout:hover{color:var(--red);}
+.project-header{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 20px;}
+.project-name{font-size:17px;font-weight:700;letter-spacing:-0.3px;}
+.project-meta{font-size:12px;color:var(--text2);margin-top:2px;}
+.tabs{display:flex;overflow-x:auto;background:var(--surface);border-bottom:1px solid var(--border);padding:0 20px;gap:0;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{padding:14px 16px;font-size:13px;font-weight:500;color:var(--text3);cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:all .2s;}
+.tab.active{color:var(--amber);border-bottom-color:var(--amber);}
+.tab:hover:not(.active){color:var(--text2);}
+.content{padding:20px;max-width:800px;margin:0 auto;width:100%;}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:16px;}
+.card-title{font-size:14px;font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.card-title .dot{width:6px;height:6px;border-radius:50%;background:var(--amber);}
+.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px;}
+.metric-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;}
+.metric-label{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;}
+.metric-value{font-size:26px;font-weight:700;letter-spacing:-1px;line-height:1;}
+.metric-sub{font-size:11px;color:var(--text3);margin-top:4px;}
+.metric-card.amber .metric-value{color:var(--amber);}
+.metric-card.green .metric-value{color:var(--green);}
+.metric-card.red .metric-value{color:var(--red);}
+.report-item{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:10px;}
+.report-item-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;}
+.report-date{font-size:13px;font-weight:600;}
+.report-workers{font-size:12px;color:var(--text2);}
+.tag{display:inline-block;font-size:10px;font-weight:600;padding:3px 8px;border-radius:100px;text-transform:uppercase;letter-spacing:0.04em;}
+.tag-ok{background:var(--green-bg);color:var(--green);}
+.tag-warn{background:var(--amber-bg);color:var(--amber);}
+.tag-bad{background:var(--red-bg);color:var(--red);}
+.report-desc{font-size:13px;color:var(--text2);line-height:1.5;margin-bottom:8px;}
+.report-issues{font-size:12px;color:var(--red);background:var(--red-bg);padding:8px 10px;border-radius:6px;margin-bottom:8px;}
+.finance-item{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--border);}
+.finance-item:last-child{border-bottom:none;}
+.finance-left .fi-desc{font-size:14px;font-weight:500;}
+.finance-left .fi-date{font-size:11px;color:var(--text3);margin-top:2px;}
+.finance-left .fi-type{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;}
+.finance-amount{font-size:16px;font-weight:700;color:var(--red);}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.form-actions{display:flex;gap:10px;margin-top:20px;}
+.empty{text-align:center;padding:40px 20px;color:var(--text3);}
+.empty-icon{font-size:40px;margin-bottom:12px;}
+.empty-text{font-size:14px;}
+.photo-upload-area{border:2px dashed var(--border2);border-radius:10px;padding:20px;text-align:center;cursor:pointer;transition:border-color .2s;}
+.photo-upload-area:hover{border-color:var(--amber);}
+.photo-upload-area input{display:none;}
+.photo-previews{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;}
+.photo-thumb{width:64px;height:64px;object-fit:cover;border-radius:6px;border:1px solid var(--border);cursor:pointer;}
+.section-label{font-size:11px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:12px;}
+.alert-banner{background:var(--red-bg);border:1px solid rgba(224,90,74,0.2);border-radius:10px;padding:12px 16px;margin-bottom:16px;font-size:13px;color:var(--red);display:flex;align-items:center;gap:8px;}
+.loading{text-align:center;padding:40px;color:var(--text3);font-size:14px;}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--green);color:#fff;padding:12px 24px;border-radius:100px;font-size:13px;font-weight:600;transition:transform .3s ease;z-index:9999;white-space:nowrap;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+.toast.error{background:var(--red);}
+.photo-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:9999;align-items:center;justify-content:center;}
+.photo-modal.show{display:flex;}
+.photo-modal img{max-width:90vw;max-height:90vh;border-radius:8px;}
+.photo-modal-close{position:absolute;top:20px;right:20px;font-size:28px;color:#fff;cursor:pointer;}
+.sync-badge{font-size:10px;color:var(--green);background:var(--green-bg);padding:2px 8px;border-radius:100px;margin-left:8px;}
+@media(max-width:500px){.metrics{grid-template-columns:1fr 1fr;}.form-row{grid-template-columns:1fr;}.login-box{padding:28px 20px;}}
+</style>
+</head>
+<body>
+
+<div class="photo-modal" id="photo-modal" onclick="closePhotoModal()">
+  <span class="photo-modal-close">✕</span>
+  <img id="photo-modal-img" src="" alt="Site photo"/>
+</div>
+<div class="toast" id="toast"></div>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">
+      <div class="login-logo-icon">
+        <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="12" width="4" height="7" rx="0.75" fill="#F5A623"/>
+          <rect x="8" y="7" width="4" height="12" rx="0.75" fill="#F5A623"/>
+          <rect x="14" y="2" width="4" height="17" rx="0.75" fill="#F5A623"/>
+        </svg>
+      </div>
+      <div class="login-logo-text">Build<span>watch</span></div>
+    </div>
+    <div class="login-title">Welcome back 👋</div>
+    <div class="login-sub">Jyoti Garden House · KTech Buildcon Pvt Ltd</div>
+    <div class="field">
+      <label>Your Name</label>
+      <input type="text" id="login-name" placeholder="Enter your name"/>
+    </div>
+    <div class="field">
+      <label>Role</label>
+      <select id="login-role">
+        <option value="">Select your role</option>
+        <option value="contractor">Contractor</option>
+        <option value="supervisor">Site Supervisor</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Password</label>
+      <input type="password" id="login-pass" placeholder="Enter password" onkeydown="if(event.key==='Enter')doLogin()"/>
+    </div>
+    <div class="error-msg" id="login-error">Incorrect password. Try again.</div>
+    <br/>
+    <button class="btn btn-primary" id="login-btn" onclick="doLogin()">Login →</button>
+    <div style="margin-top:16px;font-size:11px;color:var(--text3);text-align:center;">
+      Contractor: <b style="color:var(--amber)">ktech2026</b> &nbsp;·&nbsp; Supervisor: <b style="color:var(--amber)">site2026</b>
+    </div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <nav class="nav">
+    <div class="nav-logo">
+      <div class="nav-logo-icon">
+        <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="12" width="4" height="7" rx="0.75" fill="#F5A623"/>
+          <rect x="8" y="7" width="4" height="12" rx="0.75" fill="#F5A623"/>
+          <rect x="14" y="2" width="4" height="17" rx="0.75" fill="#F5A623"/>
+        </svg>
+      </div>
+      Build<span>watch</span>
+      <span class="sync-badge" id="sync-badge" style="display:none;">● Live</span>
+    </div>
+    <div class="nav-right">
+      <span class="nav-role" id="nav-role-badge">Contractor</span>
+      <span class="nav-user" id="nav-user-name"></span>
+      <span class="nav-logout" onclick="doLogout()">Logout</span>
+    </div>
+  </nav>
+
+  <div class="project-header">
+    <div class="project-name">Jyoti Garden House</div>
+    <div class="project-meta">KTech Buildcon Pvt Ltd · Contractor: Ram Dhan</div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('dashboard')">Dashboard</div>
+    <div class="tab" onclick="switchTab('report')" id="tab-report">Daily Report</div>
+    <div class="tab" onclick="switchTab('reports')">All Reports</div>
+    <div class="tab" onclick="switchTab('finance')">Finance</div>
+    <div class="tab" onclick="switchTab('materials')">Materials</div>
+    <div class="tab" onclick="switchTab('labour')">Labour</div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div class="content" id="view-dashboard">
+    <div id="dashboard-alert" class="alert-banner" style="display:none;">🚨 <span id="dashboard-alert-text"></span></div>
+    <div class="section-label">Overview</div>
+    <div class="metrics">
+      <div class="metric-card amber">
+        <div class="metric-label">Reports</div>
+        <div class="metric-value" id="m-reports">—</div>
+        <div class="metric-sub">Submitted</div>
+      </div>
+      <div class="metric-card red">
+        <div class="metric-label">Total Spent</div>
+        <div class="metric-value" id="m-spent">—</div>
+        <div class="metric-sub">All time</div>
+      </div>
+      <div class="metric-card green">
+        <div class="metric-label">Workers</div>
+        <div class="metric-value" id="m-workers">—</div>
+        <div class="metric-sub">Last report</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="dot"></span>Latest Site Report</div>
+      <div id="latest-report-content"><div class="loading">Loading...</div></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="dot"></span>Recent Expenses</div>
+      <div id="latest-finance-content"><div class="loading">Loading...</div></div>
+    </div>
+  </div>
+
+  <!-- DAILY REPORT FORM -->
+  <div class="content" id="view-report" style="display:none;">
+    <div class="card">
+      <div class="card-title"><span class="dot"></span>Submit Daily Report</div>
+      <div class="form-row">
+        <div class="field"><label>Date</label><input type="date" id="r-date"/></div>
+        <div class="field"><label>Workers Present</label><input type="number" id="r-workers" placeholder="e.g. 24" min="0"/></div>
+      </div>
+      <div class="field"><label>Work Done Today</label><textarea id="r-work" placeholder="Describe what work was completed today..."></textarea></div>
+      <div class="field"><label>Materials Received</label><input type="text" id="r-materials" placeholder="e.g. 30 bags cement, 2 ton steel..."/></div>
+      <div class="field"><label>Issues / Problems (leave blank if none)</label><input type="text" id="r-issues" placeholder="Any problems on site today?"/></div>
+      <div class="field">
+        <label>Site Photos</label>
+        <div class="photo-upload-area" onclick="document.getElementById('photo-input').click()">
+          <div style="font-size:28px;margin-bottom:6px;">📷</div>
+          <div style="font-size:13px;color:var(--text2);">Tap to upload photos from site</div>
+          <input type="file" id="photo-input" multiple accept="image/*" onchange="handlePhotos(this)"/>
+        </div>
+        <div class="photo-previews" id="photo-previews"></div>
+      </div>
+      <div class="form-actions">
+        <button class="btn btn-primary" onclick="submitReport()" id="submit-report-btn">Submit Report ✓</button>
+        <button class="btn btn-secondary btn-sm" onclick="switchTab('dashboard')">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ALL REPORTS -->
+  <div class="content" id="view-reports" style="display:none;">
+    <div class="section-label">All Site Reports</div>
+    <div id="all-reports-list"><div class="loading">Loading...</div></div>
+  </div>
+
+  <!-- FINANCE -->
+  <div class="content" id="view-finance" style="display:none;">
+    <div class="card">
+      <div class="card-title"><span class="dot"></span>Add Expense</div>
+      <div class="form-row">
+        <div class="field"><label>Date</label><input type="date" id="f-date"/></div>
+        <div class="field"><label>Type</label>
+          <select id="f-type">
+            <option value="Material">Material</option>
+            <option value="Labour">Labour Payment</option>
+            <option value="Vendor">Vendor</option>
+            <option value="Equipment">Equipment</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+      </div>
+      <div class="field"><label>Description</label><input type="text" id="f-desc" placeholder="e.g. 50 cement bags from Sharma Traders"/></div>
+      <div class="form-row">
+        <div class="field"><label>Amount (₹)</label><input type="number" id="f-amount" placeholder="0"/></div>
+        <div class="field"><label>Payment Mode</label>
+          <select id="f-mode">
+            <option value="Cash">Cash</option>
+            <option value="UPI">UPI</option>
+            <option value="Bank Transfer">Bank Transfer</option>
+            <option value="Cheque">Cheque</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn btn-primary" onclick="submitFinance()" id="submit-finance-btn">Add Entry ✓</button>
+    </div>
+    <div class="section-label">Finance Log</div>
+    <div class="card" style="padding:0 20px;">
+      <div id="finance-list"><div class="loading">Loading...</div></div>
+    </div>
+    <div class="card"><div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-size:14px;color:var(--text2);">Total Spent</span><span style="font-size:22px;font-weight:700;color:var(--red);" id="finance-total">—</span></div></div>
+  </div>
+
+  <!-- MATERIALS -->
+  <div class="content" id="view-materials" style="display:none;">
+    <div class="card">
+      <div class="card-title"><span class="dot"></span>Log Material</div>
+      <div class="form-row">
+        <div class="field"><label>Date</label><input type="date" id="mat-date"/></div>
+        <div class="field"><label>Material Name</label><input type="text" id="mat-name" placeholder="e.g. Cement, Steel, Sand"/></div>
+      </div>
+      <div class="form-row">
+        <div class="field"><label>Quantity Received</label><input type="text" id="mat-qty-in" placeholder="e.g. 50 bags"/></div>
+        <div class="field"><label>Quantity Used</label><input type="text" id="mat-qty-used" placeholder="e.g. 30 bags"/></div>
+      </div>
+      <div class="form-row">
+        <div class="field"><label>Cost (₹)</label><input type="number" id="mat-cost" placeholder="0"/></div>
+        <div class="field"><label>Supplier / Vendor</label><input type="text" id="mat-vendor" placeholder="Vendor name"/></div>
+      </div>
+      <button class="btn btn-primary" onclick="submitMaterial()" id="submit-mat-btn">Log Material ✓</button>
+    </div>
+    <div class="section-label">Material Log</div>
+    <div id="materials-list"><div class="loading">Loading...</div></div>
+  </div>
+
+  <!-- LABOUR -->
+  <div class="content" id="view-labour" style="display:none;">
+    <div class="card">
+      <div class="card-title"><span class="dot"></span>Log Labour Payment</div>
+      <div class="form-row">
+        <div class="field"><label>Date</label><input type="date" id="lab-date"/></div>
+        <div class="field"><label>Worker Name</label><input type="text" id="lab-name" placeholder="Worker name"/></div>
+      </div>
+      <div class="form-row">
+        <div class="field"><label>Role</label>
+          <select id="lab-role">
+            <option value="Mason">Mason</option>
+            <option value="Helper">Helper</option>
+            <option value="Electrician">Electrician</option>
+            <option value="Plumber">Plumber</option>
+            <option value="Carpenter">Carpenter</option>
+            <option value="Supervisor">Supervisor</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="field"><label>Amount Paid (₹)</label><input type="number" id="lab-amount" placeholder="0"/></div>
+      </div>
+      <div class="field"><label>Days Worked</label><input type="number" id="lab-days" placeholder="e.g. 5"/></div>
+      <button class="btn btn-primary" onclick="submitLabour()" id="submit-lab-btn">Log Payment ✓</button>
+    </div>
+    <div class="section-label">Labour Log</div>
+    <div id="labour-list"><div class="loading">Loading...</div></div>
+  </div>
+</div>
+
+<script>
+// ── SUPABASE ──
+const SUPABASE_URL = 'https://jmfmbmdedwyuoocatwzn.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImptZm1ibWRlZHd5dW9vY2F0d3puIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk1NTMzODksImV4cCI6MjA5NTEyOTM4OX0.V-CyVbb41q3w4ZdS7mKzyhG_9gCaG_7aam1X9JqFS5w';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const PASSWORDS = { contractor: 'ktech2026', supervisor: 'site2026' };
+let currentUser = null;
+let photoFiles = [];
+
+// ── AUTH ──
+function doLogin() {
+  const name = document.getElementById('login-name').value.trim();
+  const role = document.getElementById('login-role').value;
+  const pass = document.getElementById('login-pass').value;
+  const err = document.getElementById('login-error');
+  err.style.display = 'none';
+  if (!name) { err.textContent = 'Please enter your name.'; err.style.display = 'block'; return; }
+  if (!role) { err.textContent = 'Please select your role.'; err.style.display = 'block'; return; }
+  if (pass !== PASSWORDS[role]) { err.textContent = 'Incorrect password. Try again.'; err.style.display = 'block'; return; }
+  currentUser = { name, role };
+  localStorage.setItem('bw_user', JSON.stringify(currentUser));
+  showApp();
+}
+
+function doLogout() {
+  localStorage.removeItem('bw_user');
+  currentUser = null;
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('app').style.display = 'none';
+}
+
+function showApp() {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('app').style.display = 'flex';
+  document.getElementById('app').style.flexDirection = 'column';
+  document.getElementById('nav-user-name').textContent = currentUser.name;
+  document.getElementById('nav-role-badge').textContent = currentUser.role === 'contractor' ? 'Contractor' : 'Supervisor';
+  document.getElementById('sync-badge').style.display = 'inline-block';
+  if (currentUser.role === 'contractor') document.getElementById('tab-report').style.display = 'none';
+  const today = new Date().toISOString().split('T')[0];
+  ['r-date','f-date','mat-date','lab-date'].forEach(id => { const el = document.getElementById(id); if(el) el.value = today; });
+  switchTab('dashboard');
+}
+
+// ── TABS ──
+function switchTab(tab) {
+  ['dashboard','report','reports','finance','materials','labour'].forEach(v => {
+    document.getElementById('view-'+v).style.display = v === tab ? 'block' : 'none';
+  });
+  document.querySelectorAll('.tab').forEach(t => {
+    t.classList.toggle('active', t.getAttribute('onclick').includes("'"+tab+"'"));
+  });
+  if (tab === 'dashboard') loadDashboard();
+  if (tab === 'reports') loadReports();
+  if (tab === 'finance') loadFinance();
+  if (tab === 'materials') loadMaterials();
+  if (tab === 'labour') loadLabour();
+}
+
+// ── PHOTOS ──
+function handlePhotos(input) {
+  const previews = document.getElementById('photo-previews');
+  photoFiles = Array.from(input.files);
+  previews.innerHTML = '';
+  photoFiles.forEach(file => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      const img = document.createElement('img');
+      img.src = e.target.result;
+      img.className = 'photo-thumb';
+      img.onclick = () => openPhotoModal(e.target.result);
+      previews.appendChild(img);
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function openPhotoModal(src) { document.getElementById('photo-modal-img').src = src; document.getElementById('photo-modal').classList.add('show'); }
+function closePhotoModal() { document.getElementById('photo-modal').classList.remove('show'); }
+
+// ── SUBMIT REPORT ──
+async function submitReport() {
+  const btn = document.getElementById('submit-report-btn');
+  const workers = document.getElementById('r-workers').value;
+  const work = document.getElementById('r-work').value.trim();
+  if (!workers || !work) { showToast('Fill workers count and work done', true); return; }
+  btn.textContent = 'Saving...'; btn.disabled = true;
+
+  // Convert photos to base64 strings
+  const photos = [];
+  for (const file of photoFiles) {
+    const b64 = await new Promise(res => { const r = new FileReader(); r.onload = e => res(e.target.result); r.readAsDataURL(file); });
+    photos.push(b64);
+  }
+
+  const { error } = await sb.from('reports').insert({
+    date: document.getElementById('r-date').value,
+    supervisor: currentUser.name,
+    workers: parseInt(workers),
+    work_done: work,
+    materials: document.getElementById('r-materials').value,
+    issues: document.getElementById('r-issues').value,
+    photos: photos,
+    project: 'Jyoti Garden House'
+  });
+
+  btn.textContent = 'Submit Report ✓'; btn.disabled = false;
+  if (error) { showToast('Error: ' + error.message, true); return; }
+
+  ['r-workers','r-work','r-materials','r-issues'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('photo-previews').innerHTML = '';
+  photoFiles = [];
+  showToast('Report submitted! Saved to database ✓');
+  switchTab('dashboard');
+}
+
+// ── SUBMIT FINANCE ──
+async function submitFinance() {
+  const btn = document.getElementById('submit-finance-btn');
+  const desc = document.getElementById('f-desc').value.trim();
+  const amount = document.getElementById('f-amount').value;
+  if (!desc || !amount) { showToast('Fill description and amount', true); return; }
+  btn.textContent = 'Saving...'; btn.disabled = true;
+
+  const { error } = await sb.from('finance').insert({
+    date: document.getElementById('f-date').value,
+    type: document.getElementById('f-type').value,
+    description: desc,
+    amount: parseFloat(amount),
+    payment_mode: document.getElementById('f-mode').value,
+    added_by: currentUser.name,
+    project: 'Jyoti Garden House'
+  });
+
+  btn.textContent = 'Add Entry ✓'; btn.disabled = false;
+  if (error) { showToast('Error: ' + error.message, true); return; }
+  document.getElementById('f-desc').value = '';
+  document.getElementById('f-amount').value = '';
+  showToast('Finance entry saved ✓');
+  loadFinance();
+}
+
+// ── SUBMIT MATERIAL ──
+async function submitMaterial() {
+  const btn = document.getElementById('submit-mat-btn');
+  const name = document.getElementById('mat-name').value.trim();
+  const qtyIn = document.getElementById('mat-qty-in').value.trim();
+  if (!name || !qtyIn) { showToast('Fill material name and quantity', true); return; }
+  btn.textContent = 'Saving...'; btn.disabled = true;
+
+  const { error } = await sb.from('materials').insert({
+    date: document.getElementById('mat-date').value,
+    name: name,
+    qty_in: qtyIn,
+    qty_used: document.getElementById('mat-qty-used').value,
+    cost: parseFloat(document.getElementById('mat-cost').value) || 0,
+    vendor: document.getElementById('mat-vendor').value,
+    added_by: currentUser.name,
+    project: 'Jyoti Garden House'
+  });
+
+  btn.textContent = 'Log Material ✓'; btn.disabled = false;
+  if (error) { showToast('Error: ' + error.message, true); return; }
+  ['mat-name','mat-qty-in','mat-qty-used','mat-cost','mat-vendor'].forEach(id => document.getElementById(id).value = '');
+  showToast('Material logged ✓');
+  loadMaterials();
+}
+
+// ── SUBMIT LABOUR ──
+async function submitLabour() {
+  const btn = document.getElementById('submit-lab-btn');
+  const name = document.getElementById('lab-name').value.trim();
+  const amount = document.getElementById('lab-amount').value;
+  if (!name || !amount) { showToast('Fill worker name and amount', true); return; }
+  btn.textContent = 'Saving...'; btn.disabled = true;
+
+  const { error } = await sb.from('labour').insert({
+    date: document.getElementById('lab-date').value,
+    worker_name: name,
+    role: document.getElementById('lab-role').value,
+    amount: parseFloat(amount),
+    days: parseInt(document.getElementById('lab-days').value) || 1,
+    added_by: currentUser.name,
+    project: 'Jyoti Garden House'
+  });
+
+  btn.textContent = 'Log Payment ✓'; btn.disabled = false;
+  if (error) { showToast('Error: ' + error.message, true); return; }
+  ['lab-name','lab-amount','lab-days'].forEach(id => document.getElementById(id).value = '');
+  showToast('Labour payment logged ✓');
+  loadLabour();
+}
+
+// ── LOAD DASHBOARD ──
+async function loadDashboard() {
+  const [rRes, fRes] = await Promise.all([
+    sb.from('reports').select('*').eq('project','Jyoti Garden House').order('created_at',{ascending:false}),
+    sb.from('finance').select('*').eq('project','Jyoti Garden House').order('created_at',{ascending:false})
+  ]);
+
+  const reports = rRes.data || [];
+  const finance = fRes.data || [];
+  const total = finance.reduce((s,f) => s + f.amount, 0);
+
+  document.getElementById('m-reports').textContent = reports.length;
+  document.getElementById('m-spent').textContent = '₹' + formatNum(total);
+  document.getElementById('m-workers').textContent = reports.length > 0 ? reports[0].workers : '—';
+
+  // Alert
+  if (reports.length > 0 && reports[0].issues) {
+    document.getElementById('dashboard-alert').style.display = 'flex';
+    document.getElementById('dashboard-alert-text').textContent = 'Issue: ' + reports[0].issues;
+  } else {
+    document.getElementById('dashboard-alert').style.display = 'none';
+  }
+
+  // Latest report
+  if (reports.length > 0) {
+    const r = reports[0];
+    let html = `
+      <div style="margin-bottom:10px;">
+        <span style="font-size:13px;font-weight:600;">${formatDate(r.date)}</span>
+        <span class="tag ${r.issues ? 'tag-warn' : 'tag-ok'}" style="margin-left:8px;">${r.issues ? 'Issue flagged' : 'All clear'}</span>
+      </div>
+      <div style="font-size:13px;color:var(--text2);margin-bottom:8px;line-height:1.5;">${r.work_done}</div>
+      <div style="font-size:12px;color:var(--text3);margin-bottom:6px;">👷 ${r.workers} workers · By ${r.supervisor}</div>
+    `;
+    if (r.materials) html += `<div style="font-size:12px;color:var(--text3);margin-bottom:8px;">📦 ${r.materials}</div>`;
+    if (r.issues) html += `<div class="report-issues">⚠️ ${r.issues}</div>`;
+    if (r.photos && r.photos.length > 0) {
+      html += '<div style="display:flex;gap:8px;flex-wrap:wrap;">';
+      r.photos.forEach(p => { html += `<img src="${p}" class="photo-thumb" onclick="openPhotoModal('${p.replace(/'/g,"\\'")}')"/>`; });
+      html += '</div>';
+    }
+    document.getElementById('latest-report-content').innerHTML = html;
+  } else {
+    document.getElementById('latest-report-content').innerHTML = '<div class="empty"><div class="empty-icon">📋</div><div class="empty-text">No reports yet. Submit the first daily report.</div></div>';
+  }
+
+  // Recent finance
+  if (finance.length > 0) {
+    document.getElementById('latest-finance-content').innerHTML = finance.slice(0,3).map(f => `
+      <div class="finance-item">
+        <div class="finance-left">
+          <div class="fi-type">${f.type}</div>
+          <div class="fi-desc">${f.description}</div>
+          <div class="fi-date">${formatDate(f.date)} · ${f.payment_mode}</div>
+        </div>
+        <div class="finance-amount">-₹${formatNum(f.amount)}</div>
+      </div>`).join('');
+  } else {
+    document.getElementById('latest-finance-content').innerHTML = '<div class="empty"><div class="empty-icon">💰</div><div class="empty-text">No finance entries yet.</div></div>';
+  }
+}
+
+// ── LOAD REPORTS ──
+async function loadReports() {
+  const { data, error } = await sb.from('reports').select('*').eq('project','Jyoti Garden House').order('created_at',{ascending:false});
+  const list = document.getElementById('all-reports-list');
+  if (!data || data.length === 0) { list.innerHTML = '<div class="empty"><div class="empty-icon">📋</div><div class="empty-text">No reports yet.</div></div>'; return; }
+  list.innerHTML = data.map(r => `
+    <div class="report-item">
+      <div class="report-item-header">
+        <div><div class="report-date">${formatDate(r.date)}</div><div class="report-workers">👷 ${r.workers} workers · ${r.supervisor}</div></div>
+        <span class="tag ${r.issues ? 'tag-warn' : 'tag-ok'}">${r.issues ? 'Issue' : 'Clear'}</span>
+      </div>
+      <div class="report-desc">${r.work_done}</div>
+      ${r.materials ? `<div style="font-size:12px;color:var(--text3);margin-bottom:8px;">📦 ${r.materials}</div>` : ''}
+      ${r.issues ? `<div class="report-issues">⚠️ ${r.issues}</div>` : ''}
+      ${r.photos && r.photos.length > 0 ? `<div style="display:flex;gap:8px;flex-wrap:wrap;">${r.photos.map(p=>`<img src="${p}" class="photo-thumb" onclick="openPhotoModal('${p.replace(/'/g,"\\'")}')"/>`).join('')}</div>` : ''}
+    </div>`).join('');
+}
+
+// ── LOAD FINANCE ──
+async function loadFinance() {
+  const { data } = await sb.from('finance').select('*').eq('project','Jyoti Garden House').order('created_at',{ascending:false});
+  const list = document.getElementById('finance-list');
+  const total = (data||[]).reduce((s,f) => s+f.amount, 0);
+  document.getElementById('finance-total').textContent = '₹' + formatNum(total);
+  if (!data || data.length === 0) { list.innerHTML = '<div class="empty" style="padding:30px 0;"><div class="empty-icon">💸</div><div class="empty-text">No entries yet.</div></div>'; return; }
+  list.innerHTML = data.map(f => `
+    <div class="finance-item">
+      <div class="finance-left">
+        <div class="fi-type">${f.type}</div>
+        <div class="fi-desc">${f.description}</div>
+        <div class="fi-date">${formatDate(f.date)} · ${f.payment_mode} · ${f.added_by}</div>
+      </div>
+      <div class="finance-amount">-₹${formatNum(f.amount)}</div>
+    </div>`).join('');
+}
+
+// ── LOAD MATERIALS ──
+async function loadMaterials() {
+  const { data } = await sb.from('materials').select('*').eq('project','Jyoti Garden House').order('created_at',{ascending:false});
+  const list = document.getElementById('materials-list');
+  if (!data || data.length === 0) { list.innerHTML = '<div class="empty"><div class="empty-icon">📦</div><div class="empty-text">No materials logged yet.</div></div>'; return; }
+  list.innerHTML = data.map(m => `
+    <div class="report-item">
+      <div class="report-item-header">
+        <div><div class="report-date">${m.name}</div><div class="report-workers">${formatDate(m.date)} · ${m.vendor||'No vendor'}</div></div>
+        ${m.cost ? `<span style="font-size:15px;font-weight:700;color:var(--red);">₹${formatNum(m.cost)}</span>` : ''}
+      </div>
+      <div style="display:flex;gap:16px;font-size:12px;color:var(--text2);">
+        <span>📥 Received: ${m.qty_in}</span>
+        ${m.qty_used ? `<span>🔧 Used: ${m.qty_used}</span>` : ''}
+      </div>
+    </div>`).join('');
+}
+
+// ── LOAD LABOUR ──
+async function loadLabour() {
+  const { data } = await sb.from('labour').select('*').eq('project','Jyoti Garden House').order('created_at',{ascending:false});
+  const list = document.getElementById('labour-list');
+  const total = (data||[]).reduce((s,l) => s+l.amount, 0);
+  if (!data || data.length === 0) { list.innerHTML = '<div class="empty"><div class="empty-icon">👷</div><div class="empty-text">No labour entries yet.</div></div>'; return; }
+  list.innerHTML = `
+    <div class="card" style="margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;">
+      <span style="font-size:13px;color:var(--text2);">Total Labour Paid</span>
+      <span style="font-size:20px;font-weight:700;color:var(--red);">₹${formatNum(total)}</span>
+    </div>` +
+    data.map(l => `
+    <div class="report-item">
+      <div class="report-item-header">
+        <div><div class="report-date">${l.worker_name}</div><div class="report-workers">${l.role} · ${l.days} days · ${formatDate(l.date)} · ${l.added_by}</div></div>
+        <span style="font-size:16px;font-weight:700;color:var(--red);">₹${formatNum(l.amount)}</span>
+      </div>
+    </div>`).join('');
+}
+
+// ── UTILS ──
+function formatNum(n) {
+  if (!n) return '0';
+  if (n >= 100000) return (n/100000).toFixed(1)+'L';
+  if (n >= 1000) return (n/1000).toFixed(1)+'K';
+  return n.toLocaleString('en-IN');
+}
+function formatDate(d) {
+  if (!d) return '—';
+  return new Date(d).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
+}
+function showToast(msg, isError=false) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast'+(isError?' error':'');
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+// ── INIT ──
+const saved = localStorage.getItem('bw_user');
+if (saved) { try { currentUser = JSON.parse(saved); showApp(); } catch(e) {} }
+</script>
+</body>
+</html>
