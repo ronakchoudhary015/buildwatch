@@ -44,46 +44,44 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .field label{display:block;font-size:11px;font-weight:600;color:var(--text3);margin-bottom:5px;text-transform:uppercase;letter-spacing:0.07em;}
 .field input,.field select,.field textarea{
   width:100%;background:var(--surface2);border:1px solid var(--border2);border-radius:8px;
-  padding:10px 12px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;
+  padding:11px 12px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;
   outline:none;transition:border-color .2s;-webkit-appearance:none;appearance:none;
 }
 .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--amber);}
 .field input::placeholder,.field textarea::placeholder{color:var(--text3);}
-.field select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B6860' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;}
+.field select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B6860' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;}
 .field select option{background:var(--surface2);}
-.field textarea{resize:vertical;min-height:72px;}
+.field textarea{resize:vertical;min-height:80px;}
 
 /* BUTTONS */
-.btn{padding:10px 18px;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;justify-content:center;gap:6px;-webkit-tap-highlight-color:transparent;}
+.btn{padding:11px 18px;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;justify-content:center;gap:6px;-webkit-tap-highlight-color:transparent;}
 .btn-full{width:100%;}
 .btn-primary{background:var(--amber);color:#0E0D0A;}
-.btn-primary:hover,.btn-primary:active{background:#f0aa28;}
+.btn-primary:active{background:#e09a20;}
 .btn-primary:disabled{opacity:0.55;cursor:not-allowed;}
 .btn-secondary{background:var(--surface2);color:var(--text);border:1px solid var(--border2);}
 .btn-danger{background:var(--red-bg);color:var(--red);border:1px solid var(--red-border);}
-.btn-sm{padding:6px 12px;font-size:12px;}
+.btn-sm{padding:7px 13px;font-size:12px;}
 .err{font-size:12px;color:var(--red);margin-top:6px;display:none;}
 
 /* APP SHELL */
-#app{display:none;flex-direction:column;min-height:100vh;}
+#app{display:none;flex-direction:column;min-height:100vh;padding-bottom:20px;}
 
 /* NAV */
 .nav{position:sticky;top:0;z-index:100;background:var(--surface);border-bottom:1px solid var(--border);padding:0 16px;height:52px;display:flex;align-items:center;justify-content:space-between;}
 .nav-logo{font-weight:700;font-size:15px;display:flex;align-items:center;gap:8px;}
-.nav-logo-icon{width:26px;height:26px;background:#111009;border-radius:6px;border:1px solid var(--amber-border);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.nav-logo-icon svg{width:13px;height:13px;}
+.nav-logo-icon{width:27px;height:27px;background:#111009;border-radius:6px;border:1px solid var(--amber-border);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.nav-logo-icon svg{width:14px;height:14px;}
 .nav-logo span{color:var(--amber);}
-.live-dot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:pulse 2s infinite;flex-shrink:0;}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
-.nav-right{display:flex;align-items:center;gap:6px;}
+.nav-right{display:flex;align-items:center;gap:8px;}
 .role-badge{font-size:10px;font-weight:600;padding:3px 8px;border-radius:100px;text-transform:uppercase;letter-spacing:0.05em;white-space:nowrap;}
 .role-contractor{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border);}
 .role-supervisor{background:var(--blue-bg);color:var(--blue);border:1px solid rgba(74,158,224,0.25);}
 .role-store{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border);}
 .role-accountant{background:var(--purple-bg);color:var(--purple);border:1px solid rgba(155,122,224,0.25);}
 .role-client{background:var(--surface2);color:var(--text2);border:1px solid var(--border2);}
-.nav-name{font-size:12px;color:var(--text2);max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.logout-btn{font-size:11px;color:var(--text3);cursor:pointer;padding:4px 6px;border-radius:6px;-webkit-tap-highlight-color:transparent;}
+.nav-name{font-size:12px;color:var(--text2);max-width:70px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.logout-btn{font-size:11px;color:var(--text3);cursor:pointer;padding:5px 8px;border-radius:6px;border:1px solid var(--border);-webkit-tap-highlight-color:transparent;}
 
 /* PROJECT HEADER */
 .proj-header{background:var(--surface);border-bottom:1px solid var(--border);padding:10px 16px;}
@@ -91,124 +89,98 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .proj-meta{font-size:11px;color:var(--text2);margin-top:1px;}
 
 /* TABS */
-.tabs{display:flex;overflow-x:auto;background:var(--surface);border-bottom:1px solid var(--border);padding:0 16px;-webkit-overflow-scrolling:touch;}
+.tabs{display:flex;overflow-x:auto;background:var(--surface);border-bottom:1px solid var(--border);padding:0 16px;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
 .tabs::-webkit-scrollbar{display:none;}
-.tab{padding:12px 14px;font-size:12px;font-weight:500;color:var(--text3);cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:all .2s;-webkit-tap-highlight-color:transparent;}
+.tab{padding:13px 14px;font-size:12px;font-weight:500;color:var(--text3);cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:all .2s;-webkit-tap-highlight-color:transparent;flex-shrink:0;}
 .tab.active{color:var(--amber);border-bottom-color:var(--amber);}
 
 /* CONTENT */
 .content{padding:14px;max-width:760px;margin:0 auto;width:100%;}
 .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px;}
-.card-title{font-size:13px;font-weight:600;margin-bottom:12px;display:flex;align-items:center;gap:7px;}
+.card-title{font-size:13px;font-weight:600;margin-bottom:14px;display:flex;align-items:center;gap:7px;}
 .card-title .cdot{width:5px;height:5px;border-radius:50%;background:var(--amber);flex-shrink:0;}
 
 /* METRICS */
 .metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;}
-.mc{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px;}
+.mc{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 10px;}
 .mc-label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;}
 .mc-val{font-size:22px;font-weight:700;letter-spacing:-0.5px;line-height:1;}
-.mc-sub{font-size:10px;color:var(--text3);margin-top:2px;}
+.mc-sub{font-size:10px;color:var(--text3);margin-top:3px;}
 .mc.amber .mc-val{color:var(--amber);}
 .mc.green .mc-val{color:var(--green);}
 .mc.red .mc-val{color:var(--red);}
 
 /* LIST ITEMS */
 .list-item{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:13px;margin-bottom:8px;}
-.li-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:7px;gap:8px;}
+.li-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;gap:8px;}
 .li-title{font-size:13px;font-weight:600;}
 .li-sub{font-size:11px;color:var(--text3);margin-top:2px;}
-.li-body{font-size:13px;color:var(--text2);line-height:1.5;margin-bottom:6px;}
-.li-issue{font-size:12px;color:var(--red);background:var(--red-bg);padding:7px 9px;border-radius:6px;margin-bottom:6px;}
-.photos-row{display:flex;gap:6px;flex-wrap:wrap;}
-.photo-thumb{width:56px;height:56px;object-fit:cover;border-radius:6px;border:1px solid var(--border);cursor:pointer;flex-shrink:0;}
+.li-body{font-size:13px;color:var(--text2);line-height:1.55;margin-bottom:6px;}
+.li-issue{font-size:12px;color:var(--red);background:var(--red-bg);padding:7px 10px;border-radius:6px;margin-bottom:6px;border-left:3px solid var(--red);}
+.photos-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px;}
+.photo-thumb{width:58px;height:58px;object-fit:cover;border-radius:6px;border:1px solid var(--border);cursor:pointer;flex-shrink:0;}
 
 /* FINANCE */
-.fi-row{display:flex;justify-content:space-between;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--border);gap:8px;}
+.fi-row{display:flex;justify-content:space-between;align-items:flex-start;padding:11px 0;border-bottom:1px solid var(--border);gap:10px;}
 .fi-row:last-child{border-bottom:none;}
-.fi-left .fi-type{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.05em;}
-.fi-left .fi-desc{font-size:13px;font-weight:500;margin-top:1px;}
-.fi-left .fi-meta{font-size:11px;color:var(--text3);margin-top:1px;}
-.fi-amt{font-size:14px;font-weight:700;color:var(--red);flex-shrink:0;}
+.fi-type{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.05em;}
+.fi-desc{font-size:13px;font-weight:500;margin-top:1px;}
+.fi-meta{font-size:11px;color:var(--text3);margin-top:2px;}
+.fi-amt{font-size:14px;font-weight:700;color:var(--red);flex-shrink:0;white-space:nowrap;}
 
 /* TAGS */
-.tag{display:inline-flex;align-items:center;font-size:10px;font-weight:600;padding:2px 7px;border-radius:100px;text-transform:uppercase;letter-spacing:0.04em;flex-shrink:0;}
-.tag-ok{background:var(--green-bg);color:var(--green);}
-.tag-warn{background:var(--amber-bg);color:var(--amber);}
-.tag-bad{background:var(--red-bg);color:var(--red);}
+.tag{display:inline-flex;align-items:center;font-size:10px;font-weight:600;padding:3px 8px;border-radius:100px;text-transform:uppercase;letter-spacing:0.04em;flex-shrink:0;}
+.tag-ok{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border);}
+.tag-warn{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border);}
+.tag-bad{background:var(--red-bg);color:var(--red);border:1px solid var(--red-border);}
 
 /* FORM */
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-.form-actions{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;}
 .sec-label{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px;}
 
 /* UPLOAD */
-.upload-area{border:2px dashed var(--border2);border-radius:10px;padding:16px;text-align:center;cursor:pointer;transition:border-color .2s;-webkit-tap-highlight-color:transparent;}
+.upload-area{border:2px dashed var(--border2);border-radius:10px;padding:18px;text-align:center;cursor:pointer;transition:border-color .2s;-webkit-tap-highlight-color:transparent;}
 .upload-area:active{border-color:var(--amber);}
 .upload-area input{display:none;}
 .preview-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;}
 
 /* ALERT */
-.alert{background:var(--red-bg);border:1px solid var(--red-border);border-radius:10px;padding:10px 13px;margin-bottom:12px;font-size:12px;color:var(--red);display:flex;align-items:flex-start;gap:7px;}
+.alert{background:var(--red-bg);border:1px solid var(--red-border);border-left:3px solid var(--red);border-radius:10px;padding:10px 13px;margin-bottom:12px;font-size:12px;color:var(--red);display:flex;align-items:flex-start;gap:7px;}
 
-/* TEAM */
-.team-card{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:13px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;gap:10px;}
-.tm-name{font-size:13px;font-weight:600;}
-.tm-role{font-size:11px;color:var(--text3);margin-top:1px;}
-.tm-pass{font-size:11px;color:var(--text3);margin-top:1px;font-family:monospace;}
+/* TEAM / WORKER CARDS */
+.person-card{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:13px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;gap:10px;}
+.pc-name{font-size:13px;font-weight:600;}
+.pc-sub{font-size:11px;color:var(--text3);margin-top:2px;}
+.pc-pass{font-size:11px;color:var(--text3);margin-top:2px;font-family:monospace;}
 
 /* ATTENDANCE */
-.worker-row{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:8px;}
-.worker-row-top{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
-.worker-check{width:22px;height:22px;border-radius:6px;border:2px solid var(--border2);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:all .15s;-webkit-tap-highlight-color:transparent;}
-.worker-check.present{background:var(--green);border-color:var(--green);}
-.worker-check.present::after{content:'✓';color:#fff;font-size:13px;font-weight:700;}
-.worker-name-txt{font-size:14px;font-weight:500;flex:1;}
-.worker-role-txt{font-size:11px;color:var(--text3);}
-.worker-ot{display:none;padding:8px 0 0;}
-.worker-row.present-row .worker-ot{display:block;}
-.ot-row{display:flex;align-items:center;gap:8px;}
-.ot-label{font-size:12px;color:var(--text2);white-space:nowrap;}
-.ot-input{width:80px;background:var(--surface);border:1px solid var(--border2);border-radius:6px;padding:6px 8px;color:var(--text);font-size:13px;font-family:'DM Sans',sans-serif;outline:none;-webkit-appearance:none;}
-.ot-input:focus{border-color:var(--amber);}
-.att-date-bar{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap;}
-.att-date-bar input[type=date]{flex:1;min-width:0;background:var(--surface2);border:1px solid var(--border2);border-radius:8px;padding:9px 11px;color:var(--text);font-size:14px;font-family:'DM Sans',sans-serif;outline:none;-webkit-appearance:none;appearance:none;}
+.att-date-bar{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
+.att-date-bar input[type=date]{flex:1;min-width:0;background:var(--surface2);border:1px solid var(--border2);border-radius:8px;padding:10px 12px;color:var(--text);font-size:14px;font-family:'DM Sans',sans-serif;outline:none;-webkit-appearance:none;}
 .att-date-bar input[type=date]:focus{border-color:var(--amber);}
-.att-summary{font-size:12px;color:var(--text2);padding:8px 12px;background:var(--surface2);border-radius:8px;margin-bottom:12px;}
+.att-summary-bar{font-size:12px;color:var(--text2);background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:9px 12px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;}
+.worker-row{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:8px;transition:border-color .15s;}
+.worker-row.checked{border-color:var(--green);}
+.wr-top{display:flex;align-items:center;gap:10px;}
+.wr-check{width:24px;height:24px;border-radius:7px;border:2px solid var(--border2);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:all .15s;-webkit-tap-highlight-color:transparent;font-size:14px;font-weight:700;color:transparent;}
+.wr-check.on{background:var(--green);border-color:var(--green);color:#fff;}
+.wr-info{flex:1;}
+.wr-name{font-size:14px;font-weight:500;}
+.wr-role{font-size:11px;color:var(--text3);margin-top:1px;}
+.wr-rate{font-size:11px;color:var(--amber);}
+.wr-ot{display:none;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);}
+.worker-row.checked .wr-ot{display:flex;align-items:center;gap:10px;}
+.ot-label{font-size:12px;color:var(--text2);white-space:nowrap;}
+.ot-inp{width:72px;background:var(--surface);border:1px solid var(--border2);border-radius:6px;padding:7px 10px;color:var(--text);font-size:13px;font-family:'DM Sans',sans-serif;outline:none;-webkit-appearance:none;text-align:center;}
+.ot-inp:focus{border-color:var(--amber);}
 
-/* AI CHAT */
-.ai-btn{position:fixed;bottom:24px;right:20px;width:52px;height:52px;background:var(--amber);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:500;box-shadow:0 4px 20px rgba(245,166,35,0.4);font-size:22px;-webkit-tap-highlight-color:transparent;border:none;transition:transform .15s;}
-.ai-btn:active{transform:scale(0.93);}
-.ai-panel{position:fixed;bottom:0;left:0;right:0;height:70vh;background:var(--surface);border-top:1px solid var(--border);border-radius:20px 20px 0 0;z-index:600;display:flex;flex-direction:column;transform:translateY(100%);transition:transform .3s ease;}
-.ai-panel.open{transform:translateY(0);}
-.ai-header{padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
-.ai-header-left{display:flex;align-items:center;gap:8px;}
-.ai-avatar{width:30px;height:30px;background:var(--amber);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
-.ai-title{font-size:14px;font-weight:600;}
-.ai-subtitle{font-size:11px;color:var(--text3);}
-.ai-close{font-size:20px;color:var(--text3);cursor:pointer;padding:4px;-webkit-tap-highlight-color:transparent;}
-.ai-messages{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;}
-.ai-msg{max-width:85%;padding:10px 13px;border-radius:12px;font-size:13px;line-height:1.5;}
-.ai-msg.user{background:var(--amber);color:#0E0D0A;align-self:flex-end;border-radius:12px 12px 3px 12px;}
-.ai-msg.bot{background:var(--surface2);color:var(--text);align-self:flex-start;border-radius:12px 12px 12px 3px;}
-.ai-msg.bot.loading{color:var(--text3);}
-.ai-input-bar{padding:12px 14px;border-top:1px solid var(--border);display:flex;gap:8px;flex-shrink:0;}
-.ai-input{flex:1;background:var(--surface2);border:1px solid var(--border2);border-radius:24px;padding:10px 14px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;}
-.ai-input:focus{border-color:var(--amber);}
-.ai-send{width:40px;height:40px;background:var(--amber);border:none;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;font-size:16px;-webkit-tap-highlight-color:transparent;}
-.ai-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:599;display:none;}
-.ai-overlay.show{display:block;}
-.quick-chips{display:flex;gap:6px;flex-wrap:wrap;padding:0 14px 10px;}
-.chip{font-size:11px;padding:5px 10px;background:var(--surface2);border:1px solid var(--border2);border-radius:100px;color:var(--text2);cursor:pointer;-webkit-tap-highlight-color:transparent;white-space:nowrap;}
-.chip:active{border-color:var(--amber);color:var(--amber);}
-
-/* EMPTY/LOADING */
-.empty{text-align:center;padding:32px 14px;color:var(--text3);}
-.empty-icon{font-size:32px;margin-bottom:8px;}
-.empty-text{font-size:13px;}
+/* EMPTY / LOADING */
+.empty{text-align:center;padding:36px 14px;color:var(--text3);}
+.empty-icon{font-size:34px;margin-bottom:8px;}
+.empty-text{font-size:13px;line-height:1.5;}
 .loading{text-align:center;padding:32px;color:var(--text3);font-size:13px;}
 
 /* TOAST */
-.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--green);color:#fff;padding:9px 20px;border-radius:100px;font-size:13px;font-weight:600;transition:transform .3s;z-index:9999;white-space:nowrap;pointer-events:none;}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--green);color:#fff;padding:10px 22px;border-radius:100px;font-size:13px;font-weight:600;transition:transform .3s;z-index:9999;white-space:nowrap;pointer-events:none;box-shadow:0 4px 20px rgba(0,0,0,0.3);}
 .toast.show{transform:translateX(-50%) translateY(0);}
 .toast.err{background:var(--red);}
 
@@ -216,18 +188,16 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .pmodal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.93);z-index:9999;align-items:center;justify-content:center;}
 .pmodal.show{display:flex;}
 .pmodal img{max-width:92vw;max-height:88vh;border-radius:8px;}
-.pmodal-close{position:absolute;top:16px;right:16px;font-size:24px;color:#fff;cursor:pointer;padding:4px;}
+.pmodal-close{position:absolute;top:16px;right:16px;font-size:26px;color:#fff;cursor:pointer;padding:6px;-webkit-tap-highlight-color:transparent;}
 
-/* INSTALL BANNER */
-.install-bar{position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--amber-border);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;z-index:498;}
+/* DIVIDER */
+.divider{height:1px;background:var(--border);margin:4px 0 12px;}
 
-@media(max-width:360px){
+@media(max-width:380px){
   .metrics{grid-template-columns:1fr 1fr;}
   .mc-val{font-size:18px;}
 }
-@media(max-width:480px){
-  .form-row{grid-template-columns:1fr;}
-}
+@media(max-width:480px){.form-row{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
@@ -237,14 +207,13 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
   <img id="pmodal-img" src="" alt=""/>
 </div>
 <div class="toast" id="toast"></div>
-<div class="ai-overlay" id="ai-overlay" onclick="closeAI()"></div>
 
 <!-- LOGIN -->
 <div id="login-screen">
   <div class="login-box">
     <div class="logo-wrap">
       <div class="logo-icon">
-        <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg viewBox="0 0 20 20" fill="none">
           <rect x="2" y="12" width="4" height="7" rx="0.75" fill="#F5A623"/>
           <rect x="8" y="7" width="4" height="12" rx="0.75" fill="#F5A623"/>
           <rect x="14" y="2" width="4" height="17" rx="0.75" fill="#F5A623"/>
@@ -256,7 +225,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
     <div class="login-sub">Jyoti Garden House · KTech Buildcon Pvt Ltd</div>
     <div class="field"><label>Your Name</label><input type="text" id="ln" placeholder="Enter your name" autocomplete="name"/></div>
     <div class="field"><label>Password</label><input type="password" id="lp" placeholder="Enter password" onkeydown="if(event.key==='Enter')doLogin()"/></div>
-    <div class="err" id="lerr">Incorrect name or password.</div>
+    <div class="err" id="lerr"></div>
     <br/>
     <button class="btn btn-primary btn-full" id="lbtn" onclick="doLogin()">Sign In →</button>
   </div>
@@ -265,68 +234,40 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 <!-- APP -->
 <div id="app">
   <nav class="nav">
-    <div style="display:flex;align-items:center;gap:8px;">
-      <div class="nav-logo">
-        <div class="nav-logo-icon">
-          <svg viewBox="0 0 20 20" fill="none"><rect x="2" y="12" width="4" height="7" rx="0.75" fill="#F5A623"/><rect x="8" y="7" width="4" height="12" rx="0.75" fill="#F5A623"/><rect x="14" y="2" width="4" height="17" rx="0.75" fill="#F5A623"/></svg>
-        </div>
-        Build<span>watch</span>
+    <div class="nav-logo">
+      <div class="nav-logo-icon">
+        <svg viewBox="0 0 20 20" fill="none">
+          <rect x="2" y="12" width="4" height="7" rx="0.75" fill="#F5A623"/>
+          <rect x="8" y="7" width="4" height="12" rx="0.75" fill="#F5A623"/>
+          <rect x="14" y="2" width="4" height="17" rx="0.75" fill="#F5A623"/>
+        </svg>
       </div>
-      <div class="live-dot"></div>
+      Build<span>watch</span>
     </div>
     <div class="nav-right">
-      <span class="role-badge" id="nav-badge">—</span>
+      <button onclick="toggleLang()" id="lang-btn" style="background:var(--surface2);border:1px solid var(--border2);color:var(--text2);padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;-webkit-tap-highlight-color:transparent;">हिंदी</button>
+      <span class="role-badge" id="nav-badge"></span>
       <span class="nav-name" id="nav-name"></span>
-      <span class="logout-btn" onclick="doLogout()">Out</span>
+      <span class="logout-btn" id="logout-btn" onclick="doLogout()">Logout</span>
     </div>
   </nav>
 
   <div class="proj-header">
-    <div class="proj-name">Jyoti Garden House</div>
-    <div class="proj-meta">KTech Buildcon Pvt Ltd · Ram Dhan</div>
+    <div class="proj-name">🏗 Jyoti Garden House</div>
+    <div class="proj-meta">KTech Buildcon Pvt Ltd · Contractor: Ram Dhan</div>
   </div>
 
   <div class="tabs" id="tabs-bar"></div>
 
-  <div id="view-dashboard" class="content" style="display:none;"></div>
+  <div id="view-dashboard"  class="content" style="display:none;"></div>
   <div id="view-attendance" class="content" style="display:none;"></div>
-  <div id="view-report" class="content" style="display:none;"></div>
-  <div id="view-reports" class="content" style="display:none;"></div>
-  <div id="view-finance" class="content" style="display:none;"></div>
-  <div id="view-materials" class="content" style="display:none;"></div>
-  <div id="view-labour" class="content" style="display:none;"></div>
-  <div id="view-team" class="content" style="display:none;"></div>
-  <div id="view-workers" class="content" style="display:none;"></div>
-</div>
-
-<!-- AI BUTTON -->
-<button class="ai-btn" id="ai-btn" onclick="openAI()" style="display:none;">🤖</button>
-
-<!-- AI PANEL -->
-<div class="ai-panel" id="ai-panel">
-  <div class="ai-header">
-    <div class="ai-header-left">
-      <div class="ai-avatar">🤖</div>
-      <div>
-        <div class="ai-title">Buildwatch AI</div>
-        <div class="ai-subtitle">Ask anything about your site</div>
-      </div>
-    </div>
-    <span class="ai-close" onclick="closeAI()">✕</span>
-  </div>
-  <div class="ai-messages" id="ai-messages">
-    <div class="ai-msg bot">Namaste! Main Buildwatch AI hoon. Site ke baare mein kuch bhi poochho — reports, finance, materials, ya koi problem. 🧱</div>
-  </div>
-  <div class="quick-chips" id="quick-chips">
-    <span class="chip" onclick="askChip('Aaj ka report kya hai?')">Aaj ka report?</span>
-    <span class="chip" onclick="askChip('Total kitna paisa kharch hua?')">Total spend?</span>
-    <span class="chip" onclick="askChip('Koi issue hai site pe?')">Any issues?</span>
-    <span class="chip" onclick="askChip('Materials ki stock kaisi hai?')">Stock status?</span>
-  </div>
-  <div class="ai-input-bar">
-    <input class="ai-input" id="ai-input" placeholder="Kuch bhi poochho..." onkeydown="if(event.key==='Enter')sendAI()"/>
-    <button class="ai-send" onclick="sendAI()">➤</button>
-  </div>
+  <div id="view-report"     class="content" style="display:none;"></div>
+  <div id="view-reports"    class="content" style="display:none;"></div>
+  <div id="view-finance"    class="content" style="display:none;"></div>
+  <div id="view-materials"  class="content" style="display:none;"></div>
+  <div id="view-labour"     class="content" style="display:none;"></div>
+  <div id="view-workers"    class="content" style="display:none;"></div>
+  <div id="view-team"       class="content" style="display:none;"></div>
 </div>
 
 <script>
@@ -334,385 +275,365 @@ const SB_URL = 'https://jmfmbmdedwyuoocatwzn.supabase.co';
 const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImptZm1ibWRlZHd5dW9vY2F0d3puIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk1NTMzODksImV4cCI6MjA5NTEyOTM4OX0.V-CyVbb41q3w4ZdS7mKzyhG_9gCaG_7aam1X9JqFS5w';
 const sb = supabase.createClient(SB_URL, SB_KEY);
 const PROJECT = 'Jyoti Garden House';
-const CLAUDE_KEY = 'anthropic-key-placeholder';
 
-const ROLE_CONFIG = {
-  contractor: { label:'Contractor',    badge:'role-contractor', tabs:['dashboard','attendance','report','reports','finance','materials','labour','workers','team'] },
-  supervisor: { label:'Supervisor',    badge:'role-supervisor', tabs:['attendance','report','reports'] },
-  store:      { label:'Store Manager', badge:'role-store',      tabs:['materials'] },
-  accountant: { label:'Accountant',    badge:'role-accountant', tabs:['finance','labour'] },
-  client:     { label:'Client',        badge:'role-client',     tabs:['reports'] },
+const ROLES = {
+  contractor: { label:'Contractor',    cls:'role-contractor', tabs:['dashboard','attendance','report','reports','finance','materials','labour','workers','team'] },
+  supervisor: { label:'Supervisor',    cls:'role-supervisor', tabs:['attendance','report','reports'] },
+  store:      { label:'Store Mgr',     cls:'role-store',      tabs:['materials'] },
+  accountant: { label:'Accountant',    cls:'role-accountant', tabs:['finance','labour'] },
+  client:     { label:'Client',        cls:'role-client',     tabs:['reports'] },
 };
-const TAB_LABELS = {
-  dashboard:'Dashboard', attendance:'Attendance', report:'Daily Report',
-  reports:'Reports', finance:'Finance', materials:'Materials',
-  labour:'Labour', workers:'Workers', team:'Team'
+const TAB_NAMES = {
+  dashboard:'Dashboard',attendance:'Attendance',report:'Daily Report',
+  reports:'Reports',finance:'Finance',materials:'Materials',
+  labour:'Labour',workers:'Workers',team:'Team'
 };
 
-let CU = null;
-let photoFiles = [];
-let attendanceState = {}; // workerId -> {present, overtime}
-let aiHistory = [];
+let CU=null, photoFiles=[], attState={};
 
 // ── LOGIN ──
 async function doLogin() {
-  const name = document.getElementById('ln').value.trim();
-  const pass = document.getElementById('lp').value;
-  const err  = document.getElementById('lerr');
-  const btn  = document.getElementById('lbtn');
-  err.style.display = 'none';
-  if (!name || !pass) { err.textContent='Fill in name and password.'; err.style.display='block'; return; }
-  btn.textContent='Signing in...'; btn.disabled=true;
-
-  const {data,error} = await sb.from('users').select('*')
-    .eq('project',PROJECT).eq('active',true)
-    .ilike('name',name).eq('password',pass).single();
-
-  btn.textContent='Sign In →'; btn.disabled=false;
-  if (error||!data) { err.textContent='Wrong name or password.'; err.style.display='block'; return; }
-  CU=data; localStorage.setItem('bw_user',JSON.stringify(CU)); showApp();
+  const name=document.getElementById('ln').value.trim();
+  const pass=document.getElementById('lp').value;
+  const err=document.getElementById('lerr');
+  const btn=document.getElementById('lbtn');
+  err.style.display='none';
+  if(!name||!pass){err.textContent=t('fill_fields');err.style.display='block';return;}
+  btn.textContent=t('signing_in');btn.disabled=true;
+  const {data,error}=await sb.from('users').select('*').eq('project',PROJECT).eq('active',true).ilike('name',name).eq('password',pass).single();
+  btn.textContent=t('signin_btn');btn.disabled=false;
+  if(error||!data){err.textContent=t('wrong_creds');err.style.display='block';return;}
+  CU=data;localStorage.setItem('bw_u',JSON.stringify(CU));showApp();
 }
 
-function doLogout() {
-  localStorage.removeItem('bw_user'); CU=null;
+function doLogout(){
+  localStorage.removeItem('bw_u');CU=null;
   document.getElementById('login-screen').style.display='flex';
   document.getElementById('app').style.display='none';
-  document.getElementById('ai-btn').style.display='none';
 }
 
 // ── SHOW APP ──
-function showApp() {
+function showApp(){
   document.getElementById('login-screen').style.display='none';
   document.getElementById('app').style.display='flex';
   document.getElementById('app').style.flexDirection='column';
-  document.getElementById('ai-btn').style.display='flex';
-
-  const rc = ROLE_CONFIG[CU.role]||ROLE_CONFIG.supervisor;
-  document.getElementById('nav-name').textContent = CU.name;
-  document.getElementById('nav-badge').textContent = rc.label;
-  document.getElementById('nav-badge').className = 'role-badge '+rc.badge;
-
-  const tabsBar = document.getElementById('tabs-bar');
-  tabsBar.innerHTML = rc.tabs.map(t=>`<div class="tab" id="tab-${t}" onclick="switchTab('${t}')">${TAB_LABELS[t]}</div>`).join('');
-
+  const rc=ROLES[CU.role]||ROLES.supervisor;
+  document.getElementById('nav-name').textContent=CU.name;
+  document.getElementById('nav-badge').textContent=rc.label;
+  document.getElementById('nav-badge').className='role-badge '+rc.cls;
+  document.getElementById('tabs-bar').innerHTML=rc.tabs.map(t=>`<div class="tab" id="tab-${t}" onclick="switchTab('${t}')">${TAB_NAMES[t]}</div>`).join('');
   buildViews();
   switchTab(rc.tabs[0]);
 }
 
 // ── BUILD VIEWS ──
-function buildViews() {
-  const today = new Date().toISOString().split('T')[0];
-  const role = CU.role;
+function buildViews(){
+  const today=new Date().toISOString().split('T')[0];
+
+  // Update nav logout
+  const lo=document.getElementById('logout-btn');
+  if(lo)lo.textContent=t('logout');
+
+  // Update tabs
+  const rc=ROLES[CU.role]||ROLES.supervisor;
+  document.getElementById('tabs-bar').innerHTML=rc.tabs.map(tk=>`<div class="tab" id="tab-${tk}" onclick="switchTab('${tk}')">${t('tab_'+tk)}</div>`).join('');
 
   // DASHBOARD
-  document.getElementById('view-dashboard').innerHTML = `
-    <div id="dash-alert" class="alert" style="display:none;">🚨 <span id="dash-alert-txt"></span></div>
-    <div class="sec-label">Overview</div>
+  document.getElementById('view-dashboard').innerHTML=`
+    <div id="d-alert" class="alert" style="display:none;">⚠️ <span id="d-alert-txt"></span></div>
+    <div class="sec-label">${t('overview')}</div>
     <div class="metrics">
-      <div class="mc amber"><div class="mc-label">Reports</div><div class="mc-val" id="m-rep">—</div><div class="mc-sub">Total</div></div>
-      <div class="mc red"><div class="mc-label">Spent</div><div class="mc-val" id="m-spent">—</div><div class="mc-sub">All time</div></div>
-      <div class="mc green"><div class="mc-label">Workers</div><div class="mc-val" id="m-wrk">—</div><div class="mc-sub">Last report</div></div>
+      <div class="mc amber"><div class="mc-label">${t('reports_label')}</div><div class="mc-val" id="m-rep">—</div><div class="mc-sub">${t('total_label')}</div></div>
+      <div class="mc red"><div class="mc-label">${t('spent_label')}</div><div class="mc-val" id="m-spent">—</div><div class="mc-sub">${t('all_time')}</div></div>
+      <div class="mc green"><div class="mc-label">${t('workers_label')}</div><div class="mc-val" id="m-wrk">—</div><div class="mc-sub">${t('last_report')}</div></div>
     </div>
-    <div class="card"><div class="card-title"><span class="cdot"></span>Latest Report</div><div id="d-rep"><div class="loading">Loading...</div></div></div>
-    <div class="card"><div class="card-title"><span class="cdot"></span>Recent Expenses</div><div id="d-fin"><div class="loading">Loading...</div></div></div>
+    <div class="card"><div class="card-title"><span class="cdot"></span>${t('latest_report')}</div><div id="d-rep"><div class="loading">${t('loading')}</div></div></div>
+    <div class="card"><div class="card-title"><span class="cdot"></span>${t('recent_expenses')}</div><div id="d-fin"><div class="loading">${t('loading')}</div></div></div>
   `;
 
   // ATTENDANCE
-  document.getElementById('view-attendance').innerHTML = `
+  document.getElementById('view-attendance').innerHTML=`
     <div class="card">
-      <div class="card-title"><span class="cdot"></span>Mark Attendance</div>
+      <div class="card-title"><span class="cdot"></span>${t('mark_attendance')}</div>
       <div class="att-date-bar">
-        <input type="date" id="att-date" value="${today}"/>
-        <button class="btn btn-sm btn-secondary" onclick="loadWorkerList()">Refresh</button>
+        <input type="date" id="att-date" value="${today}" onchange="loadWorkerList()"/>
       </div>
-      <div class="att-summary" id="att-summary">Loading workers...</div>
-      <div id="worker-att-list"><div class="loading">Loading workers...</div></div>
-      <div style="margin-top:14px;">
-        <button class="btn btn-primary btn-full" id="att-btn" onclick="submitAttendance()">Submit Attendance ✓</button>
+      <div class="att-summary-bar">
+        <span id="att-sum">0 ${t('workers_registered')}</span>
+        <span id="att-count" style="color:var(--green);font-weight:600;">0 ${t('present')}</span>
+      </div>
+      <div id="att-worker-list"><div class="loading">${t('loading')}</div></div>
+      <div style="margin-top:12px;">
+        <button class="btn btn-primary btn-full" id="att-btn" onclick="submitAttendance()">${t('submit_attendance')}</button>
       </div>
     </div>
-    <div class="sec-label" style="margin-top:8px;">Today's Attendance Log</div>
-    <div id="att-history"><div class="loading">Loading...</div></div>
+    <div class="sec-label">${t('attendance_log')}</div>
+    <div id="att-log"><div class="loading">${t('loading')}</div></div>
   `;
 
-  // REPORT FORM
-  document.getElementById('view-report').innerHTML = `
+  // DAILY REPORT
+  document.getElementById('view-report').innerHTML=`
     <div class="card">
-      <div class="card-title"><span class="cdot"></span>Daily Site Report</div>
+      <div class="card-title"><span class="cdot"></span>${t('daily_report')}</div>
       <div class="form-row">
-        <div class="field"><label>Date</label><input type="date" id="r-date" value="${today}"/></div>
-        <div class="field"><label>Workers Present</label><input type="number" id="r-wrk" placeholder="24" min="0" inputmode="numeric"/></div>
+        <div class="field"><label>${t('date_label')}</label><input type="date" id="r-date" value="${today}"/></div>
+        <div class="field"><label>${t('workers_count')}</label><input type="number" id="r-wrk" placeholder="e.g. 24" inputmode="numeric"/></div>
       </div>
-      <div class="field"><label>Work Done Today</label><textarea id="r-work" placeholder="Describe work completed today..."></textarea></div>
-      <div class="field"><label>Materials Received</label><input type="text" id="r-mat" placeholder="e.g. 30 bags cement"/></div>
-      <div class="field"><label>Issues (leave blank if none)</label><input type="text" id="r-issues" placeholder="Any problems today?"/></div>
+      <div class="field"><label>${t('work_done')}</label><textarea id="r-work" placeholder="${t('work_placeholder')}"></textarea></div>
+      <div class="field"><label>${t('materials_received')}</label><input type="text" id="r-mat" placeholder="${t('mat_placeholder')}"/></div>
+      <div class="field"><label>${t('issues_label')}</label><input type="text" id="r-issues" placeholder="${t('issues_placeholder')}"/></div>
       <div class="field">
-        <label>Site Photos</label>
-        <div class="upload-area" onclick="document.getElementById('photo-inp').click()">
-          <div style="font-size:24px;margin-bottom:4px;">📷</div>
-          <div style="font-size:12px;color:var(--text2);">Tap to upload site photos</div>
-          <input type="file" id="photo-inp" multiple accept="image/*" onchange="handlePhotos(this)"/>
+        <label>${t('site_photos')}</label>
+        <div class="upload-area" onclick="document.getElementById('ph-inp').click()">
+          <div style="font-size:26px;margin-bottom:5px;">📷</div>
+          <div style="font-size:12px;color:var(--text2);">${t('upload_photos')}</div>
+          <input type="file" id="ph-inp" multiple accept="image/*" onchange="handlePhotos(this)"/>
         </div>
-        <div class="preview-row" id="photo-prev"></div>
+        <div class="preview-row" id="ph-prev"></div>
       </div>
-      <button class="btn btn-primary btn-full" id="r-btn" onclick="submitReport()">Submit Report ✓</button>
+      <button class="btn btn-primary btn-full" id="r-btn" onclick="submitReport()">${t('submit_report')}</button>
     </div>
   `;
 
   // ALL REPORTS
-  document.getElementById('view-reports').innerHTML = `
-    <div class="sec-label">All Site Reports</div>
-    <div id="rep-list"><div class="loading">Loading...</div></div>
+  document.getElementById('view-reports').innerHTML=`
+    <div class="sec-label">${t('all_reports')}</div>
+    <div id="rep-list"><div class="loading">${t('loading')}</div></div>
   `;
 
   // FINANCE
-  document.getElementById('view-finance').innerHTML = `
+  document.getElementById('view-finance').innerHTML=`
     <div class="card">
-      <div class="card-title"><span class="cdot"></span>Add Expense</div>
+      <div class="card-title"><span class="cdot"></span>${t('add_expense')}</div>
       <div class="form-row">
-        <div class="field"><label>Date</label><input type="date" id="f-date" value="${today}"/></div>
-        <div class="field"><label>Type</label>
-          <select id="f-type"><option>Material</option><option>Labour Payment</option><option>Vendor</option><option>Equipment</option><option>Other</option></select>
+        <div class="field"><label>${t('date_label')}</label><input type="date" id="f-date" value="${today}"/></div>
+        <div class="field"><label>${t('category')}</label>
+          <select id="f-type"><option>Material</option><option>Labour Payment</option><option>Vendor</option><option>Equipment</option><option>Transport</option><option>Other</option></select>
         </div>
       </div>
-      <div class="field"><label>Description</label><input type="text" id="f-desc" placeholder="e.g. 50 cement bags from Sharma Traders"/></div>
+      <div class="field"><label>${t('description')}</label><input type="text" id="f-desc" placeholder="${t('desc_placeholder')}"/></div>
       <div class="form-row">
-        <div class="field"><label>Amount (₹)</label><input type="number" id="f-amt" placeholder="0" inputmode="numeric"/></div>
-        <div class="field"><label>Payment Mode</label>
+        <div class="field"><label>${t('amount')}</label><input type="number" id="f-amt" placeholder="0" inputmode="numeric"/></div>
+        <div class="field"><label>${t('payment_mode')}</label>
           <select id="f-mode"><option>Cash</option><option>UPI</option><option>Bank Transfer</option><option>Cheque</option></select>
         </div>
       </div>
-      <button class="btn btn-primary btn-full" id="f-btn" onclick="submitFinance()">Add Entry ✓</button>
+      <button class="btn btn-primary btn-full" id="f-btn" onclick="submitFinance()">${t('add_entry')}</button>
     </div>
-    <div class="sec-label">Finance Log</div>
-    <div class="card" style="padding:0 16px;"><div id="fin-list"><div class="loading">Loading...</div></div></div>
-    <div class="card"><div style="display:flex;justify-content:space-between;align-items:center;">
-      <span style="font-size:13px;color:var(--text2);">Total Spent</span>
-      <span style="font-size:19px;font-weight:700;color:var(--red);" id="fin-total">—</span>
-    </div></div>
+    <div class="card" style="display:flex;justify-content:space-between;align-items:center;padding:14px 16px;">
+      <span style="font-size:13px;color:var(--text2);">${t('total_spent')}</span>
+      <span style="font-size:20px;font-weight:700;color:var(--red);" id="fin-total">₹0</span>
+    </div>
+    <div class="sec-label">${t('finance_log')}</div>
+    <div class="card" style="padding:0 16px;"><div id="fin-list"><div class="loading">${t('loading')}</div></div></div>
   `;
 
   // MATERIALS
-  document.getElementById('view-materials').innerHTML = `
+  document.getElementById('view-materials').innerHTML=`
     <div class="card">
-      <div class="card-title"><span class="cdot"></span>Log Material</div>
+      <div class="card-title"><span class="cdot"></span>${t('log_material')}</div>
       <div class="form-row">
-        <div class="field"><label>Date</label><input type="date" id="mat-date" value="${today}"/></div>
-        <div class="field"><label>Material Name</label><input type="text" id="mat-name" placeholder="e.g. Cement, Steel"/></div>
+        <div class="field"><label>${t('date_label')}</label><input type="date" id="mat-date" value="${today}"/></div>
+        <div class="field"><label>${t('material_name')}</label><input type="text" id="mat-name" placeholder="${t('mat_name_placeholder')}"/></div>
       </div>
       <div class="form-row">
-        <div class="field"><label>Qty Received</label><input type="text" id="mat-in" placeholder="e.g. 50 bags"/></div>
-        <div class="field"><label>Qty Used</label><input type="text" id="mat-used" placeholder="e.g. 30 bags"/></div>
+        <div class="field"><label>${t('qty_received')}</label><input type="text" id="mat-in" placeholder="${t('qty_rec_ph')}"/></div>
+        <div class="field"><label>${t('qty_used')}</label><input type="text" id="mat-used" placeholder="${t('qty_used_ph')}"/></div>
       </div>
       <div class="form-row">
-        <div class="field"><label>Cost (₹)</label><input type="number" id="mat-cost" placeholder="0" inputmode="numeric"/></div>
-        <div class="field"><label>Vendor</label><input type="text" id="mat-vendor" placeholder="Vendor name"/></div>
+        <div class="field"><label>${t('cost')}</label><input type="number" id="mat-cost" placeholder="0" inputmode="numeric"/></div>
+        <div class="field"><label>${t('vendor')}</label><input type="text" id="mat-vendor" placeholder="${t('vendor_ph')}"/></div>
       </div>
-      <button class="btn btn-primary btn-full" id="mat-btn" onclick="submitMaterial()">Log Material ✓</button>
+      <button class="btn btn-primary btn-full" id="mat-btn" onclick="submitMaterial()">${t('log_mat_btn')}</button>
     </div>
-    <div class="sec-label">Material Log</div>
-    <div id="mat-list"><div class="loading">Loading...</div></div>
+    <div class="sec-label">${t('mat_log')}</div>
+    <div id="mat-list"><div class="loading">${t('loading')}</div></div>
   `;
 
   // LABOUR
-  document.getElementById('view-labour').innerHTML = `
+  document.getElementById('view-labour').innerHTML=`
     <div class="card">
-      <div class="card-title"><span class="cdot"></span>Log Labour Payment</div>
+      <div class="card-title"><span class="cdot"></span>${t('log_labour')}</div>
       <div class="form-row">
-        <div class="field"><label>Date</label><input type="date" id="lab-date" value="${today}"/></div>
-        <div class="field"><label>Worker Name</label><input type="text" id="lab-name" placeholder="Worker name"/></div>
+        <div class="field"><label>${t('date_label')}</label><input type="date" id="lab-date" value="${today}"/></div>
+        <div class="field"><label>${t('worker_name')}</label><input type="text" id="lab-name" placeholder="${t('worker_ph')}"/></div>
       </div>
       <div class="form-row">
-        <div class="field"><label>Role</label>
-          <select id="lab-role"><option>Mason</option><option>Helper</option><option>Electrician</option><option>Plumber</option><option>Carpenter</option><option>Supervisor</option><option>Other</option></select>
+        <div class="field"><label>${t('role')}</label>
+          <select id="lab-role"><option>Mason</option><option>Helper</option><option>Electrician</option><option>Plumber</option><option>Carpenter</option><option>Supervisor</option><option>Driver</option><option>Other</option></select>
         </div>
-        <div class="field"><label>Amount Paid (₹)</label><input type="number" id="lab-amt" placeholder="0" inputmode="numeric"/></div>
+        <div class="field"><label>${t('amount_paid')}</label><input type="number" id="lab-amt" placeholder="0" inputmode="numeric"/></div>
       </div>
-      <div class="field"><label>Days Worked</label><input type="number" id="lab-days" placeholder="5" inputmode="numeric"/></div>
-      <button class="btn btn-primary btn-full" id="lab-btn" onclick="submitLabour()">Log Payment ✓</button>
+      <div class="field"><label>${t('days_worked')}</label><input type="number" id="lab-days" placeholder="e.g. 6" inputmode="numeric"/></div>
+      <button class="btn btn-primary btn-full" id="lab-btn" onclick="submitLabour()">${t('log_pay')}</button>
     </div>
-    <div class="sec-label">Labour Log</div>
-    <div id="lab-list"><div class="loading">Loading...</div></div>
+    <div class="sec-label">${t('labour_log')}</div>
+    <div id="lab-list"><div class="loading">${t('loading')}</div></div>
   `;
 
   // WORKERS REGISTRY
-  document.getElementById('view-workers').innerHTML = `
+  document.getElementById('view-workers').innerHTML=`
     <div class="card">
-      <div class="card-title"><span class="cdot"></span>Add Worker</div>
+      <div class="card-title"><span class="cdot"></span>${t('add_worker')}</div>
       <div class="form-row">
-        <div class="field"><label>Full Name</label><input type="text" id="wk-name" placeholder="Worker name"/></div>
-        <div class="field"><label>Role</label>
-          <select id="wk-role"><option>Mason</option><option>Helper</option><option>Electrician</option><option>Plumber</option><option>Carpenter</option><option>Supervisor</option><option>Other</option></select>
+        <div class="field"><label>${t('full_name')}</label><input type="text" id="wk-name" placeholder="${t('worker_name_ph')}"/></div>
+        <div class="field"><label>${t('role')}</label>
+          <select id="wk-role"><option>Mason</option><option>Helper</option><option>Electrician</option><option>Plumber</option><option>Carpenter</option><option>Supervisor</option><option>Driver</option><option>Other</option></select>
         </div>
       </div>
       <div class="form-row">
-        <div class="field"><label>Daily Rate (₹)</label><input type="number" id="wk-rate" placeholder="e.g. 600" inputmode="numeric"/></div>
-        <div class="field"><label>Phone</label><input type="tel" id="wk-phone" placeholder="Mobile number" inputmode="tel"/></div>
+        <div class="field"><label>${t('daily_rate')}</label><input type="number" id="wk-rate" placeholder="${t('rate_ph')}" inputmode="numeric"/></div>
+        <div class="field"><label>${t('phone')}</label><input type="tel" id="wk-phone" placeholder="${t('phone_ph')}" inputmode="tel"/></div>
       </div>
-      <button class="btn btn-primary btn-full" id="wk-btn" onclick="addWorker()">Add Worker ✓</button>
+      <button class="btn btn-primary btn-full" id="wk-btn" onclick="addWorker()">${t('add_worker_btn')}</button>
     </div>
-    <div class="sec-label">Worker Registry</div>
-    <div id="wk-list"><div class="loading">Loading...</div></div>
+    <div class="sec-label">${t('worker_registry')}</div>
+    <div id="wk-list"><div class="loading">${t('loading')}</div></div>
   `;
 
   // TEAM
-  document.getElementById('view-team').innerHTML = `
+  document.getElementById('view-team').innerHTML=`
     <div class="card">
-      <div class="card-title"><span class="cdot"></span>Add Team Member</div>
+      <div class="card-title"><span class="cdot"></span>${t('add_member')}</div>
       <div class="form-row">
-        <div class="field"><label>Full Name</label><input type="text" id="tm-name" placeholder="e.g. Raju Kumar"/></div>
-        <div class="field"><label>Role</label>
+        <div class="field"><label>${t('full_name')}</label><input type="text" id="tm-name" placeholder="e.g. Raju Kumar"/></div>
+        <div class="field"><label>${t('access_role')}</label>
           <select id="tm-role">
-            <option value="supervisor">Site Supervisor</option>
-            <option value="store">Store Manager</option>
-            <option value="accountant">Accountant</option>
-            <option value="client">Client (Read Only)</option>
+            <option value="supervisor">${t('role_supervisor')}</option>
+            <option value="store">${t('role_store')}</option>
+            <option value="accountant">${t('role_accountant')}</option>
+            <option value="client">${t('role_client')}</option>
           </select>
         </div>
       </div>
-      <div class="field"><label>Password</label><input type="text" id="tm-pass" placeholder="e.g. raju123"/></div>
-      <button class="btn btn-primary btn-full" id="tm-btn" onclick="addTeamMember()">Add Member ✓</button>
+      <div class="field"><label>${t('tm_pass')}</label><input type="text" id="tm-pass" placeholder="${t('tm_pass_ph')}"/></div>
+      <button class="btn btn-primary btn-full" id="tm-btn" onclick="addTeamMember()">${t('add_member_btn')}</button>
     </div>
-    <div class="sec-label">Team Members</div>
-    <div id="team-list"><div class="loading">Loading...</div></div>
+    <div class="sec-label">${t('team_members')}</div>
+    <div id="team-list"><div class="loading">${t('loading')}</div></div>
   `;
 }
 
 // ── TABS ──
-function switchTab(tab) {
-  const rc = ROLE_CONFIG[CU.role]||ROLE_CONFIG.supervisor;
-  if (!rc.tabs.includes(tab)) return;
-  rc.tabs.forEach(t => {
-    document.getElementById('view-'+t).style.display = t===tab?'block':'none';
-    const el = document.getElementById('tab-'+t);
-    if (el) el.classList.toggle('active', t===tab);
+function switchTab(tab){
+  const rc=ROLES[CU.role]||ROLES.supervisor;
+  if(!rc.tabs.includes(tab))return;
+  rc.tabs.forEach(t=>{
+    document.getElementById('view-'+t).style.display=t===tab?'block':'none';
+    const el=document.getElementById('tab-'+t);
+    if(el)el.classList.toggle('active',t===tab);
   });
-  if (tab==='dashboard')  loadDashboard();
-  if (tab==='attendance') { loadWorkerList(); loadAttHistory(); }
-  if (tab==='reports')    loadReports();
-  if (tab==='finance')    loadFinance();
-  if (tab==='materials')  loadMaterials();
-  if (tab==='labour')     loadLabour();
-  if (tab==='workers')    loadWorkers();
-  if (tab==='team')       loadTeam();
+  if(tab==='dashboard')loadDashboard();
+  if(tab==='attendance'){loadWorkerList();loadAttLog();}
+  if(tab==='reports')loadReports();
+  if(tab==='finance')loadFinance();
+  if(tab==='materials')loadMaterials();
+  if(tab==='labour')loadLabour();
+  if(tab==='workers')loadWorkers();
+  if(tab==='team')loadTeam();
 }
 
 // ── PHOTOS ──
-function handlePhotos(input) {
-  const prev = document.getElementById('photo-prev');
-  photoFiles = Array.from(input.files);
-  prev.innerHTML = '';
-  photoFiles.forEach(file => {
-    const reader = new FileReader();
-    reader.onload = e => {
-      const img = document.createElement('img');
-      img.src = e.target.result;
-      img.className = 'photo-thumb';
-      img.onclick = () => openPM(e.target.result);
+function handlePhotos(input){
+  const prev=document.getElementById('ph-prev');
+  photoFiles=Array.from(input.files);
+  prev.innerHTML='';
+  photoFiles.forEach(file=>{
+    const reader=new FileReader();
+    reader.onload=e=>{
+      const img=document.createElement('img');
+      img.src=e.target.result;img.className='photo-thumb';
+      img.onclick=()=>openPM(e.target.result);
       prev.appendChild(img);
     };
     reader.readAsDataURL(file);
   });
 }
-function openPM(src) { document.getElementById('pmodal-img').src=src; document.getElementById('pmodal').classList.add('show'); }
-function closePM() { document.getElementById('pmodal').classList.remove('show'); }
+function openPM(src){document.getElementById('pmodal-img').src=src;document.getElementById('pmodal').classList.add('show');}
+function closePM(){document.getElementById('pmodal').classList.remove('show');}
 
 // ── ATTENDANCE ──
-async function loadWorkerList() {
-  attendanceState = {};
-  const {data} = await sb.from('worker_registry').select('*').eq('project',PROJECT).eq('active',true).order('name');
-  const list = document.getElementById('worker-att-list');
-  if (!data||data.length===0) {
-    list.innerHTML = '<div class="empty"><div class="empty-icon">👷</div><div class="empty-text">No workers added yet. Go to Workers tab to add workers.</div></div>';
-    document.getElementById('att-summary').textContent = '0 workers registered';
-    return;
+async function loadWorkerList(){
+  attState={};
+  const {data}=await sb.from('worker_registry').select('*').eq('project',PROJECT).eq('active',true).order('name');
+  const list=document.getElementById('att-worker-list');
+  if(!data||data.length===0){
+    list.innerHTML='<div class="empty"><div class="empty-icon">👷</div><div class="empty-text">No workers added yet.<br>Go to Workers tab to add them first.</div></div>';
+    updateAttCount(0,0);return;
   }
-  document.getElementById('att-summary').textContent = `${data.length} workers registered · Tap to mark present`;
-  list.innerHTML = data.map(w => `
+  data.forEach(w=>{attState[w.id]={present:false,overtime:0,name:w.name,role:w.role,rate:w.daily_rate};});
+  list.innerHTML=data.map(w=>`
     <div class="worker-row" id="wr-${w.id}">
-      <div class="worker-row-top">
-        <div class="worker-check" id="wc-${w.id}" onclick="toggleWorker(${w.id})"></div>
-        <div style="flex:1;">
-          <div class="worker-name-txt">${w.name}</div>
-          <div class="worker-role-txt">${w.role} · ₹${w.daily_rate}/day</div>
+      <div class="wr-top">
+        <div class="wr-check" id="wc-${w.id}" onclick="toggleAtt(${w.id})">✓</div>
+        <div class="wr-info">
+          <div class="wr-name">${w.name}</div>
+          <div class="wr-role">${w.role}</div>
         </div>
+        <div class="wr-rate">₹${w.daily_rate}/day</div>
       </div>
-      <div class="worker-ot" id="wot-${w.id}">
-        <div class="ot-row">
-          <span class="ot-label">Overtime hours:</span>
-          <input class="ot-input" type="number" id="ot-${w.id}" placeholder="0" min="0" step="0.5" inputmode="decimal"/>
-        </div>
+      <div class="wr-ot" id="wot-${w.id}">
+        <span class="ot-label">Overtime (hrs):</span>
+        <input class="ot-inp" type="number" id="ot-${w.id}" value="0" min="0" step="0.5" inputmode="decimal"/>
+        <span style="font-size:12px;color:var(--text3);">hrs</span>
       </div>
-    </div>
-  `).join('');
-  data.forEach(w => { attendanceState[w.id] = {present:false, overtime:0, name:w.name, role:w.role, daily_rate:w.daily_rate}; });
-  updateAttSummary();
+    </div>`).join('');
+  updateAttCount(0,data.length);
 }
 
-function toggleWorker(id) {
-  const isPresent = attendanceState[id]?.present;
-  attendanceState[id].present = !isPresent;
-  const check = document.getElementById('wc-'+id);
-  const row = document.getElementById('wr-'+id);
-  const otDiv = document.getElementById('wot-'+id);
-  if (attendanceState[id].present) {
-    check.classList.add('present');
-    row.classList.add('present-row');
-    otDiv.style.display = 'block';
-  } else {
-    check.classList.remove('present');
-    row.classList.remove('present-row');
-    otDiv.style.display = 'none';
-    document.getElementById('ot-'+id).value = '';
-    attendanceState[id].overtime = 0;
-  }
-  updateAttSummary();
+function toggleAtt(id){
+  attState[id].present=!attState[id].present;
+  const check=document.getElementById('wc-'+id);
+  const row=document.getElementById('wr-'+id);
+  if(attState[id].present){check.classList.add('on');row.classList.add('checked');}
+  else{check.classList.remove('on');row.classList.remove('checked');}
+  const total=Object.keys(attState).length;
+  const present=Object.values(attState).filter(w=>w.present).length;
+  updateAttCount(present,total);
 }
 
-function updateAttSummary() {
-  const total = Object.keys(attendanceState).length;
-  const present = Object.values(attendanceState).filter(w=>w.present).length;
-  const sumEl = document.getElementById('att-summary');
-  if (sumEl) sumEl.textContent = `${present} present out of ${total} workers`;
+function updateAttCount(present,total){
+  const s=document.getElementById('att-sum');
+  const c=document.getElementById('att-count');
+  if(s)s.textContent=`${total} workers registered`;
+  if(c)c.textContent=`${present} present`;
 }
 
-async function submitAttendance() {
-  const btn = document.getElementById('att-btn');
-  const date = document.getElementById('att-date').value;
-  const presentWorkers = Object.entries(attendanceState).filter(([,v])=>v.present);
-  if (presentWorkers.length===0) { showToast('Mark at least one worker present', true); return; }
-  btn.textContent='Saving...'; btn.disabled=true;
-
-  // collect OT values
-  const records = presentWorkers.map(([id,w]) => ({
-    project: PROJECT,
-    date,
-    worker_id: parseInt(id),
-    worker_name: w.name,
-    role: w.role,
-    daily_rate: w.daily_rate,
-    present: true,
-    overtime_hours: parseFloat(document.getElementById('ot-'+id)?.value)||0,
-    marked_by: CU.name
+async function submitAttendance(){
+  const btn=document.getElementById('att-btn');
+  const date=document.getElementById('att-date').value;
+  const presentList=Object.entries(attState).filter(([,v])=>v.present);
+  if(presentList.length===0){showToast(t('mark_one'),true);return;}
+  btn.textContent=t('submitting');btn.disabled=true;
+  const records=presentList.map(([id,w])=>({
+    project:PROJECT,date,worker_id:parseInt(id),worker_name:w.name,
+    role:w.role,daily_rate:w.rate,present:true,
+    overtime_hours:parseFloat(document.getElementById('ot-'+id)?.value)||0,
+    marked_by:CU.name
   }));
-
-  const {error} = await sb.from('attendance').insert(records);
-  btn.textContent='Submit Attendance ✓'; btn.disabled=false;
-  if (error) { showToast('Error: '+error.message, true); return; }
-  showToast(`Attendance saved — ${records.length} workers marked ✓`);
-  loadAttHistory();
+  const {error}=await sb.from('attendance').insert(records);
+  btn.textContent='Submit Attendance ✓';btn.disabled=false;
+  if(error){showToast('Error: '+error.message,true);return;}
+  showToast(`${records.length} ${t('att_saved')}`);
+  loadAttLog();
 }
 
-async function loadAttHistory() {
-  const today = document.getElementById('att-date')?.value || new Date().toISOString().split('T')[0];
-  const {data} = await sb.from('attendance').select('*').eq('project',PROJECT).eq('date',today).order('worker_name');
-  const list = document.getElementById('att-history');
-  if (!data||data.length===0) { list.innerHTML='<div class="empty"><div class="empty-icon">📋</div><div class="empty-text">No attendance for this date yet.</div></div>'; return; }
-  list.innerHTML = data.map(a=>`
+async function loadAttLog(){
+  const date=document.getElementById('att-date')?.value||new Date().toISOString().split('T')[0];
+  const {data}=await sb.from('attendance').select('*').eq('project',PROJECT).eq('date',date).order('worker_name');
+  const list=document.getElementById('att-log');
+  if(!data||data.length===0){list.innerHTML='<div class="empty"><div class="empty-icon">📋</div><div class="empty-text">No attendance recorded for this date.</div></div>';return;}
+  const totalPay=data.reduce((s,a)=>s+(a.daily_rate*(1+(a.overtime_hours/8))),0);
+  list.innerHTML=`
+    <div class="card" style="display:flex;justify-content:space-between;margin-bottom:8px;padding:12px 14px;">
+      <span style="font-size:12px;color:var(--text2);">${data.length} workers · Est. wages</span>
+      <span style="font-size:15px;font-weight:700;color:var(--amber);">₹${fmtNum(Math.round(totalPay))}</span>
+    </div>`+
+    data.map(a=>`
     <div class="list-item">
       <div class="li-header">
         <div><div class="li-title">${a.worker_name}</div><div class="li-sub">${a.role} · ₹${a.daily_rate}/day · ${a.marked_by}</div></div>
-        <div style="text-align:right;">
+        <div style="text-align:right;flex-shrink:0;">
           <span class="tag tag-ok">Present</span>
           ${a.overtime_hours>0?`<div style="font-size:11px;color:var(--amber);margin-top:3px;">+${a.overtime_hours}h OT</div>`:''}
         </div>
@@ -720,357 +641,494 @@ async function loadAttHistory() {
     </div>`).join('');
 }
 
-// ── WORKERS REGISTRY ──
-async function addWorker() {
-  const btn = document.getElementById('wk-btn');
-  const name = document.getElementById('wk-name').value.trim();
-  const rate = document.getElementById('wk-rate').value;
-  if (!name) { showToast('Enter worker name', true); return; }
-  btn.textContent='Adding...'; btn.disabled=true;
-  const {error} = await sb.from('worker_registry').insert({
-    project:PROJECT, name, role:document.getElementById('wk-role').value,
-    daily_rate:parseFloat(rate)||0, phone:document.getElementById('wk-phone').value,
-    added_by:CU.name, active:true
+// ── WORKERS ──
+async function addWorker(){
+  const btn=document.getElementById('wk-btn');
+  const name=document.getElementById('wk-name').value.trim();
+  if(!name){showToast(t('fill_worker'),true);return;}
+  btn.textContent='Adding...';btn.disabled=true;
+  const {error}=await sb.from('worker_registry').insert({
+    project:PROJECT,name,role:document.getElementById('wk-role').value,
+    daily_rate:parseFloat(document.getElementById('wk-rate').value)||0,
+    phone:document.getElementById('wk-phone').value,
+    added_by:CU.name,active:true
   });
-  btn.textContent='Add Worker ✓'; btn.disabled=false;
-  if (error) { showToast('Error: '+error.message, true); return; }
+  btn.textContent='Add Worker ✓';btn.disabled=false;
+  if(error){showToast('Error: '+error.message,true);return;}
   ['wk-name','wk-rate','wk-phone'].forEach(id=>document.getElementById(id).value='');
-  showToast(name+' added to registry ✓');
-  loadWorkers();
+  showToast(name+t('worker_added'));loadWorkers();
 }
 
-async function removeWorker(id, name) {
-  if (!confirm('Remove '+name+' from registry?')) return;
+async function removeWorker(id,name){
+  if(!confirm('Remove '+name+'?'))return;
   await sb.from('worker_registry').update({active:false}).eq('id',id);
-  showToast(name+' removed'); loadWorkers();
+  showToast(name+' removed');loadWorkers();
 }
 
-async function loadWorkers() {
-  const {data} = await sb.from('worker_registry').select('*').eq('project',PROJECT).eq('active',true).order('name');
-  const list = document.getElementById('wk-list');
-  if (!data||data.length===0) { list.innerHTML='<div class="empty"><div class="empty-icon">👷</div><div class="empty-text">No workers added yet.</div></div>'; return; }
-  list.innerHTML = data.map(w=>`
-    <div class="team-card">
+async function loadWorkers(){
+  const {data}=await sb.from('worker_registry').select('*').eq('project',PROJECT).eq('active',true).order('name');
+  const list=document.getElementById('wk-list');
+  if(!data||data.length===0){list.innerHTML='<div class="empty"><div class="empty-icon">👷</div><div class="empty-text">No workers in registry yet.</div></div>';return;}
+  list.innerHTML=`<div class="card" style="padding:12px 14px;margin-bottom:8px;display:flex;justify-content:space-between;"><span style="font-size:12px;color:var(--text2);">Total workers</span><span style="font-weight:700;color:var(--amber);">${data.length}</span></div>`+
+    data.map(w=>`
+    <div class="person-card">
       <div>
-        <div class="tm-name">${w.name}</div>
-        <div class="tm-role">${w.role} · ₹${w.daily_rate}/day</div>
-        ${w.phone?`<div class="tm-pass">📞 ${w.phone}</div>`:''}
+        <div class="pc-name">${w.name}</div>
+        <div class="pc-sub">${w.role} · ₹${w.daily_rate}/day</div>
+        ${w.phone?`<div class="pc-pass">📞 ${w.phone}</div>`:''}
       </div>
       <button class="btn btn-danger btn-sm" onclick="removeWorker(${w.id},'${w.name}')">Remove</button>
     </div>`).join('');
 }
 
 // ── SUBMIT REPORT ──
-async function submitReport() {
-  const btn = document.getElementById('r-btn');
-  const wrk = document.getElementById('r-wrk').value;
-  const work = document.getElementById('r-work').value.trim();
-  if (!wrk||!work) { showToast('Fill workers count and work done', true); return; }
-  btn.textContent='Saving...'; btn.disabled=true;
+async function submitReport(){
+  const btn=document.getElementById('r-btn');
+  const wrk=document.getElementById('r-wrk').value;
+  const work=document.getElementById('r-work').value.trim();
+  if(!wrk||!work){showToast(t('fill_report'),true);return;}
+  btn.textContent='Saving...';btn.disabled=true;
   const photos=[];
-  for (const file of photoFiles) {
-    const b64 = await new Promise(res=>{const r=new FileReader();r.onload=e=>res(e.target.result);r.readAsDataURL(file);});
+  for(const file of photoFiles){
+    const b64=await new Promise(res=>{const r=new FileReader();r.onload=e=>res(e.target.result);r.readAsDataURL(file);});
     photos.push(b64);
   }
-  const {error} = await sb.from('reports').insert({
-    date:document.getElementById('r-date').value, supervisor:CU.name,
-    workers:parseInt(wrk), work_done:work,
+  const {error}=await sb.from('reports').insert({
+    date:document.getElementById('r-date').value,supervisor:CU.name,
+    workers:parseInt(wrk),work_done:work,
     materials:document.getElementById('r-mat').value,
     issues:document.getElementById('r-issues').value,
-    photos, project:PROJECT
+    photos,project:PROJECT
   });
-  btn.textContent='Submit Report ✓'; btn.disabled=false;
-  if (error) { showToast('Error: '+error.message, true); return; }
+  btn.textContent='Submit Report ✓';btn.disabled=false;
+  if(error){showToast('Error: '+error.message,true);return;}
   ['r-wrk','r-work','r-mat','r-issues'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('photo-prev').innerHTML=''; photoFiles=[];
-  showToast('Report submitted ✓');
-  switchTab(ROLE_CONFIG[CU.role].tabs[0]);
+  document.getElementById('ph-prev').innerHTML='';photoFiles=[];
+  showToast(t('report_saved'));
+  switchTab(ROLES[CU.role].tabs[0]);
 }
 
 // ── SUBMIT FINANCE ──
-async function submitFinance() {
+async function submitFinance(){
   const btn=document.getElementById('f-btn');
   const desc=document.getElementById('f-desc').value.trim();
   const amt=document.getElementById('f-amt').value;
-  if (!desc||!amt) { showToast('Fill description and amount', true); return; }
-  btn.textContent='Saving...'; btn.disabled=true;
+  if(!desc||!amt){showToast(t('fill_finance'),true);return;}
+  btn.textContent='Saving...';btn.disabled=true;
   const {error}=await sb.from('finance').insert({
-    date:document.getElementById('f-date').value, type:document.getElementById('f-type').value,
-    description:desc, amount:parseFloat(amt),
+    date:document.getElementById('f-date').value,type:document.getElementById('f-type').value,
+    description:desc,amount:parseFloat(amt),
     payment_mode:document.getElementById('f-mode').value,
-    added_by:CU.name, project:PROJECT
+    added_by:CU.name,project:PROJECT
   });
-  btn.textContent='Add Entry ✓'; btn.disabled=false;
-  if (error) { showToast('Error: '+error.message, true); return; }
-  document.getElementById('f-desc').value=''; document.getElementById('f-amt').value='';
-  showToast('Expense saved ✓'); loadFinance();
+  btn.textContent='Add Entry ✓';btn.disabled=false;
+  if(error){showToast('Error: '+error.message,true);return;}
+  document.getElementById('f-desc').value='';document.getElementById('f-amt').value='';
+  showToast(t('finance_saved'));loadFinance();
 }
 
 // ── SUBMIT MATERIAL ──
-async function submitMaterial() {
+async function submitMaterial(){
   const btn=document.getElementById('mat-btn');
   const name=document.getElementById('mat-name').value.trim();
   const qin=document.getElementById('mat-in').value.trim();
-  if (!name||!qin) { showToast('Fill material name and quantity', true); return; }
-  btn.textContent='Saving...'; btn.disabled=true;
+  if(!name||!qin){showToast(t('fill_mat'),true);return;}
+  btn.textContent='Saving...';btn.disabled=true;
   const {error}=await sb.from('materials').insert({
-    date:document.getElementById('mat-date').value, name, qty_in:qin,
+    date:document.getElementById('mat-date').value,name,qty_in:qin,
     qty_used:document.getElementById('mat-used').value,
     cost:parseFloat(document.getElementById('mat-cost').value)||0,
     vendor:document.getElementById('mat-vendor').value,
-    added_by:CU.name, project:PROJECT
+    added_by:CU.name,project:PROJECT
   });
-  btn.textContent='Log Material ✓'; btn.disabled=false;
-  if (error) { showToast('Error: '+error.message, true); return; }
+  btn.textContent='Log Material ✓';btn.disabled=false;
+  if(error){showToast('Error: '+error.message,true);return;}
   ['mat-name','mat-in','mat-used','mat-cost','mat-vendor'].forEach(id=>document.getElementById(id).value='');
-  showToast('Material logged ✓'); loadMaterials();
+  showToast(t('mat_saved'));loadMaterials();
 }
 
 // ── SUBMIT LABOUR ──
-async function submitLabour() {
+async function submitLabour(){
   const btn=document.getElementById('lab-btn');
   const name=document.getElementById('lab-name').value.trim();
   const amt=document.getElementById('lab-amt').value;
-  if (!name||!amt) { showToast('Fill worker name and amount', true); return; }
-  btn.textContent='Saving...'; btn.disabled=true;
+  if(!name||!amt){showToast(t('fill_labour'),true);return;}
+  btn.textContent='Saving...';btn.disabled=true;
   const {error}=await sb.from('labour').insert({
-    date:document.getElementById('lab-date').value, worker_name:name,
+    date:document.getElementById('lab-date').value,worker_name:name,
     role:document.getElementById('lab-role').value,
-    amount:parseFloat(amt), days:parseInt(document.getElementById('lab-days').value)||1,
-    added_by:CU.name, project:PROJECT
+    amount:parseFloat(amt),days:parseInt(document.getElementById('lab-days').value)||1,
+    added_by:CU.name,project:PROJECT
   });
-  btn.textContent='Log Payment ✓'; btn.disabled=false;
-  if (error) { showToast('Error: '+error.message, true); return; }
+  btn.textContent='Log Payment ✓';btn.disabled=false;
+  if(error){showToast('Error: '+error.message,true);return;}
   ['lab-name','lab-amt','lab-days'].forEach(id=>document.getElementById(id).value='');
-  showToast('Labour logged ✓'); loadLabour();
+  showToast(t('labour_saved'));loadLabour();
 }
 
-// ── ADD TEAM MEMBER ──
-async function addTeamMember() {
+// ── TEAM ──
+async function addTeamMember(){
   const btn=document.getElementById('tm-btn');
   const name=document.getElementById('tm-name').value.trim();
-  const role=document.getElementById('tm-role').value;
   const pass=document.getElementById('tm-pass').value.trim();
-  if (!name||!pass) { showToast('Fill name and password', true); return; }
-  btn.textContent='Adding...'; btn.disabled=true;
-  const {error}=await sb.from('users').insert({name,role,password:pass,added_by:CU.name,project:PROJECT,active:true});
-  btn.textContent='Add Member ✓'; btn.disabled=false;
-  if (error) { showToast('Error: '+error.message, true); return; }
+  if(!name||!pass){showToast(t('fill_team'),true);return;}
+  btn.textContent='Adding...';btn.disabled=true;
+  const {error}=await sb.from('users').insert({name,role:document.getElementById('tm-role').value,password:pass,added_by:CU.name,project:PROJECT,active:true});
+  btn.textContent='Add Member ✓';btn.disabled=false;
+  if(error){showToast('Error: '+error.message,true);return;}
   ['tm-name','tm-pass'].forEach(id=>document.getElementById(id).value='');
-  showToast(name+' added ✓'); loadTeam();
+  showToast(name+t('member_added'));loadTeam();
 }
 
-async function removeTeamMember(id,name) {
-  if (!confirm('Remove '+name+'?')) return;
+async function removeMember(id,name){
+  if(!confirm('Remove '+name+'?'))return;
   await sb.from('users').update({active:false}).eq('id',id);
-  showToast(name+' removed'); loadTeam();
+  showToast(name+' removed');loadTeam();
 }
 
 // ── LOAD FUNCTIONS ──
-async function loadDashboard() {
+async function loadDashboard(){
   const [rr,fr]=await Promise.all([
     sb.from('reports').select('*').eq('project',PROJECT).order('created_at',{ascending:false}),
     sb.from('finance').select('*').eq('project',PROJECT).order('created_at',{ascending:false})
   ]);
-  const reports=rr.data||[], finance=fr.data||[];
+  const reports=rr.data||[],finance=fr.data||[];
   const total=finance.reduce((s,f)=>s+f.amount,0);
   document.getElementById('m-rep').textContent=reports.length;
   document.getElementById('m-spent').textContent='₹'+fmtNum(total);
   document.getElementById('m-wrk').textContent=reports.length>0?reports[0].workers:'—';
-  if (reports.length>0&&reports[0].issues) {
-    document.getElementById('dash-alert').style.display='flex';
-    document.getElementById('dash-alert-txt').textContent='Issue: '+reports[0].issues;
-  }
+  const alert=document.getElementById('d-alert');
+  if(reports.length>0&&reports[0].issues){alert.style.display='flex';document.getElementById('d-alert-txt').textContent=reports[0].issues;}
+  else alert.style.display='none';
+  // Latest report
   const dRep=document.getElementById('d-rep');
-  if (reports.length>0) {
+  if(reports.length>0){
     const r=reports[0];
     dRep.innerHTML=`
-      <div style="margin-bottom:7px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;">
         <span style="font-size:13px;font-weight:600;">${fmtDate(r.date)}</span>
-        <span class="tag ${r.issues?'tag-warn':'tag-ok'}">${r.issues?'Issue':'Clear'}</span>
+        <span class="tag ${r.issues?'tag-warn':'tag-ok'}">${r.issues?'Issue Flagged':'All Clear'}</span>
       </div>
-      <div style="font-size:13px;color:var(--text2);margin-bottom:6px;line-height:1.5;">${r.work_done}</div>
-      <div style="font-size:11px;color:var(--text3);margin-bottom:5px;">👷 ${r.workers} workers · ${r.supervisor}</div>
-      ${r.materials?`<div style="font-size:11px;color:var(--text3);margin-bottom:6px;">📦 ${r.materials}</div>`:''}
+      <div style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:8px;">${r.work_done}</div>
+      <div style="font-size:11px;color:var(--text3);margin-bottom:4px;">👷 ${r.workers} workers present · By ${r.supervisor}</div>
+      ${r.materials?`<div style="font-size:11px;color:var(--text3);margin-bottom:6px;">📦 Materials: ${r.materials}</div>`:''}
       ${r.issues?`<div class="li-issue">⚠️ ${r.issues}</div>`:''}
       ${r.photos&&r.photos.length>0?`<div class="photos-row">${r.photos.map(p=>`<img src="${p}" class="photo-thumb" onclick="openPM('${p.replace(/'/g,"\\'")}')"/>`).join('')}</div>`:''}
     `;
-  } else { dRep.innerHTML='<div class="empty"><div class="empty-icon">📋</div><div class="empty-text">No reports yet.</div></div>'; }
+  } else dRep.innerHTML='<div class="empty"><div class="empty-icon">📋</div><div class="empty-text">No reports yet. Submit the first daily report.</div></div>';
+  // Recent finance
   const dFin=document.getElementById('d-fin');
-  if (finance.length>0) {
-    dFin.innerHTML=finance.slice(0,3).map(f=>`<div class="fi-row"><div class="fi-left"><div class="fi-type">${f.type}</div><div class="fi-desc">${f.description}</div><div class="fi-meta">${fmtDate(f.date)} · ${f.payment_mode}</div></div><div class="fi-amt">-₹${fmtNum(f.amount)}</div></div>`).join('');
-  } else { dFin.innerHTML='<div class="empty"><div class="empty-icon">💰</div><div class="empty-text">No expenses yet.</div></div>'; }
+  if(finance.length>0){
+    dFin.innerHTML=finance.slice(0,3).map(f=>`
+      <div class="fi-row">
+        <div><div class="fi-type">${f.type}</div><div class="fi-desc">${f.description}</div><div class="fi-meta">${fmtDate(f.date)} · ${f.payment_mode}</div></div>
+        <div class="fi-amt">-₹${fmtNum(f.amount)}</div>
+      </div>`).join('');
+  } else dFin.innerHTML='<div class="empty"><div class="empty-icon">💰</div><div class="empty-text">No expenses recorded yet.</div></div>';
 }
 
-async function loadReports() {
+async function loadReports(){
   const {data}=await sb.from('reports').select('*').eq('project',PROJECT).order('created_at',{ascending:false});
   const list=document.getElementById('rep-list');
-  if (!data||data.length===0){list.innerHTML='<div class="empty"><div class="empty-icon">📋</div><div class="empty-text">No reports yet.</div></div>';return;}
+  if(!data||data.length===0){list.innerHTML='<div class="empty"><div class="empty-icon">📋</div><div class="empty-text">No reports submitted yet.</div></div>';return;}
   list.innerHTML=data.map(r=>`
     <div class="list-item">
       <div class="li-header">
-        <div><div class="li-title">${fmtDate(r.date)}</div><div class="li-sub">👷 ${r.workers} workers · ${r.supervisor}</div></div>
+        <div><div class="li-title">${fmtDate(r.date)}</div><div class="li-sub">👷 ${r.workers} workers present · ${r.supervisor}</div></div>
         <span class="tag ${r.issues?'tag-warn':'tag-ok'}">${r.issues?'Issue':'Clear'}</span>
       </div>
       <div class="li-body">${r.work_done}</div>
-      ${r.materials?`<div style="font-size:11px;color:var(--text3);margin-bottom:5px;">📦 ${r.materials}</div>`:''}
+      ${r.materials?`<div style="font-size:11px;color:var(--text3);margin-bottom:6px;">📦 ${r.materials}</div>`:''}
       ${r.issues?`<div class="li-issue">⚠️ ${r.issues}</div>`:''}
       ${r.photos&&r.photos.length>0?`<div class="photos-row">${r.photos.map(p=>`<img src="${p}" class="photo-thumb" onclick="openPM('${p.replace(/'/g,"\\'")}')"/>`).join('')}</div>`:''}
     </div>`).join('');
 }
 
-async function loadFinance() {
+async function loadFinance(){
   const {data}=await sb.from('finance').select('*').eq('project',PROJECT).order('created_at',{ascending:false});
   const total=(data||[]).reduce((s,f)=>s+f.amount,0);
   document.getElementById('fin-total').textContent='₹'+fmtNum(total);
   const list=document.getElementById('fin-list');
-  if (!data||data.length===0){list.innerHTML='<div class="empty" style="padding:24px 0;"><div class="empty-icon">💸</div><div class="empty-text">No entries yet.</div></div>';return;}
-  list.innerHTML=data.map(f=>`<div class="fi-row"><div class="fi-left"><div class="fi-type">${f.type}</div><div class="fi-desc">${f.description}</div><div class="fi-meta">${fmtDate(f.date)} · ${f.payment_mode} · ${f.added_by}</div></div><div class="fi-amt">-₹${fmtNum(f.amount)}</div></div>`).join('');
+  if(!data||data.length===0){list.innerHTML='<div class="empty" style="padding:24px 0;"><div class="empty-icon">💸</div><div class="empty-text">No entries yet.</div></div>';return;}
+  list.innerHTML=data.map(f=>`
+    <div class="fi-row">
+      <div><div class="fi-type">${f.type}</div><div class="fi-desc">${f.description}</div><div class="fi-meta">${fmtDate(f.date)} · ${f.payment_mode} · ${f.added_by}</div></div>
+      <div class="fi-amt">-₹${fmtNum(f.amount)}</div>
+    </div>`).join('');
 }
 
-async function loadMaterials() {
+async function loadMaterials(){
   const {data}=await sb.from('materials').select('*').eq('project',PROJECT).order('created_at',{ascending:false});
   const list=document.getElementById('mat-list');
-  if (!data||data.length===0){list.innerHTML='<div class="empty"><div class="empty-icon">📦</div><div class="empty-text">No materials logged yet.</div></div>';return;}
+  if(!data||data.length===0){list.innerHTML='<div class="empty"><div class="empty-icon">📦</div><div class="empty-text">No materials logged yet.</div></div>';return;}
   list.innerHTML=data.map(m=>`
     <div class="list-item">
       <div class="li-header">
         <div><div class="li-title">${m.name}</div><div class="li-sub">${fmtDate(m.date)} · ${m.vendor||'No vendor'} · ${m.added_by}</div></div>
-        ${m.cost?`<span style="font-size:13px;font-weight:700;color:var(--red);">₹${fmtNum(m.cost)}</span>`:''}
+        ${m.cost?`<span style="font-size:13px;font-weight:700;color:var(--red);flex-shrink:0;">₹${fmtNum(m.cost)}</span>`:''}
       </div>
-      <div style="display:flex;gap:12px;font-size:12px;color:var(--text2);">
-        <span>📥 ${m.qty_in}</span>${m.qty_used?`<span>🔧 ${m.qty_used}</span>`:''}
+      <div style="display:flex;gap:14px;font-size:12px;color:var(--text2);">
+        <span>📥 Received: ${m.qty_in}</span>
+        ${m.qty_used?`<span>🔧 Used: ${m.qty_used}</span>`:''}
       </div>
     </div>`).join('');
 }
 
-async function loadLabour() {
+async function loadLabour(){
   const {data}=await sb.from('labour').select('*').eq('project',PROJECT).order('created_at',{ascending:false});
   const list=document.getElementById('lab-list');
   const total=(data||[]).reduce((s,l)=>s+l.amount,0);
-  if (!data||data.length===0){list.innerHTML='<div class="empty"><div class="empty-icon">👷</div><div class="empty-text">No labour entries yet.</div></div>';return;}
-  list.innerHTML=`<div class="card" style="margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;"><span style="font-size:13px;color:var(--text2);">Total Labour Paid</span><span style="font-size:17px;font-weight:700;color:var(--red);">₹${fmtNum(total)}</span></div>`+
-    data.map(l=>`<div class="list-item"><div class="li-header"><div><div class="li-title">${l.worker_name}</div><div class="li-sub">${l.role} · ${l.days} days · ${fmtDate(l.date)}</div></div><span style="font-size:14px;font-weight:700;color:var(--red);">₹${fmtNum(l.amount)}</span></div></div>`).join('');
-}
-
-async function loadTeam() {
-  const {data}=await sb.from('users').select('*').eq('project',PROJECT).eq('active',true).order('created_at');
-  const list=document.getElementById('team-list');
-  if (!data||data.length===0){list.innerHTML='<div class="empty"><div class="empty-icon">👥</div><div class="empty-text">No team members yet.</div></div>';return;}
-  const rc=ROLE_CONFIG;
-  list.innerHTML=data.map(u=>`
-    <div class="team-card">
-      <div><div class="tm-name">${u.name}</div><div class="tm-role">${rc[u.role]?.label||u.role}</div><div class="tm-pass">Pass: ${u.password}</div></div>
-      <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
-        <span class="role-badge ${rc[u.role]?.badge||''}">${rc[u.role]?.label||u.role}</span>
-        ${u.role!=='contractor'?`<button class="btn btn-danger btn-sm" onclick="removeTeamMember(${u.id},'${u.name}')">Remove</button>`:''}
+  if(!data||data.length===0){list.innerHTML='<div class="empty"><div class="empty-icon">👷</div><div class="empty-text">No labour entries yet.</div></div>';return;}
+  list.innerHTML=`<div class="card" style="margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;padding:12px 14px;">
+    <span style="font-size:12px;color:var(--text2);">Total Labour Paid</span>
+    <span style="font-size:17px;font-weight:700;color:var(--red);">₹${fmtNum(total)}</span>
+  </div>`+data.map(l=>`
+    <div class="list-item">
+      <div class="li-header">
+        <div><div class="li-title">${l.worker_name}</div><div class="li-sub">${l.role} · ${l.days} days · ${fmtDate(l.date)} · ${l.added_by}</div></div>
+        <span style="font-size:14px;font-weight:700;color:var(--red);flex-shrink:0;">₹${fmtNum(l.amount)}</span>
       </div>
     </div>`).join('');
 }
 
-// ── AI ──
-function openAI() {
-  document.getElementById('ai-panel').classList.add('open');
-  document.getElementById('ai-overlay').classList.add('show');
-  document.getElementById('ai-input').focus();
+async function loadTeam(){
+  const {data}=await sb.from('users').select('*').eq('project',PROJECT).eq('active',true).order('created_at');
+  const list=document.getElementById('team-list');
+  if(!data||data.length===0){list.innerHTML='<div class="empty"><div class="empty-icon">👥</div><div class="empty-text">No team members yet.</div></div>';return;}
+  list.innerHTML=data.map(u=>`
+    <div class="person-card">
+      <div>
+        <div class="pc-name">${u.name}</div>
+        <div class="pc-sub">${ROLES[u.role]?.label||u.role}</div>
+        <div class="pc-pass">Password: ${u.password}</div>
+      </div>
+      <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+        <span class="role-badge ${ROLES[u.role]?.cls||''}">${ROLES[u.role]?.label||u.role}</span>
+        ${u.role!=='contractor'?`<button class="btn btn-danger btn-sm" onclick="removeMember(${u.id},'${u.name}')">Remove</button>`:''}
+      </div>
+    </div>`).join('');
 }
-function closeAI() {
-  document.getElementById('ai-panel').classList.remove('open');
-  document.getElementById('ai-overlay').classList.remove('show');
-}
-function askChip(q) {
-  document.getElementById('ai-input').value=q;
-  sendAI();
-}
 
-async function sendAI() {
-  const input = document.getElementById('ai-input');
-  const msg = input.value.trim();
-  if (!msg) return;
-  input.value='';
-  document.getElementById('quick-chips').style.display='none';
+// ── LANGUAGE SYSTEM ──
+let LANG = localStorage.getItem('bw_lang') || 'en';
 
-  addAIMsg(msg,'user');
-  const loading = addAIMsg('Thinking...','bot loading');
+const T = {
+  en: {
+    // Login
+    signin:'Sign In', signin_btn:'Sign In →', signing_in:'Signing in...',
+    your_name:'Your Name', password:'Password', name_placeholder:'Enter your name',
+    pass_placeholder:'Enter password', wrong_creds:'Wrong name or password. Try again.',
+    fill_fields:'Please fill in name and password.',
+    // Nav
+    logout:'Logout',
+    // Project
+    contractor_label:'Contractor',
+    // Tabs
+    tab_dashboard:'Dashboard', tab_attendance:'Attendance', tab_report:'Daily Report',
+    tab_reports:'Reports', tab_finance:'Finance', tab_materials:'Materials',
+    tab_labour:'Labour', tab_workers:'Workers', tab_team:'Team',
+    // Dashboard
+    overview:'Overview', reports_label:'Reports', total_label:'Total', spent_label:'Spent',
+    all_time:'All time', workers_label:'Workers', last_report:'Last report',
+    latest_report:'Latest Report', recent_expenses:'Recent Expenses',
+    no_reports:'No reports submitted yet.', no_expenses:'No expenses recorded yet.',
+    loading:'Loading...', workers_present:'workers present',
+    // Attendance
+    mark_attendance:'Mark Attendance', refresh:'Refresh',
+    workers_registered:'workers registered', present:'present',
+    submit_attendance:'Submit Attendance ✓', submitting:'Saving...',
+    attendance_log:'Attendance Log', no_att:'No attendance recorded for this date.',
+    no_workers_yet:'No workers added yet.\nGo to Workers tab to add them first.',
+    mark_one:'Mark at least one worker present', overtime_hrs:'Overtime (hrs):',
+    att_saved:'workers marked present ✓', est_wages:'Est. wages',
+    // Report Form
+    daily_report:'Submit Daily Report', date_label:'Date',
+    workers_count:'Workers Present', work_done:'Work Done Today',
+    work_placeholder:'Describe all work completed today...',
+    materials_received:'Materials Received', mat_placeholder:'e.g. 30 bags cement, 2 ton steel rods',
+    issues_label:'Issues / Problems', issues_placeholder:'Leave blank if no issues today',
+    site_photos:'Site Photos', upload_photos:'Tap to upload photos from site',
+    submit_report:'Submit Report ✓', fill_report:'Fill workers count and work done',
+    report_saved:'Report submitted ✓',
+    // Reports list
+    all_reports:'All Site Reports', issue_flag:'Issue Flagged', all_clear:'All Clear',
+    issue:'Issue', clear:'Clear', materials_label:'Materials', by_label:'By',
+    // Finance
+    add_expense:'Add Expense', category:'Category', description:'Description',
+    desc_placeholder:'e.g. 50 cement bags from Sharma Traders',
+    amount:'Amount (₹)', payment_mode:'Payment Mode', add_entry:'Add Entry ✓',
+    total_spent:'Total Spent', finance_log:'Finance Log',
+    no_finance:'No entries yet.', fill_finance:'Fill description and amount',
+    finance_saved:'Expense saved ✓',
+    // Materials
+    log_material:'Log Material', material_name:'Material Name',
+    mat_name_placeholder:'e.g. Cement, Steel, Sand',
+    qty_received:'Qty Received', qty_used:'Qty Used',
+    qty_rec_ph:'e.g. 50 bags', qty_used_ph:'e.g. 30 bags',
+    cost:'Cost (₹)', vendor:'Vendor / Supplier', vendor_ph:'Vendor name',
+    log_mat_btn:'Log Material ✓', mat_log:'Material Log',
+    no_mat:'No materials logged yet.', fill_mat:'Fill material name and quantity',
+    mat_saved:'Material logged ✓', received:'Received', used:'Used',
+    // Labour
+    log_labour:'Log Labour Payment', worker_name:'Worker Name',
+    worker_ph:'Worker name', role:'Role', amount_paid:'Amount Paid (₹)',
+    days_worked:'Days Worked', log_pay:'Log Payment ✓', labour_log:'Labour Log',
+    no_labour:'No labour entries yet.', fill_labour:'Fill worker name and amount',
+    labour_saved:'Labour logged ✓', total_labour:'Total Labour Paid', days:'days',
+    // Workers
+    add_worker:'Add Worker to Registry', full_name:'Full Name',
+    worker_name_ph:'Worker\'s full name', daily_rate:'Daily Rate (₹)',
+    rate_ph:'e.g. 600', phone:'Phone Number', phone_ph:'Mobile number',
+    add_worker_btn:'Add Worker ✓', worker_registry:'Worker Registry',
+    no_worker_reg:'No workers in registry yet.', fill_worker:'Enter worker name',
+    worker_added:' added ✓', remove:'Remove', total_workers:'Total workers',
+    worker_removed:' removed',
+    // Team
+    add_member:'Add Team Member', access_role:'Access Role', tm_pass:'Password',
+    tm_pass_ph:'e.g. raju2026', add_member_btn:'Add Member ✓', team_members:'Team Members',
+    no_team:'No team members yet.', fill_team:'Fill name and password',
+    member_added:' added ✓', member_removed:' removed', view_only:'View Only',
+    password_label:'Password',
+    // Roles
+    role_supervisor:'Site Supervisor', role_store:'Store Manager',
+    role_accountant:'Accountant', role_client:'Client (View Only)',
+  },
+  hi: {
+    // Login
+    signin:'साइन इन', signin_btn:'साइन इन करें →', signing_in:'लॉगिन हो रहा है...',
+    your_name:'आपका नाम', password:'पासवर्ड', name_placeholder:'नाम दर्ज करें',
+    pass_placeholder:'पासवर्ड दर्ज करें', wrong_creds:'गलत नाम या पासवर्ड। फिर कोशिश करें।',
+    fill_fields:'नाम और पासवर्ड भरें।',
+    // Nav
+    logout:'लॉगआउट',
+    // Project
+    contractor_label:'ठेकेदार',
+    // Tabs
+    tab_dashboard:'डैशबोर्ड', tab_attendance:'हाजिरी', tab_report:'दैनिक रिपोर्ट',
+    tab_reports:'रिपोर्ट्स', tab_finance:'वित्त', tab_materials:'सामग्री',
+    tab_labour:'मजदूरी', tab_workers:'मजदूर', tab_team:'टीम',
+    // Dashboard
+    overview:'सारांश', reports_label:'रिपोर्ट', total_label:'कुल', spent_label:'खर्च',
+    all_time:'अब तक', workers_label:'मजदूर', last_report:'आखिरी रिपोर्ट',
+    latest_report:'ताज़ा रिपोर्ट', recent_expenses:'हालिया खर्च',
+    no_reports:'अभी तक कोई रिपोर्ट नहीं।', no_expenses:'अभी तक कोई खर्च दर्ज नहीं।',
+    loading:'लोड हो रहा है...', workers_present:'मजदूर मौजूद',
+    // Attendance
+    mark_attendance:'हाजिरी लगाएं', refresh:'रिफ्रेश',
+    workers_registered:'मजदूर रजिस्टर्ड', present:'मौजूद',
+    submit_attendance:'हाजिरी जमा करें ✓', submitting:'सेव हो रहा है...',
+    attendance_log:'हाजिरी लॉग', no_att:'इस तारीख की कोई हाजिरी नहीं।',
+    no_workers_yet:'कोई मजदूर नहीं जोड़ा गया।\nमजदूर टैब में जाकर पहले जोड़ें।',
+    mark_one:'कम से कम एक मजदूर को मौजूद मार्क करें', overtime_hrs:'ओवरटाइम (घंटे):',
+    att_saved:'मजदूर हाजिर मार्क हुए ✓', est_wages:'अनुमानित मजदूरी',
+    // Report Form
+    daily_report:'दैनिक साइट रिपोर्ट', date_label:'तारीख',
+    workers_count:'मजदूर मौजूद', work_done:'आज का काम',
+    work_placeholder:'आज कौन सा काम पूरा हुआ लिखें...',
+    materials_received:'आई हुई सामग्री', mat_placeholder:'जैसे: 30 बोरी सीमेंट, 2 टन सरिया',
+    issues_label:'समस्या / परेशानी', issues_placeholder:'अगर कोई समस्या न हो तो खाली छोड़ें',
+    site_photos:'साइट फोटो', upload_photos:'फोटो अपलोड करने के लिए टैप करें',
+    submit_report:'रिपोर्ट जमा करें ✓', fill_report:'मजदूरों की संख्या और काम भरें',
+    report_saved:'रिपोर्ट जमा हो गई ✓',
+    // Reports list
+    all_reports:'सभी साइट रिपोर्ट', issue_flag:'समस्या दर्ज', all_clear:'सब ठीक',
+    issue:'समस्या', clear:'ठीक', materials_label:'सामग्री', by_label:'द्वारा',
+    // Finance
+    add_expense:'खर्च जोड़ें', category:'श्रेणी', description:'विवरण',
+    desc_placeholder:'जैसे: शर्मा ट्रेडर्स से 50 सीमेंट बोरी',
+    amount:'राशि (₹)', payment_mode:'भुगतान का तरीका', add_entry:'एंट्री जोड़ें ✓',
+    total_spent:'कुल खर्च', finance_log:'वित्त लॉग',
+    no_finance:'अभी कोई एंट्री नहीं।', fill_finance:'विवरण और राशि भरें',
+    finance_saved:'खर्च सेव हो गया ✓',
+    // Materials
+    log_material:'सामग्री दर्ज करें', material_name:'सामग्री का नाम',
+    mat_name_placeholder:'जैसे: सीमेंट, सरिया, रेत',
+    qty_received:'मिली हुई मात्रा', qty_used:'इस्तेमाल हुई मात्रा',
+    qty_rec_ph:'जैसे: 50 बोरी', qty_used_ph:'जैसे: 30 बोरी',
+    cost:'लागत (₹)', vendor:'विक्रेता / सप्लायर', vendor_ph:'विक्रेता का नाम',
+    log_mat_btn:'सामग्री दर्ज करें ✓', mat_log:'सामग्री लॉग',
+    no_mat:'अभी तक कोई सामग्री दर्ज नहीं।', fill_mat:'सामग्री का नाम और मात्रा भरें',
+    mat_saved:'सामग्री दर्ज हो गई ✓', received:'मिली', used:'इस्तेमाल',
+    // Labour
+    log_labour:'मजदूरी दर्ज करें', worker_name:'मजदूर का नाम',
+    worker_ph:'मजदूर का नाम', role:'काम', amount_paid:'भुगतान राशि (₹)',
+    days_worked:'काम के दिन', log_pay:'भुगतान दर्ज करें ✓', labour_log:'मजदूरी लॉग',
+    no_labour:'अभी तक कोई मजदूरी एंट्री नहीं।', fill_labour:'मजदूर का नाम और राशि भरें',
+    labour_saved:'मजदूरी दर्ज हो गई ✓', total_labour:'कुल मजदूरी भुगतान', days:'दिन',
+    // Workers
+    add_worker:'मजदूर रजिस्ट्री में जोड़ें', full_name:'पूरा नाम',
+    worker_name_ph:'मजदूर का पूरा नाम', daily_rate:'दैनिक दर (₹)',
+    rate_ph:'जैसे: 600', phone:'फोन नंबर', phone_ph:'मोबाइल नंबर',
+    add_worker_btn:'मजदूर जोड़ें ✓', worker_registry:'मजदूर रजिस्ट्री',
+    no_worker_reg:'अभी रजिस्ट्री में कोई मजदूर नहीं।', fill_worker:'मजदूर का नाम दर्ज करें',
+    worker_added:' जोड़ा गया ✓', remove:'हटाएं', total_workers:'कुल मजदूर',
+    worker_removed:' हटाया गया',
+    // Team
+    add_member:'टीम सदस्य जोड़ें', access_role:'भूमिका', tm_pass:'पासवर्ड',
+    tm_pass_ph:'जैसे: raju2026', add_member_btn:'सदस्य जोड़ें ✓', team_members:'टीम सदस्य',
+    no_team:'अभी कोई टीम सदस्य नहीं।', fill_team:'नाम और पासवर्ड भरें',
+    member_added:' जोड़ा गया ✓', member_removed:' हटाया गया', view_only:'केवल देखें',
+    password_label:'पासवर्ड',
+    // Roles
+    role_supervisor:'साइट सुपरवाइजर', role_store:'स्टोर मैनेजर',
+    role_accountant:'अकाउंटेंट', role_client:'क्लाइंट (केवल देखें)',
+  }
+};
 
-  // Fetch context from Supabase
-  const [rr,fr,mr,ar] = await Promise.all([
-    sb.from('reports').select('*').eq('project',PROJECT).order('created_at',{ascending:false}).limit(5),
-    sb.from('finance').select('*').eq('project',PROJECT).order('created_at',{ascending:false}).limit(10),
-    sb.from('materials').select('*').eq('project',PROJECT).order('created_at',{ascending:false}).limit(10),
-    sb.from('attendance').select('*').eq('project',PROJECT).order('date',{ascending:false}).limit(20)
-  ]);
+function t(key){ return T[LANG][key] || T['en'][key] || key; }
 
-  const totalSpent = (fr.data||[]).reduce((s,f)=>s+f.amount,0);
-  const context = `
-Project: Jyoti Garden House by KTech Buildcon Pvt Ltd
-User: ${CU.name} (${CU.role})
-Today: ${new Date().toLocaleDateString('en-IN')}
-
-Recent Reports (last 5): ${JSON.stringify(rr.data||[])}
-Recent Finance (last 10): ${JSON.stringify(fr.data||[])}
-Total Spent: ₹${fmtNum(totalSpent)}
-Recent Materials: ${JSON.stringify(mr.data||[])}
-Recent Attendance: ${JSON.stringify(ar.data||[])}
-  `.trim();
-
-  try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method:'POST',
-      headers:{'Content-Type':'application/json','x-api-key':CLAUDE_KEY,'anthropic-version':'2023-06-01'},
-      body: JSON.stringify({
-        model:'claude-haiku-4-5-20251001',
-        max_tokens:400,
-        system:`You are Buildwatch AI assistant for a construction site management app. 
-You help contractors and supervisors understand their site data.
-Answer in simple Hindi-English mix (Hinglish) as people speak in Delhi NCR.
-Be concise, helpful, and practical. Use emojis sparingly.
-Context about the project: ${context}`,
-        messages:[...aiHistory,{role:'user',content:msg}]
-      })
-    });
-    const data = await res.json();
-    const reply = data.content?.[0]?.text || 'Sorry, kuch problem hui. Dobara try karo.';
-    loading.textContent=reply;
-    loading.classList.remove('loading');
-    aiHistory.push({role:'user',content:msg},{role:'assistant',content:reply});
-    if (aiHistory.length>20) aiHistory=aiHistory.slice(-20);
-  } catch(e) {
-    loading.textContent='Network error. Check connection and try again.';
-    loading.classList.remove('loading');
+function toggleLang(){
+  LANG = LANG==='en' ? 'hi' : 'en';
+  localStorage.setItem('bw_lang', LANG);
+  const newLabel = LANG==='en' ? 'हिंदी' : 'EN';
+  const lb1=document.getElementById('lang-btn');
+  const lb2=document.getElementById('lang-btn-login');
+  if(lb1)lb1.textContent=newLabel;
+  if(lb2)lb2.textContent=newLabel;
+  if(CU){
+    buildViews();
+    switchTab(ROLES[CU.role].tabs[0]);
+  } else {
+    // Update login labels
+    const lt=document.getElementById('login-title');
+    const lbtn=document.getElementById('lbtn');
+    const ln=document.getElementById('ln');
+    const lp=document.getElementById('lp');
+    if(lt)lt.textContent=t('signin');
+    if(lbtn)lbtn.textContent=t('signin_btn');
+    if(ln)ln.placeholder=t('name_placeholder');
+    if(lp)lp.placeholder=t('pass_placeholder');
   }
 }
 
-function addAIMsg(text, type) {
-  const msgs = document.getElementById('ai-messages');
-  const div = document.createElement('div');
-  div.className='ai-msg '+type;
-  div.textContent=text;
-  msgs.appendChild(div);
-  msgs.scrollTop=msgs.scrollHeight;
-  return div;
+function renderLogin(){
+  document.getElementById('login-title').textContent = t('signin');
+  document.getElementById('ln').placeholder = t('name_placeholder');
+  document.getElementById('lp').placeholder = t('pass_placeholder');
+  document.getElementById('lbtn').textContent = t('signin_btn');
+  document.querySelector('.field:nth-child(1) label') && (document.querySelectorAll('.login-box .field label')[0].textContent = t('your_name'));
+  document.querySelector('.login-box .field:nth-child(2) label') && (document.querySelectorAll('.login-box .field label')[1].textContent = t('password'));
 }
 
 // ── UTILS ──
 function fmtNum(n){if(!n)return'0';if(n>=100000)return(n/100000).toFixed(1)+'L';if(n>=1000)return(n/1000).toFixed(1)+'K';return Number(n).toLocaleString('en-IN');}
 function fmtDate(d){if(!d)return'—';return new Date(d).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});}
-function showToast(msg,isErr=false){const t=document.getElementById('toast');t.textContent=msg;t.className='toast'+(isErr?' err':'');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);}
+function showToast(msg,isErr=false){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.className='toast'+(isErr?' err':'');
+  t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);
+}
 
 // ── PWA ──
-if('serviceWorker'in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}
-let deferredPrompt;
-window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;showInstallBar();});
-function showInstallBar(){
-  if(document.getElementById('install-bar'))return;
-  const bar=document.createElement('div');
-  bar.id='install-bar';bar.className='install-bar';
-  bar.innerHTML=`<div><div style="font-size:13px;font-weight:600;">Install Buildwatch App</div><div style="font-size:11px;color:var(--text2);">Add to home screen</div></div><div style="display:flex;gap:8px;"><button onclick="document.getElementById('install-bar').remove()" style="padding:7px 12px;border:1px solid var(--border2);background:transparent;color:var(--text2);border-radius:6px;font-size:12px;cursor:pointer;">Later</button><button onclick="installApp()" style="padding:7px 12px;background:var(--amber);color:#0E0D0A;border:none;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;">Install</button></div>`;
-  document.body.appendChild(bar);
-}
-async function installApp(){if(!deferredPrompt)return;deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null;document.getElementById('install-bar')?.remove();}
+if('serviceWorker'in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').catch(()=>{}));}
 
 // ── INIT ──
-const saved=localStorage.getItem('bw_user');
+const saved=localStorage.getItem('bw_u');
+// Set lang buttons on load
+document.addEventListener('DOMContentLoaded',()=>{
+  const lbl=document.getElementById('lang-btn-login');
+  if(lbl)lbl.textContent=LANG==='en'?'हिंदी':'EN';
+});
 if(saved){try{CU=JSON.parse(saved);showApp();}catch(e){}}
 </script>
 </body>
