@@ -2,8 +2,23 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Buildwatch — Jyoti Garden House</title>
+
+<!-- PWA -->
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#F5A623">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Buildwatch">
+<meta name="application-name" content="Buildwatch">
+<meta name="msapplication-TileColor" content="#0E0D0A">
+
+<!-- Icons -->
+<link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
+<link rel="apple-touch-icon" href="/icon-192.png">
+
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
@@ -805,6 +820,59 @@ function showToast(msg,isErr=false) {
   t.className='toast'+(isErr?' err':'');
   t.classList.add('show');
   setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+// ── SERVICE WORKER ──
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js')
+      .then(reg => console.log('SW registered'))
+      .catch(err => console.log('SW error:', err));
+  });
+}
+
+// ── INSTALL PROMPT ──
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  showInstallBanner();
+});
+
+function showInstallBanner() {
+  const banner = document.createElement('div');
+  banner.id = 'install-banner';
+  banner.style.cssText = `
+    position:fixed;bottom:0;left:0;right:0;
+    background:#1A1916;border-top:1px solid rgba(245,166,35,0.3);
+    padding:14px 18px;display:flex;align-items:center;
+    justify-content:space-between;z-index:9998;
+  `;
+  banner.innerHTML = `
+    <div>
+      <div style="font-size:13px;font-weight:600;color:#F0EDE6;">Install Buildwatch App</div>
+      <div style="font-size:11px;color:#9B9890;margin-top:2px;">Add to home screen for quick access</div>
+    </div>
+    <div style="display:flex;gap:8px;">
+      <button onclick="document.getElementById('install-banner').remove()" 
+        style="padding:8px 14px;border:1px solid #3A3835;background:transparent;color:#9B9890;border-radius:6px;font-size:12px;cursor:pointer;">
+        Later
+      </button>
+      <button onclick="installApp()" 
+        style="padding:8px 14px;background:#F5A623;color:#0E0D0A;border:none;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;">
+        Install
+      </button>
+    </div>
+  `;
+  document.body.appendChild(banner);
+}
+
+async function installApp() {
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  const { outcome } = await deferredPrompt.userChoice;
+  deferredPrompt = null;
+  document.getElementById('install-banner')?.remove();
 }
 
 // ── INIT ──
