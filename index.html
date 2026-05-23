@@ -691,21 +691,45 @@ footer{
 </footer>
 
 <script>
-function joinWaitlist(id){
-  const email=document.getElementById(id+'-email').value;
-  if(!email||!email.includes('@')){
-    document.getElementById(id+'-email').style.borderColor='var(--red)';
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbxHc_f3r6LTd6crUjPZKoKL48IoeRz8hH-GCzzY0_gNa-fZ5VdBKHBCwbZMZKUIb7yw/exec';
+
+async function joinWaitlist(id) {
+  const email = document.getElementById(id + '-email').value;
+  if (!email || !email.includes('@')) {
+    document.getElementById(id + '-email').style.borderColor = 'var(--red)';
     return;
   }
-  document.getElementById(id+'-form')||document.getElementById('hero-form');
-  if(id==='hero'){
-    document.getElementById('hero-form').style.display='none';
-    document.getElementById('hero-success').style.display='block';
+
+  const btn = event.target;
+  const originalText = btn.textContent;
+  btn.textContent = 'Joining...';
+  btn.disabled = true;
+  btn.style.opacity = '0.7';
+
+  try {
+    await fetch(SHEET_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: email,
+        name: '',
+        city: '',
+        sites: ''
+      })
+    });
+  } catch(e) {
+    // no-cors won't throw, this is fine
+  }
+
+  if (id === 'hero') {
+    document.getElementById('hero-form').style.display = 'none';
+    document.getElementById('hero-success').style.display = 'block';
   } else {
-    document.getElementById('cta-form').style.display='none';
-    const s=document.getElementById('cta-success');
-    s.style.display='block';
-    s.textContent='You\'re on the list — we\'ll be in touch before anyone else.';
+    document.getElementById('cta-form').style.display = 'none';
+    const s = document.getElementById('cta-success');
+    s.style.display = 'block';
+    s.textContent = "You're on the list — we'll be in touch before anyone else.";
   }
 }
 
