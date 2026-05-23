@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Buildwatch — Every Site. Always Visible.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#fafaf8;
+  --bg2:#f3f2ee;
+  --surface:#ffffff;
+  --border:#e8e5df;
+  --border2:#d4d0c8;
+  --text:#1a1916;
+  --text2:#6b6860;
+  --text3:#9b9890;
+  --amber:#d4920a;
+  --amber-bg:#fdf3d8;
+  --amber-border:#f5c842;
+  --green:#2d7a4f;
+  --green-bg:#edf7f2;
+  --red:#c0392b;
+  --red-bg:#fdf0ee;
+}
+@media(prefers-color-scheme:dark){
+  :root{
+    --bg:#141412;
+    --bg2:#1c1b18;
+    --surface:#242320;
+    --border:#2e2d29;
+    --border2:#3a3935;
+    --text:#f0ede6;
+    --text2:#9b9890;
+    --text3:#6b6860;
+    --amber:#F5A623;
+    --amber-bg:#2a2010;
+    --amber-border:#7a5010;
+    --green:#3aad6b;
+    --green-bg:#0f2318;
+    --red:#e05a4a;
+    --red-bg:#2a100e;
+  }
+}
+html{font-size:16px;-webkit-font-smoothing:antialiased}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Inter',sans-serif;
+  font-weight:400;
+  line-height:1.6;
+  min-height:100vh;
+}
+
+/* NAV */
+nav{
+  position:sticky;
+  top:0;
+  z-index:99;
+  background:var(--bg);
+  border-bottom:1px solid var(--border);
+  padding:0 40px;
+  height:60px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.logo{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-family:'Inter',sans-serif;
+  font-weight:600;
+  font-size:15px;
+  letter-spacing:-0.01em;
+  color:var(--text);
+  text-decoration:none;
+}
+.logo-mark{
+  width:34px;height:34px;
+  background:#111009;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:8px;
+  border:1px solid rgba(245,166,35,0.3);
+  flex-shrink:0;
+}
+.logo-mark svg{width:18px;height:18px;}
+.logo-text{display:flex;align-items:baseline;gap:0;}
+.logo-build{color:var(--text);font-weight:700;font-size:16px;letter-spacing:-0.02em;}
+.logo-watch{color:#F5A623;font-weight:700;font-size:16px;letter-spacing:-0.02em;}
+.nav-pill{
+  font-size:12px;
+  font-weight:500;
+  color:var(--amber);
+  background:var(--amber-bg);
+  border:1px solid var(--amber-border);
+  padding:4px 12px;
+  border-radius:100px;
+  letter-spacing:0.02em;
+}
+
+/* LAYOUT */
+.container{max-width:1080px;margin:0 auto;padding:0 40px;}
+section{padding:80px 0;}
+
+/* HERO */
+.hero{
+  padding:100px 0 80px;
+  border-bottom:1px solid var(--border);
+}
+.hero-inner{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:80px;
+  align-items:center;
+}
+.hero-left{}
+.eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  font-size:12px;
+  font-weight:500;
+  color:var(--amber);
+  letter-spacing:0.06em;
+  text-transform:uppercase;
+  margin-bottom:24px;
+}
+.eyebrow-dot{
+  width:6px;height:6px;
+  background:var(--amber);
+  border-radius:50%;
+  animation:pulse 2s ease infinite;
+}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+h1{
+  font-family:'Playfair Display',serif;
+  font-size:52px;
+  font-weight:500;
+  line-height:1.1;
+  letter-spacing:-0.02em;
+  color:var(--text);
+  margin-bottom:20px;
+}
+h1 em{font-style:italic;color:var(--amber);}
+.hero-desc{
+  font-size:16px;
+  color:var(--text2);
+  line-height:1.7;
+  margin-bottom:36px;
+  max-width:420px;
+}
+.form-wrap{display:flex;flex-direction:column;gap:12px;max-width:400px;}
+.input-row{display:flex;gap:0;}
+.input-row input{
+  flex:1;
+  height:44px;
+  padding:0 16px;
+  font-size:14px;
+  font-family:'Inter',sans-serif;
+  background:var(--surface);
+  border:1px solid var(--border2);
+  border-right:none;
+  color:var(--text);
+  outline:none;
+  border-radius:8px 0 0 8px;
+  transition:border-color .2s;
+}
+.input-row input:focus{border-color:var(--amber);}
+.input-row input::placeholder{color:var(--text3);}
+.btn-primary{
+  height:44px;
+  padding:0 20px;
+  background:var(--text);
+  color:var(--bg);
+  border:none;
+  font-family:'Inter',sans-serif;
+  font-size:13px;
+  font-weight:500;
+  cursor:pointer;
+  border-radius:0 8px 8px 0;
+  white-space:nowrap;
+  transition:opacity .2s;
+  letter-spacing:0.01em;
+}
+.btn-primary:hover{opacity:0.85;}
+.form-note{font-size:12px;color:var(--text3);}
+.success-banner{
+  display:none;
+  padding:12px 16px;
+  background:var(--green-bg);
+  border:1px solid var(--border);
+  border-radius:8px;
+  font-size:13px;
+  color:var(--green);
+  font-weight:500;
+}
+
+/* HERO RIGHT — MOCK DASHBOARD */
+.hero-right{}
+.dashboard-mock{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:12px;
+  overflow:hidden;
+  box-shadow:0 1px 3px rgba(0,0,0,.06),0 8px 24px rgba(0,0,0,.04);
+}
+.dash-header{
+  padding:14px 16px;
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.dash-header-left{display:flex;align-items:center;gap:10px;}
+.dash-dots{display:flex;gap:5px;}
+.dash-dot{width:9px;height:9px;border-radius:50%;background:var(--border2);}
+.dash-title{font-size:12px;color:var(--text3);font-weight:500;}
+.dash-badge{
+  font-size:11px;font-weight:500;
+  background:var(--green-bg);
+  color:var(--green);
+  padding:3px 8px;
+  border-radius:100px;
+}
+.dash-body{padding:16px;}
+.dash-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;}
+.metric{
+  background:var(--bg2);
+  border-radius:8px;
+  padding:12px;
+}
+.metric-label{font-size:10px;color:var(--text3);font-weight:500;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;}
+.metric-value{font-size:20px;font-weight:600;color:var(--text);letter-spacing:-0.02em;line-height:1;}
+.metric-sub{font-size:10px;color:var(--text3);margin-top:3px;}
+.dash-label{font-size:11px;font-weight:500;color:var(--text2);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.06em;}
+.site-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:9px 10px;
+  border-radius:6px;
+  margin-bottom:3px;
+  transition:background .15s;
+}
+.site-row:hover{background:var(--bg2);}
+.site-name{font-size:13px;color:var(--text);font-weight:500;}
+.site-sub{font-size:11px;color:var(--text3);}
+.site-tag{
+  font-size:10px;font-weight:600;
+  padding:3px 8px;
+  border-radius:100px;
+  letter-spacing:0.02em;
+  text-transform:uppercase;
+}
+.tag-ok{background:var(--green-bg);color:var(--green);}
+.tag-warn{background:var(--amber-bg);color:var(--amber);}
+.tag-alert{background:var(--red-bg);color:var(--red);}
+
+/* SOCIAL PROOF */
+.social-strip{
+  padding:24px 0;
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  gap:40px;
+}
+.social-strip-label{font-size:12px;color:var(--text3);white-space:nowrap;}
+.social-numbers{display:flex;gap:40px;}
+.social-num .n{font-size:22px;font-weight:600;color:var(--text);letter-spacing:-0.02em;}
+.social-num .l{font-size:12px;color:var(--text3);margin-top:1px;}
+
+/* PROBLEM */
+.problem-section{border-bottom:1px solid var(--border);}
+.section-eyebrow{
+  font-size:12px;font-weight:500;color:var(--text3);
+  text-transform:uppercase;letter-spacing:0.08em;
+  margin-bottom:16px;
+}
+.problem-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:60px;
+  align-items:start;
+}
+.problem-left h2{
+  font-family:'Playfair Display',serif;
+  font-size:36px;font-weight:500;
+  line-height:1.2;letter-spacing:-0.01em;
+  margin-bottom:20px;
+}
+.problem-left p{font-size:15px;color:var(--text2);line-height:1.75;margin-bottom:12px;}
+.problem-right{}
+.problem-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:20px;
+  margin-bottom:10px;
+  display:flex;
+  gap:14px;
+  align-items:flex-start;
+}
+.problem-icon{
+  width:32px;height:32px;
+  background:var(--red-bg);
+  border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+  font-size:15px;
+}
+.problem-card h4{font-size:14px;font-weight:500;color:var(--text);margin-bottom:4px;}
+.problem-card p{font-size:13px;color:var(--text2);line-height:1.55;}
+
+/* FEATURES */
+.features-section{border-bottom:1px solid var(--border);}
+.features-header{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:60px;align-items:end;margin-bottom:48px;
+}
+.features-header h2{
+  font-family:'Playfair Display',serif;
+  font-size:36px;font-weight:500;
+  line-height:1.2;letter-spacing:-0.01em;
+}
+.features-header p{font-size:15px;color:var(--text2);line-height:1.7;}
+.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);}
+.feature-box{
+  background:var(--bg);
+  padding:28px;
+}
+.feature-num{font-size:11px;font-weight:500;color:var(--text3);margin-bottom:14px;font-family:'Inter',monospace;}
+.feature-box h3{font-size:15px;font-weight:500;color:var(--text);margin-bottom:8px;letter-spacing:-0.01em;}
+.feature-box p{font-size:13px;color:var(--text2);line-height:1.65;}
+
+/* WHO */
+.who-section{border-bottom:1px solid var(--border);}
+.who-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.who-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:28px;
+}
+.who-tag{
+  display:inline-block;
+  font-size:11px;font-weight:500;
+  color:var(--text3);
+  border:1px solid var(--border);
+  padding:3px 10px;
+  border-radius:100px;
+  margin-bottom:16px;
+  text-transform:uppercase;
+  letter-spacing:0.06em;
+}
+.who-card h3{font-size:15px;font-weight:500;color:var(--text);margin-bottom:8px;}
+.who-card p{font-size:13px;color:var(--text2);line-height:1.65;}
+
+/* CTA */
+.cta-section{
+  text-align:center;
+  padding:100px 0;
+}
+.cta-section h2{
+  font-family:'Playfair Display',serif;
+  font-size:44px;font-weight:500;
+  line-height:1.15;letter-spacing:-0.02em;
+  margin-bottom:16px;
+}
+.cta-section h2 em{font-style:italic;color:var(--amber);}
+.cta-section p{font-size:16px;color:var(--text2);margin-bottom:36px;}
+.cta-form{display:flex;gap:0;justify-content:center;max-width:440px;margin:0 auto 12px;}
+.cta-note{font-size:12px;color:var(--text3);}
+
+/* FOOTER */
+footer{
+  border-top:1px solid var(--border);
+  padding:28px 40px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.footer-note{font-size:12px;color:var(--text3);}
+
+/* ANIM */
+.fade-in{opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease;}
+.fade-in.visible{opacity:1;transform:translateY(0);}
+
+@media(max-width:760px){
+  nav{padding:0 20px;}
+  .container{padding:0 20px;}
+  .hero{padding:60px 0 50px;}
+  .hero-inner,.problem-grid,.features-header{grid-template-columns:1fr;gap:40px;}
+  h1{font-size:36px;}
+  .hero-right{display:none;}
+  .features-grid,.who-grid{grid-template-columns:1fr;}
+  .social-strip{flex-direction:column;align-items:flex-start;gap:16px;}
+  .social-numbers{gap:24px;}
+  footer{flex-direction:column;gap:12px;text-align:center;}
+  .cta-form{flex-direction:column;}
+  .input-row input{border-right:1px solid var(--border2);border-bottom:none;border-radius:8px 8px 0 0;}
+  .btn-primary{border-radius:0 0 8px 8px;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="#">
+    <div class="logo-mark">
+      <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="2" y="12" width="4" height="7" rx="0.75" fill="#F5A623"/>
+        <rect x="8" y="7" width="4" height="12" rx="0.75" fill="#F5A623"/>
+        <rect x="14" y="2" width="4" height="17" rx="0.75" fill="#F5A623"/>
+        <polyline points="4,12 10,7 16,2" fill="none" stroke="#F5A623" stroke-width="1.2" stroke-linecap="round" stroke-opacity="0.4"/>
+      </svg>
+    </div>
+    <span class="logo-text"><span class="logo-build">Build</span><span class="logo-watch">watch</span></span>
+  </a>
+  <div class="nav-pill">Coming Soon</div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-inner">
+      <div class="hero-left">
+        <div class="eyebrow">
+          <span class="eyebrow-dot"></span>
+          Construction Site Intelligence
+        </div>
+        <h1>Every site.<br><em>Always</em> visible.</h1>
+        <p class="hero-desc">
+          Indian contractors manage crore-value projects on WhatsApp and paper diaries. Buildwatch gives you complete visibility over every site — reports, finances, labour, and clients — in one place.
+        </p>
+        <div class="form-wrap">
+          <div id="hero-form">
+            <div class="input-row">
+              <input type="email" id="hero-email" placeholder="Your email address" />
+              <button class="btn-primary" onclick="joinWaitlist('hero')">Join Waitlist</button>
+            </div>
+          </div>
+          <div class="success-banner" id="hero-success">
+            You're on the list — we'll be in touch before anyone else.
+          </div>
+          <p class="form-note">First 50 contractors get 3 months free. No card needed.</p>
+        </div>
+      </div>
+
+      <div class="hero-right">
+        <div class="dashboard-mock">
+          <div class="dash-header">
+            <div class="dash-header-left">
+              <div class="dash-dots">
+                <div class="dash-dot"></div>
+                <div class="dash-dot"></div>
+                <div class="dash-dot"></div>
+              </div>
+              <span class="dash-title">Buildwatch — Overview</span>
+            </div>
+            <span class="dash-badge">Live</span>
+          </div>
+          <div class="dash-body">
+            <div class="dash-metrics">
+              <div class="metric">
+                <div class="metric-label">Sites</div>
+                <div class="metric-value">4</div>
+                <div class="metric-sub">Active</div>
+              </div>
+              <div class="metric">
+                <div class="metric-label">Spent</div>
+                <div class="metric-value">₹41L</div>
+                <div class="metric-sub">This month</div>
+              </div>
+              <div class="metric">
+                <div class="metric-label">Alerts</div>
+                <div class="metric-value" style="color:var(--red)">3</div>
+                <div class="metric-sub">Need action</div>
+              </div>
+            </div>
+            <div class="dash-label">Sites</div>
+            <div class="site-row">
+              <div>
+                <div class="site-name">Sector 47, Gurugram</div>
+                <div class="site-sub">24 workers · Report submitted</div>
+              </div>
+              <span class="site-tag tag-ok">On track</span>
+            </div>
+            <div class="site-row">
+              <div>
+                <div class="site-name">Faridabad Phase 2</div>
+                <div class="site-sub">18 workers · Cement low</div>
+              </div>
+              <span class="site-tag tag-warn">Delayed</span>
+            </div>
+            <div class="site-row">
+              <div>
+                <div class="site-name">Noida Sector 62</div>
+                <div class="site-sub">9 workers · Labour short</div>
+              </div>
+              <span class="site-tag tag-alert">At risk</span>
+            </div>
+            <div class="site-row">
+              <div>
+                <div class="site-name">South Delhi Villa</div>
+                <div class="site-sub">31 workers · All clear</div>
+              </div>
+              <span class="site-tag tag-ok">On track</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOCIAL PROOF STRIP -->
+<div class="container">
+  <div class="social-strip">
+    <span class="social-strip-label">The problem in numbers</span>
+    <div class="social-numbers">
+      <div class="social-num">
+        <div class="n">7.4M+</div>
+        <div class="l">Construction firms in India</div>
+      </div>
+      <div class="social-num">
+        <div class="n">₹2Cr</div>
+        <div class="l">Average project size</div>
+      </div>
+      <div class="social-num">
+        <div class="n">0</div>
+        <div class="l">Proper software for them</div>
+      </div>
+      <div class="social-num">
+        <div class="n">2026</div>
+        <div class="l">Still managed on WhatsApp</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PROBLEM -->
+<section class="problem-section">
+  <div class="container">
+    <div class="problem-grid">
+      <div class="problem-left fade-in">
+        <div class="section-eyebrow">The problem</div>
+        <h2>Construction runs on chaos. It doesn't have to.</h2>
+        <p>Walk into any mid-size construction site in India. The contractor is juggling 30 workers, 5 vendors, 3 clients — all on WhatsApp and paper registers.</p>
+        <p>Existing tools are built for Godrej and DLF. Nobody built something simple for the contractor running a ₹1–5 crore site in Faridabad.</p>
+        <p>Until now.</p>
+      </div>
+      <div class="problem-right fade-in">
+        <div class="problem-card">
+          <div class="problem-icon">💸</div>
+          <div>
+            <h4>Labour payment fraud</h4>
+            <p>Supervisors mark 30 workers present. 22 showed up. Contractor pays for all 30. Happens daily across India.</p>
+          </div>
+        </div>
+        <div class="problem-card">
+          <div class="problem-icon">📦</div>
+          <div>
+            <h4>Material goes missing</h4>
+            <p>Cement bags, steel, tools — no tracking means no accountability. Losses add up to lakhs per project.</p>
+          </div>
+        </div>
+        <div class="problem-card">
+          <div class="problem-icon">📞</div>
+          <div>
+            <h4>Clients call 10 times a day</h4>
+            <p>No visibility means anxiety. Clients call constantly. Disputes happen with zero documentation to fall back on.</p>
+          </div>
+        </div>
+        <div class="problem-card">
+          <div class="problem-icon">📊</div>
+          <div>
+            <h4>Budget overruns nobody saw coming</h4>
+            <p>Money disappears across sites. By the time someone notices, it's too late to course correct.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features-section">
+  <div class="container">
+    <div class="features-header fade-in">
+      <div>
+        <div class="section-eyebrow">What Buildwatch does</div>
+        <h2>Everything a contractor needs. Nothing they don't.</h2>
+      </div>
+      <p>Simple enough that a site supervisor can use it in 3 minutes from their phone. Powerful enough that a contractor can manage 10 sites without calling anyone.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-box fade-in">
+        <div class="feature-num">01</div>
+        <h3>Daily site reporting</h3>
+        <p>Supervisors submit attendance, photos, and progress in minutes. From their phone. No training needed.</p>
+      </div>
+      <div class="feature-box fade-in">
+        <div class="feature-num">02</div>
+        <h3>Finance tracking</h3>
+        <p>Every rupee in and out. Material costs, labour wages, vendor payments. Know where your money goes before it's gone.</p>
+      </div>
+      <div class="feature-box fade-in">
+        <div class="feature-num">03</div>
+        <h3>Material management</h3>
+        <p>What came in, what was used, what's left. Low stock alerts before you run short. Full vendor log.</p>
+      </div>
+      <div class="feature-box fade-in">
+        <div class="feature-num">04</div>
+        <h3>Client portal</h3>
+        <p>A clean shareable link. Clients see exactly what you want them to see. No more daily calls. No more disputes.</p>
+      </div>
+      <div class="feature-box fade-in">
+        <div class="feature-num">05</div>
+        <h3>Labour management</h3>
+        <p>Worker roster, attendance, wages, payment history. Who showed up and who got paid. Always accurate.</p>
+      </div>
+      <div class="feature-box fade-in">
+        <div class="feature-num">06</div>
+        <h3>AI alerts</h3>
+        <p>Delay predictions, budget warnings, anomaly detection. Your AI site manager that never misses anything.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHO -->
+<section class="who-section">
+  <div class="container">
+    <div class="section-eyebrow fade-in">Built for three people</div>
+    <div class="who-grid" style="margin-top:32px;">
+      <div class="who-card fade-in">
+        <span class="who-tag">Site Supervisor</span>
+        <h3>Three minutes. Done for the day.</h3>
+        <p>Photos, attendance, materials, issues. One simple form on your phone. No WhatsApp forwards. No paper diaries.</p>
+      </div>
+      <div class="who-card fade-in">
+        <span class="who-tag">Contractor</span>
+        <h3>See everything. Miss nothing.</h3>
+        <p>All your sites in one dashboard. Live finance tracking. Instant alerts when something needs your attention.</p>
+      </div>
+      <div class="who-card fade-in">
+        <span class="who-tag">Client</span>
+        <h3>Clean updates. Zero calls.</h3>
+        <p>A shareable link with what the contractor chooses to show. Progress photos, milestones, dated proof. No disputes.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-eyebrow">Early access</div>
+      <h2>Be first<br>on <em>site.</em></h2>
+      <p>First 50 contractors get 3 months completely free.</p>
+      <div class="cta-form" id="cta-form">
+        <div class="input-row" style="width:100%;">
+          <input type="email" id="cta-email" placeholder="Your email address" style="flex:1;" />
+          <button class="btn-primary" onclick="joinWaitlist('cta')">Get Early Access</button>
+        </div>
+      </div>
+      <div class="success-banner" id="cta-success" style="max-width:440px;margin:0 auto 12px;"></div>
+      <p class="cta-note" style="margin-top:12px;">No credit card. No commitment. Just early access.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <a class="logo" href="#" style="text-decoration:none;">
+    <div class="logo-mark">
+      <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="2" y="12" width="4" height="7" rx="0.75" fill="#F5A623"/>
+        <rect x="8" y="7" width="4" height="12" rx="0.75" fill="#F5A623"/>
+        <rect x="14" y="2" width="4" height="17" rx="0.75" fill="#F5A623"/>
+        <polyline points="4,12 10,7 16,2" fill="none" stroke="#F5A623" stroke-width="1.2" stroke-linecap="round" stroke-opacity="0.4"/>
+      </svg>
+    </div>
+    <span class="logo-text"><span class="logo-build">Build</span><span class="logo-watch">watch</span></span>
+  </a>
+  <span class="footer-note">Building from Delhi NCR, India &nbsp;🇮🇳</span>
+  <span class="footer-note">© 2026 Buildwatch</span>
+</footer>
+
+<script>
+function joinWaitlist(id){
+  const email=document.getElementById(id+'-email').value;
+  if(!email||!email.includes('@')){
+    document.getElementById(id+'-email').style.borderColor='var(--red)';
+    return;
+  }
+  document.getElementById(id+'-form')||document.getElementById('hero-form');
+  if(id==='hero'){
+    document.getElementById('hero-form').style.display='none';
+    document.getElementById('hero-success').style.display='block';
+  } else {
+    document.getElementById('cta-form').style.display='none';
+    const s=document.getElementById('cta-success');
+    s.style.display='block';
+    s.textContent='You\'re on the list — we\'ll be in touch before anyone else.';
+  }
+}
+
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')});
+},{threshold:0.12});
+document.querySelectorAll('.fade-in').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
