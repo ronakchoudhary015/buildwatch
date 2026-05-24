@@ -276,20 +276,38 @@ const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJ
 const sb = supabase.createClient(SB_URL, SB_KEY);
 const PROJECT = 'Jyoti Garden House';
 
-const ROLES = {
-  contractor: { label:'Contractor',    cls:'role-contractor', tabs:['dashboard','attendance','report','reports','finance','materials','labour','workers','team'] },
-  supervisor: { label:'Supervisor',    cls:'role-supervisor', tabs:['attendance','report','reports'] },
-  store:      { label:'Store Mgr',     cls:'role-store',      tabs:['materials'] },
-  accountant: { label:'Accountant',    cls:'role-accountant', tabs:['finance','labour'] },
-  client:     { label:'Client',        cls:'role-client',     tabs:['reports'] },
-};
+// All possible tabs/features
+const ALL_TABS = ['dashboard','attendance','report','reports','finance','materials','labour','workers','team'];
 const TAB_NAMES = {
   dashboard:'Dashboard',attendance:'Attendance',report:'Daily Report',
   reports:'Reports',finance:'Finance',materials:'Materials',
   labour:'Labour',workers:'Workers',team:'Team'
 };
+const TAB_LABELS_HI = {
+  dashboard:'डैशबोर्ड',attendance:'हाजिरी',report:'दैनिक रिपोर्ट',
+  reports:'रिपोर्ट्स',finance:'वित्त',materials:'सामग्री',
+  labour:'मजदूरी',workers:'मजदूर',team:'टीम'
+};
 
-let CU=null, photoFiles=[], attState={};
+// Contractor always gets everything
+const CONTRACTOR_TABS = ALL_TABS;
+
+let CU=null, photoFiles=[], attState=[];
+
+// Get tabs for current user
+function getUserTabs(){
+  if(CU.role==='contractor') return CONTRACTOR_TABS;
+  // permissions is stored as array in DB e.g. ["attendance","report","reports"]
+  if(CU.permissions && Array.isArray(CU.permissions) && CU.permissions.length>0){
+    return CU.permissions.filter(p=>ALL_TABS.includes(p));
+  }
+  // fallback - old role based
+  if(CU.role==='supervisor') return ['attendance','report','reports'];
+  if(CU.role==='store') return ['materials'];
+  if(CU.role==='accountant') return ['finance','labour'];
+  if(CU.role==='client') return ['reports'];
+  return ['reports'];
+}
 
 // ── LOGIN ──
 async function doLogin() {
@@ -317,13 +335,14 @@ function showApp(){
   document.getElementById('login-screen').style.display='none';
   document.getElementById('app').style.display='flex';
   document.getElementById('app').style.flexDirection='column';
-  const rc=ROLES[CU.role]||ROLES.supervisor;
+  const tabs = getUserTabs();
+  const isContractor = CU.role==='contractor';
   document.getElementById('nav-name').textContent=CU.name;
-  document.getElementById('nav-badge').textContent=rc.label;
-  document.getElementById('nav-badge').className='role-badge '+rc.cls;
-  document.getElementById('tabs-bar').innerHTML=rc.tabs.map(t=>`<div class="tab" id="tab-${t}" onclick="switchTab('${t}')">${TAB_NAMES[t]}</div>`).join('');
+  document.getElementById('nav-badge').textContent=isContractor?'Contractor':CU.name.split(' ')[0];
+  document.getElementById('nav-badge').className='role-badge '+(isContractor?'role-contractor':'role-supervisor');
+  document.getElementById('tabs-bar').innerHTML=tabs.map(tk=>`<div class="tab" id="tab-${tk}" onclick="switchTab('${tk}')">${LANG==='hi'?(TAB_LABELS_HI[tk]||TAB_NAMES[tk]):TAB_NAMES[tk]}</div>`).join('');
   buildViews();
-  switchTab(rc.tabs[0]);
+  switchTab(tabs[0]);
 }
 
 // ── BUILD VIEWS ──
@@ -335,8 +354,8 @@ function buildViews(){
   if(lo)lo.textContent=t('logout');
 
   // Update tabs
-  const rc=ROLES[CU.role]||ROLES.supervisor;
-  document.getElementById('tabs-bar').innerHTML=rc.tabs.map(tk=>`<div class="tab" id="tab-${tk}" onclick="switchTab('${tk}')">${t('tab_'+tk)}</div>`).join('');
+  const tabs=getUserTabs();
+  document.getElementById('tabs-bar').innerHTML=tabs.map(tk=>`<div class="tab" id="tab-${tk}" onclick="switchTab('${tk}')">${LANG==='hi'?(TAB_LABELS_HI[tk]||TAB_NAMES[tk]):TAB_NAMES[tk]}</div>`).join('');
 
   // DASHBOARD
   document.getElementById('view-dashboard').innerHTML=`
@@ -497,17 +516,29 @@ function buildViews(){
       <div class="card-title"><span class="cdot"></span>${t('add_member')}</div>
       <div class="form-row">
         <div class="field"><label>${t('full_name')}</label><input type="text" id="tm-name" placeholder="e.g. Raju Kumar"/></div>
-        <div class="field"><label>${t('access_role')}</label>
-          <select id="tm-role">
-            <option value="supervisor">${t('role_supervisor')}</option>
-            <option value="store">${t('role_store')}</option>
-            <option value="accountant">${t('role_accountant')}</option>
-            <option value="client">${t('role_client')}</option>
-          </select>
+        <div class="field"><label>${t('tm_pass')}</label><input type="text" id="tm-pass" placeholder="${t('tm_pass_ph')}"/></div>
+      </div>
+      <div class="field">
+        <label style="margin-bottom:10px;display:block;">What can they access?</label>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+          ${[
+            {id:'perm-dashboard',  key:'dashboard',  label:'Dashboard'},
+            {id:'perm-attendance', key:'attendance',  label:'Attendance'},
+            {id:'perm-report',     key:'report',      label:'Submit Daily Report'},
+            {id:'perm-reports',    key:'reports',     label:'View All Reports'},
+            {id:'perm-finance',    key:'finance',     label:'Finance'},
+            {id:'perm-materials',  key:'materials',   label:'Materials'},
+            {id:'perm-labour',     key:'labour',      label:'Labour Payments'},
+            {id:'perm-workers',    key:'workers',     label:'Worker Registry'},
+          ].map(p=>`
+            <label style="display:flex;align-items:center;gap:8px;background:var(--surface2);border:1px solid var(--border2);border-radius:8px;padding:10px 12px;cursor:pointer;-webkit-tap-highlight-color:transparent;" id="lbl-${p.id}" onclick="togglePerm('${p.id}','lbl-${p.id}')">
+              <div style="width:20px;height:20px;border-radius:5px;border:2px solid var(--border2);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;" id="${p.id}"></div>
+              <span style="font-size:13px;font-weight:500;">${p.label}</span>
+              <input type="checkbox" style="display:none;" data-key="${p.key}"/>
+            </label>`).join('')}
         </div>
       </div>
-      <div class="field"><label>${t('tm_pass')}</label><input type="text" id="tm-pass" placeholder="${t('tm_pass_ph')}"/></div>
-      <button class="btn btn-primary btn-full" id="tm-btn" onclick="addTeamMember()">${t('add_member_btn')}</button>
+      <button class="btn btn-primary btn-full" id="tm-btn" onclick="addTeamMember()" style="margin-top:14px;">${t('add_member_btn')}</button>
     </div>
     <div class="sec-label">${t('team_members')}</div>
     <div id="team-list"><div class="loading">${t('loading')}</div></div>
@@ -516,12 +547,12 @@ function buildViews(){
 
 // ── TABS ──
 function switchTab(tab){
-  const rc=ROLES[CU.role]||ROLES.supervisor;
-  if(!rc.tabs.includes(tab))return;
-  rc.tabs.forEach(t=>{
-    document.getElementById('view-'+t).style.display=t===tab?'block':'none';
-    const el=document.getElementById('tab-'+t);
-    if(el)el.classList.toggle('active',t===tab);
+  const tabs=getUserTabs();
+  if(!tabs.includes(tab))return;
+  tabs.forEach(tk=>{
+    document.getElementById('view-'+tk).style.display=tk===tab?'block':'none';
+    const el=document.getElementById('tab-'+tk);
+    if(el)el.classList.toggle('active',tk===tab);
   });
   if(tab==='dashboard')loadDashboard();
   if(tab==='attendance'){loadWorkerList();loadAttLog();}
@@ -705,7 +736,7 @@ async function submitReport(){
   ['r-wrk','r-work','r-mat','r-issues'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('ph-prev').innerHTML='';photoFiles=[];
   showToast(t('report_saved'));
-  switchTab(ROLES[CU.role].tabs[0]);
+  switchTab(getUserTabs()[0]);
 }
 
 // ── SUBMIT FINANCE ──
@@ -773,17 +804,50 @@ async function addTeamMember(){
   const pass=document.getElementById('tm-pass').value.trim();
   if(!name||!pass){showToast(t('fill_team'),true);return;}
   btn.textContent='Adding...';btn.disabled=true;
-  const {error}=await sb.from('users').insert({name,role:document.getElementById('tm-role').value,password:pass,added_by:CU.name,project:PROJECT,active:true});
-  btn.textContent='Add Member ✓';btn.disabled=false;
+
+  // Collect checked permissions
+  const perms=[];
+  document.querySelectorAll('#view-team input[type=checkbox]').forEach(inp=>{
+    if(inp.checked) perms.push(inp.dataset.key);
+  });
+  if(perms.length===0){showToast('Select at least one permission',true);btn.textContent=t('add_member_btn');btn.disabled=false;return;}
+
+  const {error}=await sb.from('users').insert({
+    name, role:'custom', password:pass,
+    permissions:perms,
+    added_by:CU.name, project:PROJECT, active:true
+  });
+  btn.textContent=t('add_member_btn');btn.disabled=false;
   if(error){showToast('Error: '+error.message,true);return;}
   ['tm-name','tm-pass'].forEach(id=>document.getElementById(id).value='');
   showToast(name+t('member_added'));loadTeam();
 }
 
+function togglePerm(checkId,lblId){
+  const box=document.getElementById(checkId);
+  const lbl=document.getElementById(lblId);
+  const inp=lbl.querySelector('input[type=checkbox]');
+  const isOn=inp.checked;
+  inp.checked=!isOn;
+  if(!isOn){
+    box.style.background='var(--amber)';
+    box.style.borderColor='var(--amber)';
+    box.innerHTML='<span style="color:#0E0D0A;font-size:11px;font-weight:700;">✓</span>';
+    lbl.style.borderColor='var(--amber-border)';
+    lbl.style.background='var(--amber-bg)';
+  } else {
+    box.style.background='transparent';
+    box.style.borderColor='var(--border2)';
+    box.innerHTML='';
+    lbl.style.borderColor='var(--border2)';
+    lbl.style.background='var(--surface2)';
+  }
+}
+
 async function removeMember(id,name){
   if(!confirm('Remove '+name+'?'))return;
   await sb.from('users').update({active:false}).eq('id',id);
-  showToast(name+' removed');loadTeam();
+  showToast(name+t('member_removed'));loadTeam();
 }
 
 // ── LOAD FUNCTIONS ──
@@ -895,18 +959,21 @@ async function loadTeam(){
   const {data}=await sb.from('users').select('*').eq('project',PROJECT).eq('active',true).order('created_at');
   const list=document.getElementById('team-list');
   if(!data||data.length===0){list.innerHTML='<div class="empty"><div class="empty-icon">👥</div><div class="empty-text">No team members yet.</div></div>';return;}
-  list.innerHTML=data.map(u=>`
-    <div class="person-card">
-      <div>
+  list.innerHTML=data.map(u=>{
+    const isContractor=u.role==='contractor';
+    const perms=u.permissions&&Array.isArray(u.permissions)?u.permissions:[];
+    const chips=perms.map(p=>`<span style="font-size:10px;background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border);padding:2px 7px;border-radius:100px;white-space:nowrap;">${TAB_NAMES[p]||p}</span>`).join('');
+    return `
+    <div class="person-card" style="flex-wrap:wrap;">
+      <div style="flex:1;min-width:0;">
         <div class="pc-name">${u.name}</div>
-        <div class="pc-sub">${ROLES[u.role]?.label||u.role}</div>
-        <div class="pc-pass">Password: ${u.password}</div>
+        <div class="pc-pass" style="margin-top:3px;">Password: ${u.password}</div>
+        ${isContractor?'<span class="role-badge role-contractor" style="margin-top:6px;display:inline-block;">Full Access</span>':''}
+        ${perms.length>0?`<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:8px;">${chips}</div>`:''}
       </div>
-      <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
-        <span class="role-badge ${ROLES[u.role]?.cls||''}">${ROLES[u.role]?.label||u.role}</span>
-        ${u.role!=='contractor'?`<button class="btn btn-danger btn-sm" onclick="removeMember(${u.id},'${u.name}')">Remove</button>`:''}
-      </div>
-    </div>`).join('');
+      ${!isContractor?`<button class="btn btn-danger btn-sm" style="align-self:flex-start;" onclick="removeMember(${u.id},'${u.name}')">Remove</button>`:''}
+    </div>`;
+  }).join('');
 }
 
 // ── LANGUAGE SYSTEM ──
@@ -1087,7 +1154,7 @@ function toggleLang(){
   if(lb2)lb2.textContent=newLabel;
   if(CU){
     buildViews();
-    switchTab(ROLES[CU.role].tabs[0]);
+    switchTab(getUserTabs()[0]);
   } else {
     // Update login labels
     const lt=document.getElementById('login-title');
