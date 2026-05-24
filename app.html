@@ -1,3 +1,4 @@
+cat > /mnt/user-data/outputs/buildwatch-app.html << 'HTMLEOF'
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,13 +22,14 @@
   --amber:#F5A623;--amber-bg:rgba(245,166,35,0.08);--amber-border:rgba(245,166,35,0.2);
   --green:#2DB87A;--green-bg:rgba(45,184,122,0.08);--green-border:rgba(45,184,122,0.25);
   --red:#E05A4A;--red-bg:rgba(224,90,74,0.08);--red-border:rgba(224,90,74,0.25);
-  --blue:#4A9EE0;--blue-bg:rgba(74,158,224,0.08);
+  --blue:#4A9EE0;--blue-bg:rgba(74,158,224,0.08);--blue-border:rgba(74,158,224,0.25);
+  --purple:#9B7AE0;--purple-bg:rgba(155,122,224,0.08);
   --radius:12px;
 }
 html{-webkit-font-smoothing:antialiased;font-size:16px;}
 body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden;}
 
-/* ── LOGIN ── */
+/* LOGIN */
 #login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:16px;}
 .login-box{width:100%;max-width:360px;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:32px 24px;}
 .logo-wrap{display:flex;align-items:center;gap:10px;margin-bottom:24px;}
@@ -36,38 +38,37 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .logo-text{font-size:19px;font-weight:700;letter-spacing:-0.5px;}
 .logo-text span{color:var(--amber);}
 
-/* ── PROJECTS SCREEN ── */
+/* PROJECTS */
 #projects-screen{min-height:100vh;display:none;flex-direction:column;}
 .projects-nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 16px;height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
 .projects-body{padding:16px;max-width:600px;margin:0 auto;width:100%;}
-.project-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:12px;cursor:pointer;transition:border-color .15s;-webkit-tap-highlight-color:transparent;}
+.project-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:12px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:border-color .15s;}
 .project-card:active{border-color:var(--amber);}
-.project-card-name{font-size:16px;font-weight:700;letter-spacing:-0.3px;margin-bottom:4px;}
+.project-card-name{font-size:16px;font-weight:700;margin-bottom:4px;}
 .project-card-meta{font-size:12px;color:var(--text2);}
-.project-card-arrow{color:var(--text3);font-size:18px;}
-.project-card-status{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;padding:3px 8px;border-radius:100px;}
-.status-active{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border);}
-.status-paused{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border);}
-.status-done{background:var(--surface2);color:var(--text3);border:1px solid var(--border);}
-.new-project-btn{background:var(--amber);color:#0E0D0A;border:none;border-radius:var(--radius);padding:14px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;cursor:pointer;width:100%;margin-top:8px;-webkit-tap-highlight-color:transparent;}
+.project-progress-bar{height:4px;background:var(--border);border-radius:2px;margin-top:10px;}
+.project-progress-fill{height:4px;border-radius:2px;background:var(--amber);transition:width .3s;}
+.new-project-btn{background:var(--amber);color:#0E0D0A;border:none;border-radius:var(--radius);padding:14px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;cursor:pointer;width:100%;margin-top:8px;}
 
-/* ── CREATE PROJECT MODAL ── */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:200;display:none;align-items:flex-end;justify-content:center;}
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:200;display:none;align-items:flex-end;justify-content:center;padding:16px;}
 .modal-overlay.show{display:flex;}
-.modal-sheet{background:var(--surface);border-radius:20px 20px 0 0;padding:24px;width:100%;max-width:600px;}
-.modal-title{font-size:16px;font-weight:700;margin-bottom:16px;}
-.modal-close{float:right;font-size:22px;color:var(--text3);cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.modal-sheet{background:var(--surface);border-radius:20px 20px 0 0;padding:24px;width:100%;max-width:600px;max-height:85vh;overflow-y:auto;}
+.modal-title{font-size:16px;font-weight:700;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;}
+.modal-close{font-size:22px;color:var(--text3);cursor:pointer;-webkit-tap-highlight-color:transparent;}
 
-/* ── APP ── */
-#app{display:none;flex-direction:column;min-height:100vh;padding-bottom:20px;}
+/* APP */
+#app{display:none;flex-direction:column;min-height:100vh;padding-bottom:24px;}
 .nav{position:sticky;top:0;z-index:100;background:var(--surface);border-bottom:1px solid var(--border);padding:0 14px;height:52px;display:flex;align-items:center;justify-content:space-between;}
 .nav-left{display:flex;align-items:center;gap:8px;}
-.back-btn{font-size:11px;color:var(--amber);cursor:pointer;padding:5px 8px;border:1px solid var(--amber-border);border-radius:6px;-webkit-tap-highlight-color:transparent;background:var(--amber-bg);}
-.nav-project{font-weight:700;font-size:14px;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.back-btn{font-size:11px;color:var(--amber);cursor:pointer;padding:5px 8px;border:1px solid var(--amber-border);border-radius:6px;background:var(--amber-bg);-webkit-tap-highlight-color:transparent;}
+.nav-project{font-weight:700;font-size:14px;max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .nav-right{display:flex;align-items:center;gap:6px;}
-.lang-btn{background:var(--surface2);border:1px solid var(--border2);color:var(--text2);padding:4px 9px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;-webkit-tap-highlight-color:transparent;}
-.nav-name{font-size:11px;color:var(--text2);max-width:65px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.logout-btn{font-size:11px;color:var(--text3);cursor:pointer;padding:5px 7px;border-radius:6px;border:1px solid var(--border);-webkit-tap-highlight-color:transparent;}
+.lang-btn{background:var(--surface2);border:1px solid var(--border2);color:var(--text2);padding:4px 9px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;}
+.nav-name{font-size:11px;color:var(--text2);max-width:60px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.logout-btn{font-size:11px;color:var(--text3);cursor:pointer;padding:5px 7px;border-radius:6px;border:1px solid var(--border);}
+.live-dot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:blink 2s infinite;flex-shrink:0;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
 
 /* TABS */
 .tabs{display:flex;overflow-x:auto;background:var(--surface);border-bottom:1px solid var(--border);padding:0 14px;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
@@ -100,17 +101,28 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .btn-secondary{background:var(--surface2);color:var(--text);border:1px solid var(--border2);}
 .btn-danger{background:var(--red-bg);color:var(--red);border:1px solid var(--red-border);}
 .btn-sm{padding:6px 12px;font-size:12px;}
+.btn-ghost{background:transparent;color:var(--amber);border:1px solid var(--amber-border);font-size:12px;padding:6px 12px;}
 .err{font-size:12px;color:var(--red);margin-top:6px;display:none;}
 
 /* METRICS */
 .metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;}
 .mc{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 10px;}
 .mc-label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;}
-.mc-val{font-size:22px;font-weight:700;letter-spacing:-0.5px;line-height:1;}
+.mc-val{font-size:20px;font-weight:700;letter-spacing:-0.5px;line-height:1;}
 .mc-sub{font-size:10px;color:var(--text3);margin-top:2px;}
 .mc.amber .mc-val{color:var(--amber);}
 .mc.green .mc-val{color:var(--green);}
 .mc.red .mc-val{color:var(--red);}
+.mc.blue .mc-val{color:var(--blue);}
+
+/* PROGRESS BAR */
+.progress-wrap{margin-bottom:12px;}
+.progress-label{display:flex;justify-content:space-between;font-size:12px;color:var(--text2);margin-bottom:6px;}
+.progress-bar{height:8px;background:var(--border);border-radius:4px;overflow:hidden;}
+.progress-fill{height:8px;border-radius:4px;transition:width .4s ease;}
+.progress-fill.amber{background:var(--amber);}
+.progress-fill.green{background:var(--green);}
+.progress-fill.red{background:var(--red);}
 
 /* LIST ITEMS */
 .list-item{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:13px;margin-bottom:8px;}
@@ -135,13 +147,14 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .tag-ok{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border);}
 .tag-warn{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border);}
 .tag-bad{background:var(--red-bg);color:var(--red);border:1px solid var(--red-border);}
+.tag-blue{background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-border);}
 
-/* FORM ROW */
+/* FORM */
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .sec-label{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px;}
 
 /* UPLOAD */
-.upload-area{border:2px dashed var(--border2);border-radius:10px;padding:16px;text-align:center;cursor:pointer;transition:border-color .2s;-webkit-tap-highlight-color:transparent;}
+.upload-area{border:2px dashed var(--border2);border-radius:10px;padding:16px;text-align:center;cursor:pointer;-webkit-tap-highlight-color:transparent;}
 .upload-area:active{border-color:var(--amber);}
 .upload-area input{display:none;}
 .preview-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;}
@@ -163,7 +176,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .worker-row{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:8px;transition:border-color .15s;}
 .worker-row.checked{border-color:var(--green);}
 .wr-top{display:flex;align-items:center;gap:10px;}
-.wr-check{width:24px;height:24px;border-radius:7px;border:2px solid var(--border2);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:all .15s;-webkit-tap-highlight-color:transparent;font-size:13px;font-weight:700;color:transparent;}
+.wr-check{width:24px;height:24px;border-radius:7px;border:2px solid var(--border2);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:all .15s;font-size:13px;font-weight:700;color:transparent;-webkit-tap-highlight-color:transparent;}
 .wr-check.on{background:var(--green);border-color:var(--green);color:#fff;}
 .wr-info{flex:1;}
 .wr-name{font-size:14px;font-weight:500;}
@@ -172,16 +185,58 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .wr-ot{display:none;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);}
 .worker-row.checked .wr-ot{display:flex;align-items:center;gap:10px;}
 .ot-label{font-size:12px;color:var(--text2);white-space:nowrap;}
-.ot-inp{width:72px;background:var(--surface);border:1px solid var(--border2);border-radius:6px;padding:7px 10px;color:var(--text);font-size:13px;font-family:'DM Sans',sans-serif;outline:none;-webkit-appearance:none;text-align:center;}
+.ot-inp{width:72px;background:var(--surface);border:1px solid var(--border2);border-radius:6px;padding:7px 10px;color:var(--text);font-size:13px;font-family:'DM Sans',sans-serif;outline:none;text-align:center;-webkit-appearance:none;}
 .ot-inp:focus{border-color:var(--amber);}
 
-/* PERMISSION PICKER */
+/* MILESTONE */
+.milestone-item{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:13px;margin-bottom:8px;display:flex;align-items:center;gap:12px;}
+.milestone-check{width:28px;height:28px;border-radius:50%;border:2px solid var(--border2);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;font-size:14px;transition:all .2s;-webkit-tap-highlight-color:transparent;}
+.milestone-check.done{background:var(--green);border-color:var(--green);color:#fff;}
+.milestone-check.in-progress{background:var(--amber-bg);border-color:var(--amber);color:var(--amber);}
+.milestone-info{flex:1;}
+.milestone-name{font-size:13px;font-weight:600;}
+.milestone-date{font-size:11px;color:var(--text3);margin-top:2px;}
+
+/* ISSUE */
+.issue-item{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:13px;margin-bottom:8px;}
+.issue-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;gap:8px;}
+.issue-title{font-size:13px;font-weight:600;}
+.issue-body{font-size:12px;color:var(--text2);line-height:1.5;margin-bottom:8px;}
+.issue-meta{font-size:11px;color:var(--text3);}
+.priority-high{color:var(--red);}
+.priority-med{color:var(--amber);}
+.priority-low{color:var(--green);}
+
+/* PHOTO TIMELINE */
+.timeline-date{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.08em;margin:14px 0 8px;}
+.timeline-photos{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;}
+.timeline-photo{aspect-ratio:1;object-fit:cover;border-radius:8px;cursor:pointer;width:100%;}
+
+/* PERM PICKER */
 .perm-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
 .perm-item{display:flex;align-items:center;gap:8px;background:var(--surface2);border:1px solid var(--border2);border-radius:8px;padding:10px 12px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:all .15s;}
 .perm-item.on{border-color:var(--amber-border);background:var(--amber-bg);}
 .perm-box{width:20px;height:20px;border-radius:5px;border:2px solid var(--border2);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;}
 .perm-item.on .perm-box{background:var(--amber);border-color:var(--amber);}
 .perm-label{font-size:13px;font-weight:500;}
+
+/* BUDGET CHART */
+.budget-bars{display:flex;flex-direction:column;gap:10px;}
+.budget-row{display:flex;align-items:center;gap:10px;}
+.budget-row-label{font-size:12px;color:var(--text2);width:80px;flex-shrink:0;}
+.budget-row-bar{flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden;}
+.budget-row-fill{height:8px;border-radius:4px;}
+.budget-row-val{font-size:11px;color:var(--text3);width:55px;text-align:right;flex-shrink:0;}
+
+/* WORKER STATS */
+.worker-stat{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:8px;display:flex;align-items:center;gap:12px;}
+.ws-avatar{width:36px;height:36px;border-radius:50%;background:var(--amber);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#0E0D0A;flex-shrink:0;}
+.ws-info{flex:1;}
+.ws-name{font-size:13px;font-weight:600;}
+.ws-sub{font-size:11px;color:var(--text3);margin-top:2px;}
+.ws-stats{display:flex;gap:12px;margin-top:6px;}
+.ws-stat{font-size:11px;color:var(--text2);}
+.ws-stat span{color:var(--amber);font-weight:600;}
 
 /* EMPTY / LOADING */
 .empty{text-align:center;padding:32px 14px;color:var(--text3);}
@@ -200,11 +255,9 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .pmodal img{max-width:92vw;max-height:88vh;border-radius:8px;}
 .pmodal-close{position:absolute;top:16px;right:16px;font-size:26px;color:#fff;cursor:pointer;padding:6px;}
 
-.live-dot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:blink 2s infinite;flex-shrink:0;}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
 .role-badge{font-size:10px;font-weight:600;padding:3px 8px;border-radius:100px;text-transform:uppercase;letter-spacing:0.05em;white-space:nowrap;background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border);}
 
-@media(max-width:380px){.metrics{grid-template-columns:1fr 1fr;}.mc-val{font-size:18px;}}
+@media(max-width:380px){.metrics{grid-template-columns:1fr 1fr;}.mc-val{font-size:16px;}}
 @media(max-width:480px){.form-row{grid-template-columns:1fr;}}
 </style>
 </head>
@@ -223,17 +276,11 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
       <button class="lang-btn" id="lang-btn-login" onclick="toggleLang()">हिंदी</button>
     </div>
     <div class="logo-wrap">
-      <div class="logo-icon">
-        <svg viewBox="0 0 20 20" fill="none">
-          <rect x="2" y="12" width="4" height="7" rx="0.75" fill="#F5A623"/>
-          <rect x="8" y="7" width="4" height="12" rx="0.75" fill="#F5A623"/>
-          <rect x="14" y="2" width="4" height="17" rx="0.75" fill="#F5A623"/>
-        </svg>
-      </div>
+      <div class="logo-icon"><svg viewBox="0 0 20 20" fill="none"><rect x="2" y="12" width="4" height="7" rx="0.75" fill="#F5A623"/><rect x="8" y="7" width="4" height="12" rx="0.75" fill="#F5A623"/><rect x="14" y="2" width="4" height="17" rx="0.75" fill="#F5A623"/></svg></div>
       <div class="logo-text">Build<span>watch</span></div>
     </div>
-    <div class="login-title" id="login-title" style="font-size:17px;font-weight:600;margin-bottom:4px;">Sign In</div>
-    <div class="login-sub" id="login-sub" style="font-size:12px;color:var(--text2);margin-bottom:22px;">Welcome back</div>
+    <div id="login-title" style="font-size:17px;font-weight:600;margin-bottom:4px;">Sign In</div>
+    <div id="login-sub" style="font-size:12px;color:var(--text2);margin-bottom:22px;">Welcome back</div>
     <div class="field"><label id="lbl-name">Your Name</label><input type="text" id="ln" placeholder="Enter your name" autocomplete="name"/></div>
     <div class="field"><label id="lbl-pass">Password</label><input type="password" id="lp" placeholder="Enter password" onkeydown="if(event.key==='Enter')doLogin()"/></div>
     <div class="err" id="lerr"></div>
@@ -247,11 +294,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
   <div class="projects-nav">
     <div style="display:flex;align-items:center;gap:8px;">
       <div class="logo-icon" style="width:28px;height:28px;background:#111009;border-radius:6px;border:1px solid rgba(245,166,35,0.2);display:flex;align-items:center;justify-content:center;">
-        <svg viewBox="0 0 20 20" fill="none" width="14" height="14">
-          <rect x="2" y="12" width="4" height="7" rx="0.75" fill="#F5A623"/>
-          <rect x="8" y="7" width="4" height="12" rx="0.75" fill="#F5A623"/>
-          <rect x="14" y="2" width="4" height="17" rx="0.75" fill="#F5A623"/>
-        </svg>
+        <svg viewBox="0 0 20 20" fill="none" width="14" height="14"><rect x="2" y="12" width="4" height="7" rx="0.75" fill="#F5A623"/><rect x="8" y="7" width="4" height="12" rx="0.75" fill="#F5A623"/><rect x="14" y="2" width="4" height="17" rx="0.75" fill="#F5A623"/></svg>
       </div>
       <span style="font-weight:700;font-size:15px;">Build<span style="color:var(--amber);">watch</span></span>
       <div class="live-dot"></div>
@@ -266,28 +309,26 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
       <div>
         <div style="font-size:18px;font-weight:700;" id="proj-greeting">My Projects</div>
-        <div style="font-size:12px;color:var(--text2);margin-top:2px;" id="proj-sub">Select a site to view</div>
+        <div style="font-size:12px;color:var(--text2);margin-top:2px;" id="proj-sub">Select a site to manage</div>
       </div>
     </div>
     <div id="projects-list"><div class="loading">Loading...</div></div>
-    <button class="new-project-btn" id="new-proj-btn" onclick="showNewProjectModal()">+ New Project</button>
+    <button class="new-project-btn" id="new-proj-btn" onclick="showModal('new-proj-modal')">+ New Project</button>
   </div>
 </div>
 
 <!-- ── NEW PROJECT MODAL ── -->
 <div class="modal-overlay" id="new-proj-modal">
   <div class="modal-sheet">
-    <span class="modal-close" onclick="hideNewProjectModal()">✕</span>
-    <div class="modal-title" id="modal-title">Create New Project</div>
-    <div class="field"><label>Project Name</label><input type="text" id="new-proj-name" placeholder="e.g. Sector 47 Gurugram House"/></div>
-    <div class="field"><label>Location</label><input type="text" id="new-proj-location" placeholder="e.g. Gurugram, Haryana"/></div>
-    <div class="field"><label>Client Name</label><input type="text" id="new-proj-client" placeholder="e.g. Mr. Sharma"/></div>
-    <div class="field"><label>Status</label>
-      <select id="new-proj-status">
-        <option value="active">Active</option>
-        <option value="paused">On Hold</option>
-        <option value="done">Completed</option>
-      </select>
+    <div class="modal-title">Create New Project <span class="modal-close" onclick="hideModal('new-proj-modal')">✕</span></div>
+    <div class="field"><label>Project Name</label><input type="text" id="np-name" placeholder="e.g. Sector 47 Gurugram House"/></div>
+    <div class="field"><label>Location</label><input type="text" id="np-location" placeholder="e.g. Gurugram, Haryana"/></div>
+    <div class="field"><label>Client Name</label><input type="text" id="np-client" placeholder="e.g. Mr. Sharma"/></div>
+    <div class="form-row">
+      <div class="field"><label>Total Budget (₹)</label><input type="number" id="np-budget" placeholder="0" inputmode="numeric"/></div>
+      <div class="field"><label>Status</label>
+        <select id="np-status"><option value="active">Active</option><option value="paused">On Hold</option><option value="done">Completed</option></select>
+      </div>
     </div>
     <button class="btn btn-primary btn-full" id="create-proj-btn" onclick="createProject()">Create Project ✓</button>
   </div>
@@ -309,9 +350,12 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
   </nav>
   <div class="tabs" id="tabs-bar"></div>
   <div id="view-dashboard"  class="content" style="display:none;"></div>
+  <div id="view-milestones" class="content" style="display:none;"></div>
+  <div id="view-issues"     class="content" style="display:none;"></div>
   <div id="view-attendance" class="content" style="display:none;"></div>
   <div id="view-report"     class="content" style="display:none;"></div>
   <div id="view-reports"    class="content" style="display:none;"></div>
+  <div id="view-photos"     class="content" style="display:none;"></div>
   <div id="view-finance"    class="content" style="display:none;"></div>
   <div id="view-materials"  class="content" style="display:none;"></div>
   <div id="view-labour"     class="content" style="display:none;"></div>
@@ -324,25 +368,28 @@ const SB_URL='https://jmfmbmdedwyuoocatwzn.supabase.co';
 const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImptZm1ibWRlZHd5dW9vY2F0d3puIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk1NTMzODksImV4cCI6MjA5NTEyOTM4OX0.V-CyVbb41q3w4ZdS7mKzyhG_9gCaG_7aam1X9JqFS5w';
 const sb=supabase.createClient(SB_URL,SB_KEY);
 
-const ALL_TABS=['dashboard','attendance','report','reports','finance','materials','labour','workers','team'];
-const TAB_EN={dashboard:'Dashboard',attendance:'Attendance',report:'Daily Report',reports:'Reports',finance:'Finance',materials:'Materials',labour:'Labour',workers:'Workers',team:'Team'};
-const TAB_HI={dashboard:'डैशबोर्ड',attendance:'हाजिरी',report:'दैनिक रिपोर्ट',reports:'रिपोर्ट्स',finance:'वित्त',materials:'सामग्री',labour:'मजदूरी',workers:'मजदूर',team:'टीम'};
+const ALL_TABS=['dashboard','milestones','issues','attendance','report','reports','photos','finance','materials','labour','workers','team'];
+const TAB_EN={dashboard:'Dashboard',milestones:'Milestones',issues:'Issues',attendance:'Attendance',report:'Daily Report',reports:'Reports',photos:'Photos',finance:'Finance',materials:'Materials',labour:'Labour',workers:'Workers',team:'Team'};
+const TAB_HI={dashboard:'डैशबोर्ड',milestones:'मील पत्थर',issues:'समस्याएं',attendance:'हाजिरी',report:'दैनिक रिपोर्ट',reports:'रिपोर्ट्स',photos:'फोटो',finance:'वित्त',materials:'सामग्री',labour:'मजदूरी',workers:'मजदूर',team:'टीम'};
 
-let CU=null, CP=null, photoFiles=[], attState={};
+let CU=null,CP=null,photoFiles=[],attState={};
 let LANG=localStorage.getItem('bw_lang')||'en';
-
-function tl(key){return LANG==='hi'?TAB_HI[key]||TAB_EN[key]:TAB_EN[key];}
+const hi=()=>LANG==='hi';
+const tl=(k)=>hi()?TAB_HI[k]||TAB_EN[k]:TAB_EN[k];
 
 function getUserTabs(){
   if(!CU)return[];
   if(CU.role==='contractor')return ALL_TABS;
-  if(CU.permissions&&Array.isArray(CU.permissions)&&CU.permissions.length>0)
-    return CU.permissions.filter(p=>ALL_TABS.includes(p));
-  if(CU.role==='supervisor')return['attendance','report','reports'];
+  if(CU.permissions&&Array.isArray(CU.permissions)&&CU.permissions.length>0)return CU.permissions.filter(p=>ALL_TABS.includes(p));
+  if(CU.role==='supervisor')return['attendance','report','reports','issues'];
   if(CU.role==='store')return['materials'];
   if(CU.role==='accountant')return['finance','labour'];
-  return['reports'];
+  return['reports','photos'];
 }
+
+// ── MODAL ──
+function showModal(id){document.getElementById(id).classList.add('show');}
+function hideModal(id){document.getElementById(id).classList.remove('show');}
 
 // ── LOGIN ──
 async function doLogin(){
@@ -351,113 +398,84 @@ async function doLogin(){
   const err=document.getElementById('lerr');
   const btn=document.getElementById('lbtn');
   err.style.display='none';
-  if(!name||!pass){err.textContent=LANG==='hi'?'नाम और पासवर्ड भरें।':'Fill in name and password.';err.style.display='block';return;}
-  btn.textContent=LANG==='hi'?'लॉगिन हो रहा है...':'Signing in...';btn.disabled=true;
+  if(!name||!pass){err.textContent=hi()?'नाम और पासवर्ड भरें।':'Fill in name and password.';err.style.display='block';return;}
+  btn.textContent=hi()?'लॉगिन हो रहा है...':'Signing in...';btn.disabled=true;
   const {data,error}=await sb.from('users').select('*').eq('active',true).ilike('name',name).eq('password',pass).single();
-  btn.textContent=LANG==='hi'?'साइन इन करें →':'Sign In →';btn.disabled=false;
-  if(error||!data){err.textContent=LANG==='hi'?'गलत नाम या पासवर्ड।':'Wrong name or password.';err.style.display='block';return;}
+  btn.textContent=hi()?'साइन इन करें →':'Sign In →';btn.disabled=false;
+  if(error||!data){err.textContent=hi()?'गलत नाम या पासवर्ड।':'Wrong name or password.';err.style.display='block';return;}
   CU=data;localStorage.setItem('bw_u',JSON.stringify(CU));showProjects();
 }
 
-function doLogout(){
-  localStorage.removeItem('bw_u');CU=null;CP=null;
-  document.getElementById('login-screen').style.display='flex';
-  document.getElementById('projects-screen').style.display='none';
-  document.getElementById('app').style.display='none';
-}
+function doLogout(){localStorage.removeItem('bw_u');localStorage.removeItem('bw_cp');CU=null;CP=null;location.reload();}
 
 // ── PROJECTS ──
 async function showProjects(){
   document.getElementById('login-screen').style.display='none';
   document.getElementById('app').style.display='none';
-  document.getElementById('projects-screen').style.display='flex';
-  document.getElementById('projects-screen').style.flexDirection='column';
+  const ps=document.getElementById('projects-screen');
+  ps.style.display='flex';ps.style.flexDirection='column';
   document.getElementById('proj-user-name').textContent=CU.name;
-  document.getElementById('proj-greeting').textContent=LANG==='hi'?'मेरे प्रोजेक्ट':'My Projects';
-  document.getElementById('proj-sub').textContent=LANG==='hi'?'साइट चुनें':'Select a site to view';
-  document.getElementById('new-proj-btn').textContent=LANG==='hi'?'+ नया प्रोजेक्ट':'+ New Project';
-
-  // Only show new project button to contractors
+  document.getElementById('proj-greeting').textContent=hi()?'मेरे प्रोजेक्ट':'My Projects';
+  document.getElementById('proj-sub').textContent=hi()?'साइट चुनें':'Select a site';
   document.getElementById('new-proj-btn').style.display=CU.role==='contractor'?'block':'none';
-
+  document.getElementById('new-proj-btn').textContent=hi()?'+ नया प्रोजेक्ट':'+ New Project';
   await loadProjects();
 }
 
 async function loadProjects(){
   const list=document.getElementById('projects-list');
-  list.innerHTML=`<div class="loading">${LANG==='hi'?'लोड हो रहा है...':'Loading...'}</div>`;
-
-  let query=sb.from('projects').select('*').eq('active',true).order('created_at',{ascending:false});
-  // Non-contractors only see projects they're assigned to
-  if(CU.role!=='contractor'){
-    query=query.eq('contractor_id',CU.added_by||CU.project_owner||'');
-  } else {
-    query=query.eq('contractor_id',CU.id.toString());
+  list.innerHTML=`<div class="loading">${hi()?'लोड हो रहा है...':'Loading...'}</div>`;
+  let q=sb.from('projects').select('*').eq('active',true).order('created_at',{ascending:false});
+  if(CU.role==='contractor')q=q.eq('contractor_id',CU.id.toString());
+  else q=q.eq('contractor_id',CU.added_by||'');
+  const {data}=await q;
+  if(!data||data.length===0){
+    list.innerHTML=`<div class="empty"><div class="empty-icon">🏗️</div><div class="empty-text">${hi()?'कोई प्रोजेक्ट नहीं।':'No projects yet. Tap + to create one.'}</div></div>`;return;
   }
-
-  const {data,error}=await query;
-  if(error||!data||data.length===0){
-    list.innerHTML=`<div class="empty"><div class="empty-icon">🏗️</div><div class="empty-text">${LANG==='hi'?'कोई प्रोजेक्ट नहीं।\nऊपर + नया प्रोजेक्ट बनाएं।':'No projects yet.\nTap + New Project to get started.'}</div></div>`;
-    return;
-  }
-
   list.innerHTML=data.map(p=>{
-    const statusCls=p.status==='active'?'status-active':p.status==='done'?'status-done':'status-paused';
-    const statusLabel=p.status==='active'?(LANG==='hi'?'सक्रिय':'Active'):p.status==='done'?(LANG==='hi'?'पूर्ण':'Done'):(LANG==='hi'?'रुका हुआ':'On Hold');
-    return `
-    <div class="project-card" onclick="openProject(${JSON.stringify(p).replace(/"/g,'&quot;')})">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+    const sc=p.status==='active'?'tag-ok':p.status==='done'?'tag-blue':'tag-warn';
+    const sl=p.status==='active'?(hi()?'सक्रिय':'Active'):p.status==='done'?(hi()?'पूर्ण':'Done'):(hi()?'रुका':'On Hold');
+    const pct=p.progress||0;
+    return `<div class="project-card" onclick='openProject(${JSON.stringify(p).replace(/'/g,"&#39;")})'>
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;">
         <div class="project-card-name">${p.name}</div>
-        <span class="project-card-status ${statusCls}">${statusLabel}</span>
+        <span class="tag ${sc}">${sl}</span>
       </div>
-      <div class="project-card-meta">${p.location||''}${p.client_name?' · Client: '+p.client_name:''}</div>
-      <div class="project-card-meta" style="margin-top:3px;color:var(--text3);font-size:11px;">Created ${fmtDate(p.created_at)}</div>
+      <div class="project-card-meta">${p.location||''}${p.client_name?' · '+p.client_name:''}</div>
+      ${p.total_budget?`<div class="project-card-meta" style="margin-top:3px;color:var(--amber);">Budget: ₹${fmtNum(p.total_budget)}</div>`:''}
+      <div class="project-progress-bar"><div class="project-progress-fill" style="width:${pct}%"></div></div>
+      <div style="font-size:10px;color:var(--text3);margin-top:4px;">${pct}% ${hi()?'पूर्ण':'complete'}</div>
     </div>`;
   }).join('');
 }
 
-function openProject(project){
-  CP=project;
-  localStorage.setItem('bw_cp',JSON.stringify(CP));
+function openProject(p){
+  CP=p;localStorage.setItem('bw_cp',JSON.stringify(CP));
   document.getElementById('projects-screen').style.display='none';
-  document.getElementById('app').style.display='flex';
-  document.getElementById('app').style.flexDirection='column';
+  const app=document.getElementById('app');app.style.display='flex';app.style.flexDirection='column';
   document.getElementById('nav-project').textContent=CP.name;
   document.getElementById('nav-name').textContent=CU.name;
-  // Set lang buttons
-  ['lang-btn-app'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=LANG==='en'?'हिंदी':'EN';});
-  buildTabs();buildViews();
-  switchTab(getUserTabs()[0]);
+  setLangBtns();buildTabs();buildViews();switchTab(getUserTabs()[0]);
 }
 
-function goBack(){
-  document.getElementById('app').style.display='none';
-  showProjects();
-}
-
-// ── NEW PROJECT ──
-function showNewProjectModal(){document.getElementById('new-proj-modal').classList.add('show');}
-function hideNewProjectModal(){document.getElementById('new-proj-modal').classList.remove('show');}
+function goBack(){document.getElementById('app').style.display='none';showProjects();}
 
 async function createProject(){
   const btn=document.getElementById('create-proj-btn');
-  const name=document.getElementById('new-proj-name').value.trim();
-  if(!name){showToast('Enter project name',true);return;}
-  btn.textContent='Creating...';btn.disabled=true;
+  const name=document.getElementById('np-name').value.trim();
+  if(!name){showToast(hi()?'प्रोजेक्ट का नाम दर्ज करें':'Enter project name',true);return;}
+  btn.textContent=hi()?'बन रहा है...':'Creating...';btn.disabled=true;
   const {error}=await sb.from('projects').insert({
-    name,
-    location:document.getElementById('new-proj-location').value.trim(),
-    client_name:document.getElementById('new-proj-client').value.trim(),
-    status:document.getElementById('new-proj-status').value,
-    contractor_id:CU.id.toString(),
-    active:true
+    name,location:document.getElementById('np-location').value.trim(),
+    client_name:document.getElementById('np-client').value.trim(),
+    total_budget:parseFloat(document.getElementById('np-budget').value)||0,
+    status:document.getElementById('np-status').value,
+    contractor_id:CU.id.toString(),progress:0,active:true
   });
-  btn.textContent='Create Project ✓';btn.disabled=false;
+  btn.textContent=hi()?'प्रोजेक्ट बनाएं ✓':'Create Project ✓';btn.disabled=false;
   if(error){showToast('Error: '+error.message,true);return;}
-  ['new-proj-name','new-proj-location','new-proj-client'].forEach(id=>document.getElementById(id).value='');
-  hideNewProjectModal();
-  showToast('Project created ✓');
-  loadProjects();
+  ['np-name','np-location','np-client','np-budget'].forEach(id=>document.getElementById(id).value='');
+  hideModal('new-proj-modal');showToast(hi()?'प्रोजेक्ट बन गया ✓':'Project created ✓');loadProjects();
 }
 
 // ── TABS ──
@@ -471,12 +489,14 @@ function switchTab(tab){
   if(!tabs.includes(tab))return;
   tabs.forEach(tk=>{
     document.getElementById('view-'+tk).style.display=tk===tab?'block':'none';
-    const el=document.getElementById('tab-'+tk);
-    if(el)el.classList.toggle('active',tk===tab);
+    const el=document.getElementById('tab-'+tk);if(el)el.classList.toggle('active',tk===tab);
   });
   if(tab==='dashboard')loadDashboard();
+  if(tab==='milestones')loadMilestones();
+  if(tab==='issues')loadIssues();
   if(tab==='attendance'){loadWorkerList();loadAttLog();}
   if(tab==='reports')loadReports();
+  if(tab==='photos')loadPhotos();
   if(tab==='finance')loadFinance();
   if(tab==='materials')loadMaterials();
   if(tab==='labour')loadLabour();
@@ -487,179 +507,246 @@ function switchTab(tab){
 // ── BUILD VIEWS ──
 function buildViews(){
   const today=new Date().toISOString().split('T')[0];
-  const hi=LANG==='hi';
+  const h=hi();
 
+  // DASHBOARD
   document.getElementById('view-dashboard').innerHTML=`
     <div id="d-alert" class="alert" style="display:none;">⚠️ <span id="d-alert-txt"></span></div>
-    <div class="sec-label">${hi?'सारांश':'Overview'}</div>
+    <div class="sec-label">${h?'सारांश':'Overview'}</div>
     <div class="metrics">
-      <div class="mc amber"><div class="mc-label">${hi?'रिपोर्ट':'Reports'}</div><div class="mc-val" id="m-rep">—</div><div class="mc-sub">${hi?'कुल':'Total'}</div></div>
-      <div class="mc red"><div class="mc-label">${hi?'खर्च':'Spent'}</div><div class="mc-val" id="m-spent">—</div><div class="mc-sub">${hi?'अब तक':'All time'}</div></div>
-      <div class="mc green"><div class="mc-label">${hi?'मजदूर':'Workers'}</div><div class="mc-val" id="m-wrk">—</div><div class="mc-sub">${hi?'आखिरी':'Last'}</div></div>
+      <div class="mc amber"><div class="mc-label">${h?'रिपोर्ट':'Reports'}</div><div class="mc-val" id="m-rep">—</div><div class="mc-sub">${h?'कुल':'Total'}</div></div>
+      <div class="mc red"><div class="mc-label">${h?'खर्च':'Spent'}</div><div class="mc-val" id="m-spent">—</div><div class="mc-sub">${h?'अब तक':'All time'}</div></div>
+      <div class="mc green"><div class="mc-label">${h?'मजदूर':'Workers'}</div><div class="mc-val" id="m-wrk">—</div><div class="mc-sub">${h?'आखिरी':'Last'}</div></div>
     </div>
-    <div class="card"><div class="card-title"><span class="cdot"></span>${hi?'ताज़ा रिपोर्ट':'Latest Report'}</div><div id="d-rep"><div class="loading">${hi?'लोड हो रहा है...':'Loading...'}</div></div></div>
-    <div class="card"><div class="card-title"><span class="cdot"></span>${hi?'हालिया खर्च':'Recent Expenses'}</div><div id="d-fin"><div class="loading">${hi?'लोड हो रहा है...':'Loading...'}</div></div></div>
+    <div class="card">
+      <div class="card-title"><span class="cdot"></span>${h?'बजट':'Budget Tracker'}</div>
+      <div id="budget-tracker"><div class="loading">${h?'लोड हो रहा है...':'Loading...'}</div></div>
+    </div>
+    <div class="card"><div class="card-title"><span class="cdot"></span>${h?'ताज़ा रिपोर्ट':'Latest Report'}</div><div id="d-rep"><div class="loading">${h?'लोड हो रहा है...':'Loading...'}</div></div></div>
+    <div class="card"><div class="card-title"><span class="cdot"></span>${h?'खुली समस्याएं':'Open Issues'}</div><div id="d-issues"><div class="loading">${h?'लोड हो रहा है...':'Loading...'}</div></div></div>
   `;
 
+  // MILESTONES
+  document.getElementById('view-milestones').innerHTML=`
+    <div class="card">
+      <div class="card-title"><span class="cdot"></span>${h?'नया मील पत्थर':'Add Milestone'}</div>
+      <div class="field"><label>${h?'नाम':'Milestone Name'}</label><input type="text" id="ms-name" placeholder="${h?'जैसे: नींव का काम':'e.g. Foundation Complete'}"/></div>
+      <div class="form-row">
+        <div class="field"><label>${h?'लक्ष्य तारीख':'Target Date'}</label><input type="date" id="ms-date" value="${today}"/></div>
+        <div class="field"><label>${h?'स्थिति':'Status'}</label>
+          <select id="ms-status"><option value="pending">${h?'बाकी':'Pending'}</option><option value="in-progress">${h?'चल रहा':'In Progress'}</option><option value="done">${h?'पूर्ण':'Done'}</option></select>
+        </div>
+      </div>
+      <button class="btn btn-primary btn-full" onclick="addMilestone()">${h?'मील पत्थर जोड़ें ✓':'Add Milestone ✓'}</button>
+    </div>
+    <div class="sec-label">${h?'प्रोजेक्ट मील पत्थर':'Project Milestones'}</div>
+    <div id="ms-list"><div class="loading">${h?'लोड हो रहा है...':'Loading...'}</div></div>
+    <div style="margin-top:8px;">
+      <div style="font-size:12px;color:var(--text2);margin-bottom:6px;">${h?'प्रोजेक्ट प्रगति':'Project Progress'}: <span id="ms-progress-label" style="color:var(--amber);font-weight:600;">0%</span></div>
+      <div class="progress-bar"><div class="progress-fill amber" id="ms-progress-fill" style="width:0%"></div></div>
+    </div>
+  `;
+
+  // ISSUES
+  document.getElementById('view-issues').innerHTML=`
+    <div class="card">
+      <div class="card-title"><span class="cdot"></span>${h?'समस्या दर्ज करें':'Log Issue'}</div>
+      <div class="field"><label>${h?'समस्या का शीर्षक':'Issue Title'}</label><input type="text" id="iss-title" placeholder="${h?'जैसे: छत में दरार':'e.g. Crack in ceiling'}"/></div>
+      <div class="field"><label>${h?'विवरण':'Details'}</label><textarea id="iss-desc" placeholder="${h?'विस्तार से लिखें...':'Describe the issue...'}"></textarea></div>
+      <div class="form-row">
+        <div class="field"><label>${h?'प्राथमिकता':'Priority'}</label>
+          <select id="iss-priority"><option value="high">${h?'उच्च':'High'}</option><option value="medium">${h?'मध्यम':'Medium'}</option><option value="low">${h?'कम':'Low'}</option></select>
+        </div>
+        <div class="field"><label>${h?'जिम्मेदार':'Assigned To'}</label><input type="text" id="iss-assign" placeholder="${h?'किसको?':'Who should fix?'}"/></div>
+      </div>
+      <button class="btn btn-primary btn-full" onclick="addIssue()">${h?'समस्या दर्ज करें ✓':'Log Issue ✓'}</button>
+    </div>
+    <div class="sec-label">${h?'खुली समस्याएं':'Open Issues'}</div>
+    <div id="iss-list"><div class="loading">${h?'लोड हो रहा है...':'Loading...'}</div></div>
+  `;
+
+  // ATTENDANCE
   document.getElementById('view-attendance').innerHTML=`
     <div class="card">
-      <div class="card-title"><span class="cdot"></span>${hi?'हाजिरी लगाएं':'Mark Attendance'}</div>
+      <div class="card-title"><span class="cdot"></span>${h?'हाजिरी लगाएं':'Mark Attendance'}</div>
       <div class="att-date-bar"><input type="date" id="att-date" value="${today}" onchange="loadWorkerList()"/></div>
-      <div class="att-summary-bar"><span id="att-sum">0 ${hi?'मजदूर':'workers'}</span><span id="att-count" style="color:var(--green);font-weight:600;">0 ${hi?'मौजूद':'present'}</span></div>
-      <div id="att-worker-list"><div class="loading">${hi?'लोड हो रहा है...':'Loading...'}</div></div>
-      <div style="margin-top:12px;"><button class="btn btn-primary btn-full" id="att-btn" onclick="submitAttendance()">${hi?'हाजिरी जमा करें ✓':'Submit Attendance ✓'}</button></div>
+      <div class="att-summary-bar"><span id="att-sum">0 ${h?'मजदूर':'workers'}</span><span id="att-count" style="color:var(--green);font-weight:600;">0 ${h?'मौजूद':'present'}</span></div>
+      <div id="att-worker-list"><div class="loading">${h?'लोड हो रहा है...':'Loading...'}</div></div>
+      <div style="margin-top:12px;"><button class="btn btn-primary btn-full" id="att-btn" onclick="submitAttendance()">${h?'हाजिरी जमा करें ✓':'Submit Attendance ✓'}</button></div>
     </div>
-    <div class="sec-label">${hi?'हाजिरी लॉग':'Attendance Log'}</div>
-    <div id="att-log"><div class="loading">${hi?'लोड हो रहा है...':'Loading...'}</div></div>
+    <div class="sec-label">${h?'हाजिरी लॉग':'Attendance Log'}</div>
+    <div id="att-log"><div class="loading">${h?'लोड हो रहा है...':'Loading...'}</div></div>
   `;
 
+  // REPORT FORM
   document.getElementById('view-report').innerHTML=`
     <div class="card">
-      <div class="card-title"><span class="cdot"></span>${hi?'दैनिक साइट रिपोर्ट':'Daily Site Report'}</div>
+      <div class="card-title"><span class="cdot"></span>${h?'दैनिक साइट रिपोर्ट':'Daily Site Report'}</div>
       <div class="form-row">
-        <div class="field"><label>${hi?'तारीख':'Date'}</label><input type="date" id="r-date" value="${today}"/></div>
-        <div class="field"><label>${hi?'मजदूर मौजूद':'Workers Present'}</label><input type="number" id="r-wrk" placeholder="e.g. 24" inputmode="numeric"/></div>
+        <div class="field"><label>${h?'तारीख':'Date'}</label><input type="date" id="r-date" value="${today}"/></div>
+        <div class="field"><label>${h?'मजदूर मौजूद':'Workers Present'}</label><input type="number" id="r-wrk" placeholder="24" inputmode="numeric"/></div>
       </div>
-      <div class="field"><label>${hi?'आज का काम':'Work Done Today'}</label><textarea id="r-work" placeholder="${hi?'आज कौन सा काम पूरा हुआ...':'Describe work completed today...'}"></textarea></div>
-      <div class="field"><label>${hi?'आई हुई सामग्री':'Materials Received'}</label><input type="text" id="r-mat" placeholder="${hi?'जैसे: 30 बोरी सीमेंट':'e.g. 30 bags cement'}"/></div>
-      <div class="field"><label>${hi?'समस्या (न हो तो खाली छोड़ें)':'Issues (leave blank if none)'}</label><input type="text" id="r-issues" placeholder="${hi?'कोई समस्या?':'Any problems today?'}"/></div>
+      <div class="field"><label>${h?'आज का काम':'Work Done Today'}</label><textarea id="r-work" placeholder="${h?'आज कौन सा काम पूरा हुआ...':'Describe work completed today...'}"></textarea></div>
+      <div class="field"><label>${h?'आई हुई सामग्री':'Materials Received'}</label><input type="text" id="r-mat" placeholder="${h?'जैसे: 30 बोरी सीमेंट':'e.g. 30 bags cement'}"/></div>
+      <div class="field"><label>${h?'समस्या (न हो तो खाली छोड़ें)':'Issues (leave blank if none)'}</label><input type="text" id="r-issues" placeholder="${h?'कोई समस्या?':'Any problems today?'}"/></div>
       <div class="field">
-        <label>${hi?'साइट फोटो':'Site Photos'}</label>
+        <label>${h?'साइट फोटो':'Site Photos'}</label>
         <div class="upload-area" onclick="document.getElementById('ph-inp').click()">
           <div style="font-size:24px;margin-bottom:4px;">📷</div>
-          <div style="font-size:12px;color:var(--text2);">${hi?'फोटो अपलोड करें':'Tap to upload photos'}</div>
+          <div style="font-size:12px;color:var(--text2);">${h?'फोटो अपलोड करें':'Tap to upload photos'}</div>
           <input type="file" id="ph-inp" multiple accept="image/*" onchange="handlePhotos(this)"/>
         </div>
         <div class="preview-row" id="ph-prev"></div>
       </div>
-      <button class="btn btn-primary btn-full" id="r-btn" onclick="submitReport()">${hi?'रिपोर्ट जमा करें ✓':'Submit Report ✓'}</button>
+      <button class="btn btn-primary btn-full" id="r-btn" onclick="submitReport()">${h?'रिपोर्ट जमा करें ✓':'Submit Report ✓'}</button>
     </div>
   `;
 
+  // ALL REPORTS
   document.getElementById('view-reports').innerHTML=`
-    <div class="sec-label">${hi?'सभी रिपोर्ट':'All Reports'}</div>
-    <div id="rep-list"><div class="loading">${hi?'लोड हो रहा है...':'Loading...'}</div></div>
+    <div class="sec-label">${h?'सभी रिपोर्ट':'All Reports'}</div>
+    <div id="rep-list"><div class="loading">${h?'लोड हो रहा है...':'Loading...'}</div></div>
   `;
 
+  // PHOTO TIMELINE
+  document.getElementById('view-photos').innerHTML=`
+    <div class="sec-label">${h?'फोटो टाइमलाइन':'Photo Timeline'}</div>
+    <div id="photo-timeline"><div class="loading">${h?'लोड हो रहा है...':'Loading...'}</div></div>
+  `;
+
+  // FINANCE
   document.getElementById('view-finance').innerHTML=`
     <div class="card">
-      <div class="card-title"><span class="cdot"></span>${hi?'खर्च जोड़ें':'Add Expense'}</div>
+      <div class="card-title"><span class="cdot"></span>${h?'खर्च जोड़ें':'Add Expense'}</div>
       <div class="form-row">
-        <div class="field"><label>${hi?'तारीख':'Date'}</label><input type="date" id="f-date" value="${today}"/></div>
-        <div class="field"><label>${hi?'श्रेणी':'Category'}</label>
+        <div class="field"><label>${h?'तारीख':'Date'}</label><input type="date" id="f-date" value="${today}"/></div>
+        <div class="field"><label>${h?'श्रेणी':'Category'}</label>
           <select id="f-type"><option>Material</option><option>Labour Payment</option><option>Vendor</option><option>Equipment</option><option>Transport</option><option>Other</option></select>
         </div>
       </div>
-      <div class="field"><label>${hi?'विवरण':'Description'}</label><input type="text" id="f-desc" placeholder="${hi?'जैसे: 50 सीमेंट बोरी':'e.g. 50 cement bags'}"/></div>
+      <div class="field"><label>${h?'विवरण':'Description'}</label><input type="text" id="f-desc" placeholder="${h?'जैसे: 50 सीमेंट बोरी':'e.g. 50 cement bags'}"/></div>
       <div class="form-row">
-        <div class="field"><label>${hi?'राशि (₹)':'Amount (₹)'}</label><input type="number" id="f-amt" placeholder="0" inputmode="numeric"/></div>
-        <div class="field"><label>${hi?'भुगतान का तरीका':'Payment Mode'}</label>
+        <div class="field"><label>${h?'राशि (₹)':'Amount (₹)'}</label><input type="number" id="f-amt" placeholder="0" inputmode="numeric"/></div>
+        <div class="field"><label>${h?'भुगतान का तरीका':'Payment Mode'}</label>
           <select id="f-mode"><option>Cash</option><option>UPI</option><option>Bank Transfer</option><option>Cheque</option></select>
         </div>
       </div>
-      <button class="btn btn-primary btn-full" id="f-btn" onclick="submitFinance()">${hi?'एंट्री जोड़ें ✓':'Add Entry ✓'}</button>
+      <button class="btn btn-primary btn-full" id="f-btn" onclick="submitFinance()">${h?'एंट्री जोड़ें ✓':'Add Entry ✓'}</button>
     </div>
     <div class="card" style="display:flex;justify-content:space-between;align-items:center;padding:14px 16px;">
-      <span style="font-size:13px;color:var(--text2);">${hi?'कुल खर्च':'Total Spent'}</span>
-      <span style="font-size:20px;font-weight:700;color:var(--red);" id="fin-total">₹0</span>
+      <div>
+        <div style="font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;">${h?'कुल खर्च':'Total Spent'}</div>
+        <div style="font-size:20px;font-weight:700;color:var(--red);" id="fin-total">₹0</div>
+      </div>
+      <div style="text-align:right;">
+        <div style="font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;">${h?'बजट बचा':'Budget Left'}</div>
+        <div style="font-size:20px;font-weight:700;color:var(--green);" id="budget-left">—</div>
+      </div>
     </div>
-    <div class="sec-label">${hi?'वित्त लॉग':'Finance Log'}</div>
-    <div class="card" style="padding:0 16px;"><div id="fin-list"><div class="loading">${hi?'लोड हो रहा है...':'Loading...'}</div></div></div>
+    <div class="sec-label">${h?'श्रेणी अनुसार':'By Category'}</div>
+    <div class="card"><div id="fin-chart"><div class="loading">${h?'लोड हो रहा है...':'Loading...'}</div></div></div>
+    <div class="sec-label">${h?'सभी एंट्री':'All Entries'}</div>
+    <div class="card" style="padding:0 16px;"><div id="fin-list"><div class="loading">${h?'लोड हो रहा है...':'Loading...'}</div></div></div>
   `;
 
+  // MATERIALS
   document.getElementById('view-materials').innerHTML=`
     <div class="card">
-      <div class="card-title"><span class="cdot"></span>${hi?'सामग्री दर्ज करें':'Log Material'}</div>
+      <div class="card-title"><span class="cdot"></span>${h?'सामग्री दर्ज करें':'Log Material'}</div>
       <div class="form-row">
-        <div class="field"><label>${hi?'तारीख':'Date'}</label><input type="date" id="mat-date" value="${today}"/></div>
-        <div class="field"><label>${hi?'सामग्री का नाम':'Material Name'}</label><input type="text" id="mat-name" placeholder="${hi?'जैसे: सीमेंट, सरिया':'e.g. Cement, Steel'}"/></div>
+        <div class="field"><label>${h?'तारीख':'Date'}</label><input type="date" id="mat-date" value="${today}"/></div>
+        <div class="field"><label>${h?'सामग्री का नाम':'Material Name'}</label><input type="text" id="mat-name" placeholder="${h?'जैसे: सीमेंट':'e.g. Cement'}"/></div>
       </div>
       <div class="form-row">
-        <div class="field"><label>${hi?'मिली मात्रा':'Qty Received'}</label><input type="text" id="mat-in" placeholder="${hi?'जैसे: 50 बोरी':'e.g. 50 bags'}"/></div>
-        <div class="field"><label>${hi?'इस्तेमाल':'Qty Used'}</label><input type="text" id="mat-used" placeholder="${hi?'जैसे: 30 बोरी':'e.g. 30 bags'}"/></div>
+        <div class="field"><label>${h?'मिली मात्रा':'Qty Received'}</label><input type="text" id="mat-in" placeholder="${h?'50 बोरी':'50 bags'}"/></div>
+        <div class="field"><label>${h?'इस्तेमाल':'Qty Used'}</label><input type="text" id="mat-used" placeholder="${h?'30 बोरी':'30 bags'}"/></div>
       </div>
       <div class="form-row">
-        <div class="field"><label>${hi?'लागत (₹)':'Cost (₹)'}</label><input type="number" id="mat-cost" placeholder="0" inputmode="numeric"/></div>
-        <div class="field"><label>${hi?'विक्रेता':'Vendor'}</label><input type="text" id="mat-vendor" placeholder="${hi?'विक्रेता का नाम':'Vendor name'}"/></div>
+        <div class="field"><label>${h?'लागत (₹)':'Cost (₹)'}</label><input type="number" id="mat-cost" placeholder="0" inputmode="numeric"/></div>
+        <div class="field"><label>${h?'विक्रेता':'Vendor'}</label><input type="text" id="mat-vendor" placeholder="${h?'विक्रेता':'Vendor name'}"/></div>
       </div>
-      <button class="btn btn-primary btn-full" id="mat-btn" onclick="submitMaterial()">${hi?'सामग्री दर्ज करें ✓':'Log Material ✓'}</button>
+      <button class="btn btn-primary btn-full" id="mat-btn" onclick="submitMaterial()">${h?'सामग्री दर्ज करें ✓':'Log Material ✓'}</button>
     </div>
-    <div class="sec-label">${hi?'सामग्री लॉग':'Material Log'}</div>
-    <div id="mat-list"><div class="loading">${hi?'लोड हो रहा है...':'Loading...'}</div></div>
+    <div class="sec-label">${h?'बर्बादी ट्रैकर':'Waste Tracker'}</div>
+    <div class="card"><div id="waste-tracker"><div class="loading">${h?'लोड हो रहा है...':'Loading...'}</div></div></div>
+    <div class="sec-label">${h?'सामग्री लॉग':'Material Log'}</div>
+    <div id="mat-list"><div class="loading">${h?'लोड हो रहा है...':'Loading...'}</div></div>
   `;
 
+  // LABOUR
   document.getElementById('view-labour').innerHTML=`
     <div class="card">
-      <div class="card-title"><span class="cdot"></span>${hi?'मजदूरी दर्ज करें':'Log Labour Payment'}</div>
+      <div class="card-title"><span class="cdot"></span>${h?'मजदूरी दर्ज करें':'Log Labour Payment'}</div>
       <div class="form-row">
-        <div class="field"><label>${hi?'तारीख':'Date'}</label><input type="date" id="lab-date" value="${today}"/></div>
-        <div class="field"><label>${hi?'मजदूर का नाम':'Worker Name'}</label><input type="text" id="lab-name" placeholder="${hi?'मजदूर का नाम':'Worker name'}"/></div>
+        <div class="field"><label>${h?'तारीख':'Date'}</label><input type="date" id="lab-date" value="${today}"/></div>
+        <div class="field"><label>${h?'मजदूर का नाम':'Worker Name'}</label><input type="text" id="lab-name" placeholder="${h?'नाम':'Worker name'}"/></div>
       </div>
       <div class="form-row">
-        <div class="field"><label>${hi?'काम':'Role'}</label>
+        <div class="field"><label>${h?'काम':'Role'}</label>
           <select id="lab-role"><option>Mason</option><option>Helper</option><option>Electrician</option><option>Plumber</option><option>Carpenter</option><option>Supervisor</option><option>Driver</option><option>Other</option></select>
         </div>
-        <div class="field"><label>${hi?'भुगतान राशि (₹)':'Amount Paid (₹)'}</label><input type="number" id="lab-amt" placeholder="0" inputmode="numeric"/></div>
+        <div class="field"><label>${h?'भुगतान राशि (₹)':'Amount Paid (₹)'}</label><input type="number" id="lab-amt" placeholder="0" inputmode="numeric"/></div>
       </div>
-      <div class="field"><label>${hi?'काम के दिन':'Days Worked'}</label><input type="number" id="lab-days" placeholder="5" inputmode="numeric"/></div>
-      <button class="btn btn-primary btn-full" id="lab-btn" onclick="submitLabour()">${hi?'भुगतान दर्ज करें ✓':'Log Payment ✓'}</button>
+      <div class="field"><label>${h?'काम के दिन':'Days Worked'}</label><input type="number" id="lab-days" placeholder="5" inputmode="numeric"/></div>
+      <button class="btn btn-primary btn-full" id="lab-btn" onclick="submitLabour()">${h?'भुगतान दर्ज करें ✓':'Log Payment ✓'}</button>
     </div>
-    <div class="sec-label">${hi?'मजदूरी लॉग':'Labour Log'}</div>
-    <div id="lab-list"><div class="loading">${hi?'लोड हो रहा है...':'Loading...'}</div></div>
+    <div class="sec-label">${h?'मजदूर प्रदर्शन':'Worker Performance'}</div>
+    <div id="worker-perf"><div class="loading">${h?'लोड हो रहा है...':'Loading...'}</div></div>
+    <div class="sec-label" style="margin-top:12px;">${h?'मजदूरी लॉग':'Labour Log'}</div>
+    <div id="lab-list"><div class="loading">${h?'लोड हो रहा है...':'Loading...'}</div></div>
   `;
 
+  // WORKERS
   document.getElementById('view-workers').innerHTML=`
     <div class="card">
-      <div class="card-title"><span class="cdot"></span>${hi?'मजदूर जोड़ें':'Add Worker'}</div>
+      <div class="card-title"><span class="cdot"></span>${h?'मजदूर जोड़ें':'Add Worker'}</div>
       <div class="form-row">
-        <div class="field"><label>${hi?'पूरा नाम':'Full Name'}</label><input type="text" id="wk-name" placeholder="${hi?'मजदूर का नाम':'Worker name'}"/></div>
-        <div class="field"><label>${hi?'काम':'Role'}</label>
+        <div class="field"><label>${h?'पूरा नाम':'Full Name'}</label><input type="text" id="wk-name" placeholder="${h?'मजदूर का नाम':'Worker name'}"/></div>
+        <div class="field"><label>${h?'काम':'Role'}</label>
           <select id="wk-role"><option>Mason</option><option>Helper</option><option>Electrician</option><option>Plumber</option><option>Carpenter</option><option>Supervisor</option><option>Driver</option><option>Other</option></select>
         </div>
       </div>
       <div class="form-row">
-        <div class="field"><label>${hi?'दैनिक दर (₹)':'Daily Rate (₹)'}</label><input type="number" id="wk-rate" placeholder="600" inputmode="numeric"/></div>
-        <div class="field"><label>${hi?'फोन नंबर':'Phone'}</label><input type="tel" id="wk-phone" placeholder="${hi?'मोबाइल':'Mobile'}" inputmode="tel"/></div>
+        <div class="field"><label>${h?'दैनिक दर (₹)':'Daily Rate (₹)'}</label><input type="number" id="wk-rate" placeholder="600" inputmode="numeric"/></div>
+        <div class="field"><label>${h?'फोन नंबर':'Phone'}</label><input type="tel" id="wk-phone" placeholder="${h?'मोबाइल':'Mobile'}" inputmode="tel"/></div>
       </div>
-      <button class="btn btn-primary btn-full" id="wk-btn" onclick="addWorker()">${hi?'मजदूर जोड़ें ✓':'Add Worker ✓'}</button>
+      <button class="btn btn-primary btn-full" id="wk-btn" onclick="addWorker()">${h?'मजदूर जोड़ें ✓':'Add Worker ✓'}</button>
     </div>
-    <div class="sec-label">${hi?'मजदूर रजिस्ट्री':'Worker Registry'}</div>
-    <div id="wk-list"><div class="loading">${hi?'लोड हो रहा है...':'Loading...'}</div></div>
+    <div class="sec-label">${h?'मजदूर रजिस्ट्री':'Worker Registry'}</div>
+    <div id="wk-list"><div class="loading">${h?'लोड हो रहा है...':'Loading...'}</div></div>
   `;
 
-  const permOptions=[
-    {key:'dashboard',label:hi?'डैशबोर्ड':'Dashboard'},
-    {key:'attendance',label:hi?'हाजिरी':'Attendance'},
-    {key:'report',label:hi?'रिपोर्ट भेजें':'Submit Report'},
-    {key:'reports',label:hi?'रिपोर्ट देखें':'View Reports'},
-    {key:'finance',label:hi?'वित्त':'Finance'},
-    {key:'materials',label:hi?'सामग्री':'Materials'},
-    {key:'labour',label:hi?'मजदूरी':'Labour'},
-    {key:'workers',label:hi?'मजदूर':'Workers'},
+  // TEAM
+  const permOpts=[
+    {key:'dashboard',label:h?'डैशबोर्ड':'Dashboard'},
+    {key:'milestones',label:h?'मील पत्थर':'Milestones'},
+    {key:'issues',label:h?'समस्याएं':'Issues'},
+    {key:'attendance',label:h?'हाजिरी':'Attendance'},
+    {key:'report',label:h?'रिपोर्ट भेजें':'Submit Report'},
+    {key:'reports',label:h?'रिपोर्ट देखें':'View Reports'},
+    {key:'photos',label:h?'फोटो':'Photos'},
+    {key:'finance',label:h?'वित्त':'Finance'},
+    {key:'materials',label:h?'सामग्री':'Materials'},
+    {key:'labour',label:h?'मजदूरी':'Labour'},
+    {key:'workers',label:h?'मजदूर':'Workers'},
   ];
-
   document.getElementById('view-team').innerHTML=`
     <div class="card">
-      <div class="card-title"><span class="cdot"></span>${hi?'सदस्य जोड़ें':'Add Team Member'}</div>
+      <div class="card-title"><span class="cdot"></span>${h?'सदस्य जोड़ें':'Add Team Member'}</div>
       <div class="form-row">
-        <div class="field"><label>${hi?'पूरा नाम':'Full Name'}</label><input type="text" id="tm-name" placeholder="e.g. Raju Kumar"/></div>
-        <div class="field"><label>${hi?'पासवर्ड':'Password'}</label><input type="text" id="tm-pass" placeholder="e.g. raju2026"/></div>
+        <div class="field"><label>${h?'पूरा नाम':'Full Name'}</label><input type="text" id="tm-name" placeholder="e.g. Raju Kumar"/></div>
+        <div class="field"><label>${h?'पासवर्ड':'Password'}</label><input type="text" id="tm-pass" placeholder="e.g. raju2026"/></div>
       </div>
       <div class="field">
-        <label style="margin-bottom:10px;display:block;">${hi?'क्या देख/कर सकते हैं?':'What can they access?'}</label>
+        <label style="margin-bottom:10px;display:block;">${h?'क्या देख/कर सकते हैं?':'What can they access?'}</label>
         <div class="perm-grid">
-          ${permOptions.map(p=>`
-            <div class="perm-item" id="pi-${p.key}" onclick="togglePerm('${p.key}')">
-              <div class="perm-box" id="pb-${p.key}"></div>
-              <span class="perm-label">${p.label}</span>
-              <input type="checkbox" style="display:none;" data-key="${p.key}" id="pc-${p.key}"/>
-            </div>`).join('')}
+          ${permOpts.map(p=>`<div class="perm-item" id="pi-${p.key}" onclick="togglePerm('${p.key}')"><div class="perm-box" id="pb-${p.key}"></div><span class="perm-label">${p.label}</span><input type="checkbox" style="display:none;" data-key="${p.key}" id="pc-${p.key}"/></div>`).join('')}
         </div>
       </div>
-      <button class="btn btn-primary btn-full" id="tm-btn" onclick="addTeamMember()" style="margin-top:14px;">${hi?'सदस्य जोड़ें ✓':'Add Member ✓'}</button>
+      <button class="btn btn-primary btn-full" id="tm-btn" onclick="addTeamMember()" style="margin-top:14px;">${h?'सदस्य जोड़ें ✓':'Add Member ✓'}</button>
     </div>
-    <div class="sec-label">${hi?'टीम सदस्य':'Team Members'}</div>
-    <div id="team-list"><div class="loading">${hi?'लोड हो रहा है...':'Loading...'}</div></div>
+    <div class="sec-label">${h?'टीम सदस्य':'Team Members'}</div>
+    <div id="team-list"><div class="loading">${h?'लोड हो रहा है...':'Loading...'}</div></div>
   `;
 }
 
@@ -667,25 +754,123 @@ function buildViews(){
 function handlePhotos(input){
   const prev=document.getElementById('ph-prev');
   photoFiles=Array.from(input.files);prev.innerHTML='';
-  photoFiles.forEach(file=>{
-    const reader=new FileReader();
-    reader.onload=e=>{const img=document.createElement('img');img.src=e.target.result;img.className='photo-thumb';img.onclick=()=>openPM(e.target.result);prev.appendChild(img);};
-    reader.readAsDataURL(file);
-  });
+  photoFiles.forEach(file=>{const reader=new FileReader();reader.onload=e=>{const img=document.createElement('img');img.src=e.target.result;img.className='photo-thumb';img.onclick=()=>openPM(e.target.result);prev.appendChild(img);};reader.readAsDataURL(file);});
 }
 function openPM(src){document.getElementById('pmodal-img').src=src;document.getElementById('pmodal').classList.add('show');}
 function closePM(){document.getElementById('pmodal').classList.remove('show');}
+
+// ── MILESTONES ──
+async function addMilestone(){
+  const name=document.getElementById('ms-name').value.trim();
+  if(!name){showToast(hi()?'नाम दर्ज करें':'Enter milestone name',true);return;}
+  const {error}=await sb.from('milestones').insert({
+    project:CP.name,name,target_date:document.getElementById('ms-date').value,
+    status:document.getElementById('ms-status').value,added_by:CU.name
+  });
+  if(error){showToast('Error: '+error.message,true);return;}
+  document.getElementById('ms-name').value='';
+  showToast(hi()?'मील पत्थर जोड़ा गया ✓':'Milestone added ✓');
+  loadMilestones();
+}
+
+async function updateMilestoneStatus(id,status){
+  await sb.from('milestones').update({status}).eq('id',id);
+  loadMilestones();updateProjectProgress();
+}
+
+async function loadMilestones(){
+  const {data}=await sb.from('milestones').select('*').eq('project',CP.name).order('created_at');
+  const list=document.getElementById('ms-list');
+  const h=hi();
+  if(!data||data.length===0){list.innerHTML=`<div class="empty"><div class="empty-icon">🏁</div><div class="empty-text">${h?'कोई मील पत्थर नहीं।':'No milestones yet.'}</div></div>`;return;}
+  const done=data.filter(m=>m.status==='done').length;
+  const pct=Math.round((done/data.length)*100);
+  const fill=document.getElementById('ms-progress-fill');
+  const label=document.getElementById('ms-progress-label');
+  if(fill)fill.style.width=pct+'%';
+  if(label)label.textContent=pct+'%';
+  // Update project progress in DB
+  await sb.from('projects').update({progress:pct}).eq('name',CP.name);
+  list.innerHTML=data.map(m=>{
+    const isDone=m.status==='done';
+    const isIP=m.status==='in-progress';
+    const nextStatus=isDone?'pending':isIP?'done':'in-progress';
+    const icon=isDone?'✓':isIP?'◎':'○';
+    const cls=isDone?'done':isIP?'in-progress':'';
+    return `<div class="milestone-item">
+      <div class="milestone-check ${cls}" onclick="updateMilestoneStatus(${m.id},'${nextStatus}')">${icon}</div>
+      <div class="milestone-info">
+        <div class="milestone-name" style="${isDone?'text-decoration:line-through;color:var(--text3);':''}">${m.name}</div>
+        <div class="milestone-date">${m.target_date?fmtDate(m.target_date):''} · ${m.added_by}</div>
+      </div>
+      <span class="tag ${isDone?'tag-ok':isIP?'tag-warn':'tag-blue'}">${isDone?(h?'पूर्ण':'Done'):isIP?(h?'चल रहा':'In Progress'):(h?'बाकी':'Pending')}</span>
+    </div>`;
+  }).join('');
+}
+
+async function updateProjectProgress(){
+  const {data}=await sb.from('milestones').select('status').eq('project',CP.name);
+  if(!data||data.length===0)return;
+  const pct=Math.round((data.filter(m=>m.status==='done').length/data.length)*100);
+  await sb.from('projects').update({progress:pct}).eq('name',CP.name);
+}
+
+// ── ISSUES ──
+async function addIssue(){
+  const title=document.getElementById('iss-title').value.trim();
+  if(!title){showToast(hi()?'शीर्षक दर्ज करें':'Enter issue title',true);return;}
+  const {error}=await sb.from('issues').insert({
+    project:CP.name,title,description:document.getElementById('iss-desc').value,
+    priority:document.getElementById('iss-priority').value,
+    assigned_to:document.getElementById('iss-assign').value,
+    status:'open',logged_by:CU.name
+  });
+  if(error){showToast('Error: '+error.message,true);return;}
+  ['iss-title','iss-desc','iss-assign'].forEach(id=>document.getElementById(id).value='');
+  showToast(hi()?'समस्या दर्ज हो गई ✓':'Issue logged ✓');loadIssues();
+}
+
+async function resolveIssue(id){
+  await sb.from('issues').update({status:'resolved',resolved_at:new Date().toISOString()}).eq('id',id);
+  showToast(hi()?'समस्या हल हो गई ✓':'Issue resolved ✓');loadIssues();
+}
+
+async function loadIssues(){
+  const {data}=await sb.from('issues').select('*').eq('project',CP.name).order('created_at',{ascending:false});
+  const list=document.getElementById('iss-list');
+  const h=hi();
+  if(!data||data.length===0){list.innerHTML=`<div class="empty"><div class="empty-icon">✅</div><div class="empty-text">${h?'कोई खुली समस्या नहीं।':'No open issues. Great!'}</div></div>`;return;}
+  const open=data.filter(i=>i.status==='open');
+  const resolved=data.filter(i=>i.status==='resolved');
+  let html='';
+  if(open.length>0){
+    html+=open.map(i=>{
+      const pc=i.priority==='high'?'tag-bad':i.priority==='medium'?'tag-warn':'tag-ok';
+      const pl=i.priority==='high'?(h?'उच्च':'High'):i.priority==='medium'?(h?'मध्यम':'Medium'):(h?'कम':'Low');
+      return `<div class="issue-item">
+        <div class="issue-header">
+          <div><div class="issue-title">${i.title}</div><div class="issue-meta">${h?'द्वारा':'By'} ${i.logged_by}${i.assigned_to?' · '+h?'जिम्मेदार':'Assigned to'+': '+i.assigned_to:''}</div></div>
+          <span class="tag ${pc}">${pl}</span>
+        </div>
+        ${i.description?`<div class="issue-body">${i.description}</div>`:''}
+        <button class="btn btn-ghost btn-sm" onclick="resolveIssue(${i.id})">${h?'हल हो गया ✓':'Mark Resolved ✓'}</button>
+      </div>`;
+    }).join('');
+  }
+  if(resolved.length>0){
+    html+=`<div class="sec-label" style="margin-top:12px;">${h?'हल की गई समस्याएं':'Resolved Issues'} (${resolved.length})</div>`;
+    html+=resolved.map(i=>`<div class="issue-item" style="opacity:0.5;"><div class="issue-header"><div class="issue-title" style="text-decoration:line-through;">${i.title}</div><span class="tag tag-ok">${h?'हल':'Resolved'}</span></div></div>`).join('');
+  }
+  list.innerHTML=html;
+}
 
 // ── ATTENDANCE ──
 async function loadWorkerList(){
   attState={};
   const {data}=await sb.from('worker_registry').select('*').eq('project',CP.name).eq('active',true).order('name');
   const list=document.getElementById('att-worker-list');
-  const hi=LANG==='hi';
-  if(!data||data.length===0){
-    list.innerHTML=`<div class="empty"><div class="empty-icon">👷</div><div class="empty-text">${hi?'कोई मजदूर नहीं।\nमजदूर टैब में जाकर जोड़ें।':'No workers yet.\nGo to Workers tab to add them.'}</div></div>`;
-    updateAttCount(0,0);return;
-  }
+  const h=hi();
+  if(!data||data.length===0){list.innerHTML=`<div class="empty"><div class="empty-icon">👷</div><div class="empty-text">${h?'पहले मजदूर जोड़ें।':'Add workers first.'}</div></div>`;updateAttCount(0,0);return;}
   data.forEach(w=>{attState[w.id]={present:false,overtime:0,name:w.name,role:w.role,rate:w.daily_rate};});
   list.innerHTML=data.map(w=>`
     <div class="worker-row" id="wr-${w.id}">
@@ -695,7 +880,7 @@ async function loadWorkerList(){
         <div class="wr-rate">₹${w.daily_rate}/day</div>
       </div>
       <div class="wr-ot" id="wot-${w.id}">
-        <span class="ot-label">${hi?'ओवरटाइम (घंटे):':'Overtime (hrs):'}</span>
+        <span class="ot-label">${h?'ओवरटाइम:':'Overtime hrs:'}</span>
         <input class="ot-inp" type="number" id="ot-${w.id}" value="0" min="0" step="0.5" inputmode="decimal"/>
       </div>
     </div>`).join('');
@@ -714,60 +899,53 @@ function toggleAtt(id){
 }
 
 function updateAttCount(present,total){
-  const hi=LANG==='hi';
-  const s=document.getElementById('att-sum');
-  const c=document.getElementById('att-count');
-  if(s)s.textContent=`${total} ${hi?'मजदूर':'workers'}`;
-  if(c)c.textContent=`${present} ${hi?'मौजूद':'present'}`;
+  const h=hi();
+  const s=document.getElementById('att-sum');const c=document.getElementById('att-count');
+  if(s)s.textContent=`${total} ${h?'मजदूर':'workers'}`;
+  if(c)c.textContent=`${present} ${h?'मौजूद':'present'}`;
 }
 
 async function submitAttendance(){
-  const btn=document.getElementById('att-btn');
-  const hi=LANG==='hi';
+  const btn=document.getElementById('att-btn');const h=hi();
   const date=document.getElementById('att-date').value;
   const presentList=Object.entries(attState).filter(([,v])=>v.present);
-  if(presentList.length===0){showToast(hi?'कम से कम एक मजदूर चुनें':'Mark at least one worker',true);return;}
-  btn.textContent=hi?'सेव हो रहा है...':'Saving...';btn.disabled=true;
+  if(presentList.length===0){showToast(h?'कम से कम एक मजदूर चुनें':'Mark at least one worker',true);return;}
+  btn.textContent=h?'सेव हो रहा है...':'Saving...';btn.disabled=true;
   const records=presentList.map(([id,w])=>({
     project:CP.name,date,worker_id:parseInt(id),worker_name:w.name,
     role:w.role,daily_rate:w.rate,present:true,
-    overtime_hours:parseFloat(document.getElementById('ot-'+id)?.value)||0,
-    marked_by:CU.name
+    overtime_hours:parseFloat(document.getElementById('ot-'+id)?.value)||0,marked_by:CU.name
   }));
   const {error}=await sb.from('attendance').insert(records);
-  btn.textContent=hi?'हाजिरी जमा करें ✓':'Submit Attendance ✓';btn.disabled=false;
+  btn.textContent=h?'हाजिरी जमा करें ✓':'Submit Attendance ✓';btn.disabled=false;
   if(error){showToast('Error: '+error.message,true);return;}
-  showToast(`${records.length} ${hi?'मजदूर हाजिर ✓':'workers marked present ✓'}`);
+  showToast(`${records.length} ${h?'मजदूर हाजिर ✓':'workers marked present ✓'}`);
   loadAttLog();
 }
 
 async function loadAttLog(){
   const date=document.getElementById('att-date')?.value||new Date().toISOString().split('T')[0];
-  const hi=LANG==='hi';
+  const h=hi();
   const {data}=await sb.from('attendance').select('*').eq('project',CP.name).eq('date',date).order('worker_name');
   const list=document.getElementById('att-log');
-  if(!data||data.length===0){list.innerHTML=`<div class="empty"><div class="empty-icon">📋</div><div class="empty-text">${hi?'इस तारीख की हाजिरी नहीं।':'No attendance for this date.'}</div></div>`;return;}
+  if(!data||data.length===0){list.innerHTML=`<div class="empty"><div class="empty-icon">📋</div><div class="empty-text">${h?'इस तारीख की हाजिरी नहीं।':'No attendance for this date.'}</div></div>`;return;}
   const totalPay=data.reduce((s,a)=>s+(a.daily_rate*(1+(a.overtime_hours/8))),0);
-  list.innerHTML=`<div class="card" style="display:flex;justify-content:space-between;margin-bottom:8px;padding:12px 14px;"><span style="font-size:12px;color:var(--text2);">${data.length} ${hi?'मजदूर':'workers'} · ${hi?'अनुमानित मजदूरी':'Est. wages'}</span><span style="font-size:15px;font-weight:700;color:var(--amber);">₹${fmtNum(Math.round(totalPay))}</span></div>`+
-    data.map(a=>`<div class="list-item"><div class="li-header"><div><div class="li-title">${a.worker_name}</div><div class="li-sub">${a.role} · ₹${a.daily_rate}/day · ${a.marked_by}</div></div><div style="text-align:right;flex-shrink:0;"><span class="tag tag-ok">${hi?'मौजूद':'Present'}</span>${a.overtime_hours>0?`<div style="font-size:11px;color:var(--amber);margin-top:3px;">+${a.overtime_hours}h OT</div>`:''}</div></div></div>`).join('');
+  list.innerHTML=`<div class="card" style="display:flex;justify-content:space-between;margin-bottom:8px;padding:12px 14px;"><span style="font-size:12px;color:var(--text2);">${data.length} ${h?'मजदूर':'workers'} · ${h?'अनुमानित मजदूरी':'Est. wages'}</span><span style="font-size:15px;font-weight:700;color:var(--amber);">₹${fmtNum(Math.round(totalPay))}</span></div>`+
+    data.map(a=>`<div class="list-item"><div class="li-header"><div><div class="li-title">${a.worker_name}</div><div class="li-sub">${a.role} · ₹${a.daily_rate}/day</div></div><div style="text-align:right;flex-shrink:0;"><span class="tag tag-ok">${h?'मौजूद':'Present'}</span>${a.overtime_hours>0?`<div style="font-size:11px;color:var(--amber);margin-top:3px;">+${a.overtime_hours}h OT</div>`:''}</div></div></div>`).join('');
 }
 
 // ── WORKERS ──
 async function addWorker(){
-  const btn=document.getElementById('wk-btn');
-  const hi=LANG==='hi';
-  const name=document.getElementById('wk-name').value.trim();
-  if(!name){showToast(hi?'मजदूर का नाम दर्ज करें':'Enter worker name',true);return;}
-  btn.textContent=hi?'जोड़ा जा रहा है...':'Adding...';btn.disabled=true;
+  const h=hi();const name=document.getElementById('wk-name').value.trim();
+  if(!name){showToast(h?'नाम दर्ज करें':'Enter name',true);return;}
   const {error}=await sb.from('worker_registry').insert({
     project:CP.name,name,role:document.getElementById('wk-role').value,
     daily_rate:parseFloat(document.getElementById('wk-rate').value)||0,
     phone:document.getElementById('wk-phone').value,added_by:CU.name,active:true
   });
-  btn.textContent=hi?'मजदूर जोड़ें ✓':'Add Worker ✓';btn.disabled=false;
   if(error){showToast('Error: '+error.message,true);return;}
   ['wk-name','wk-rate','wk-phone'].forEach(id=>document.getElementById(id).value='');
-  showToast(name+(hi?' जोड़ा गया ✓':' added ✓'));loadWorkers();
+  showToast(name+(h?' जोड़ा गया ✓':' added ✓'));loadWorkers();
 }
 
 async function removeWorker(id,name){
@@ -777,133 +955,294 @@ async function removeWorker(id,name){
 }
 
 async function loadWorkers(){
-  const hi=LANG==='hi';
+  const h=hi();
   const {data}=await sb.from('worker_registry').select('*').eq('project',CP.name).eq('active',true).order('name');
   const list=document.getElementById('wk-list');
-  if(!data||data.length===0){list.innerHTML=`<div class="empty"><div class="empty-icon">👷</div><div class="empty-text">${hi?'कोई मजदूर नहीं।':'No workers yet.'}</div></div>`;return;}
-  list.innerHTML=`<div class="card" style="padding:12px 14px;margin-bottom:8px;display:flex;justify-content:space-between;"><span style="font-size:12px;color:var(--text2);">${hi?'कुल मजदूर':'Total workers'}</span><span style="font-weight:700;color:var(--amber);">${data.length}</span></div>`+
-    data.map(w=>`<div class="person-card"><div><div class="pc-name">${w.name}</div><div class="pc-sub">${w.role} · ₹${w.daily_rate}/day</div>${w.phone?`<div class="pc-pass">📞 ${w.phone}</div>`:''}</div><button class="btn btn-danger btn-sm" onclick="removeWorker(${w.id},'${w.name}')">${hi?'हटाएं':'Remove'}</button></div>`).join('');
+  if(!data||data.length===0){list.innerHTML=`<div class="empty"><div class="empty-icon">👷</div><div class="empty-text">${h?'कोई मजदूर नहीं।':'No workers yet.'}</div></div>`;return;}
+  list.innerHTML=`<div class="card" style="padding:12px 14px;margin-bottom:8px;display:flex;justify-content:space-between;"><span style="font-size:12px;color:var(--text2);">${h?'कुल मजदूर':'Total workers'}</span><span style="font-weight:700;color:var(--amber);">${data.length}</span></div>`+
+    data.map(w=>`<div class="person-card"><div><div class="pc-name">${w.name}</div><div class="pc-sub">${w.role} · ₹${w.daily_rate}/day</div>${w.phone?`<div class="pc-pass">📞 ${w.phone}</div>`:''}</div><button class="btn btn-danger btn-sm" onclick="removeWorker(${w.id},'${w.name}')">${h?'हटाएं':'Remove'}</button></div>`).join('');
 }
 
 // ── SUBMIT REPORT ──
 async function submitReport(){
-  const btn=document.getElementById('r-btn');
-  const hi=LANG==='hi';
-  const wrk=document.getElementById('r-wrk').value;
-  const work=document.getElementById('r-work').value.trim();
-  if(!wrk||!work){showToast(hi?'मजदूर और काम भरें':'Fill workers and work done',true);return;}
-  btn.textContent=hi?'सेव हो रहा है...':'Saving...';btn.disabled=true;
+  const btn=document.getElementById('r-btn');const h=hi();
+  const wrk=document.getElementById('r-wrk').value;const work=document.getElementById('r-work').value.trim();
+  if(!wrk||!work){showToast(h?'मजदूर और काम भरें':'Fill workers and work done',true);return;}
+  btn.textContent=h?'सेव हो रहा है...':'Saving...';btn.disabled=true;
   const photos=[];
   for(const file of photoFiles){const b64=await new Promise(res=>{const r=new FileReader();r.onload=e=>res(e.target.result);r.readAsDataURL(file);});photos.push(b64);}
+  const issues=document.getElementById('r-issues').value;
   const {error}=await sb.from('reports').insert({
     date:document.getElementById('r-date').value,supervisor:CU.name,
     workers:parseInt(wrk),work_done:work,
-    materials:document.getElementById('r-mat').value,
-    issues:document.getElementById('r-issues').value,
-    photos,project:CP.name
+    materials:document.getElementById('r-mat').value,issues,photos,project:CP.name
   });
-  btn.textContent=hi?'रिपोर्ट जमा करें ✓':'Submit Report ✓';btn.disabled=false;
+  // Auto-log issue if reported
+  if(!error&&issues){
+    await sb.from('issues').insert({project:CP.name,title:issues,description:'Auto-logged from daily report',priority:'medium',status:'open',logged_by:CU.name});
+  }
+  btn.textContent=h?'रिपोर्ट जमा करें ✓':'Submit Report ✓';btn.disabled=false;
   if(error){showToast('Error: '+error.message,true);return;}
   ['r-wrk','r-work','r-mat','r-issues'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('ph-prev').innerHTML='';photoFiles=[];
-  showToast(hi?'रिपोर्ट जमा हो गई ✓':'Report submitted ✓');
-  switchTab(getUserTabs()[0]);
+  showToast(h?'रिपोर्ट जमा हो गई ✓':'Report submitted ✓');switchTab(getUserTabs()[0]);
 }
 
-// ── SUBMIT FINANCE ──
+// ── FINANCE ──
 async function submitFinance(){
-  const btn=document.getElementById('f-btn');
-  const hi=LANG==='hi';
-  const desc=document.getElementById('f-desc').value.trim();
-  const amt=document.getElementById('f-amt').value;
-  if(!desc||!amt){showToast(hi?'विवरण और राशि भरें':'Fill description and amount',true);return;}
-  btn.textContent=hi?'सेव हो रहा है...':'Saving...';btn.disabled=true;
+  const btn=document.getElementById('f-btn');const h=hi();
+  const desc=document.getElementById('f-desc').value.trim();const amt=document.getElementById('f-amt').value;
+  if(!desc||!amt){showToast(h?'विवरण और राशि भरें':'Fill description and amount',true);return;}
+  btn.textContent=h?'सेव हो रहा है...':'Saving...';btn.disabled=true;
   const {error}=await sb.from('finance').insert({
     date:document.getElementById('f-date').value,type:document.getElementById('f-type').value,
-    description:desc,amount:parseFloat(amt),
-    payment_mode:document.getElementById('f-mode').value,added_by:CU.name,project:CP.name
+    description:desc,amount:parseFloat(amt),payment_mode:document.getElementById('f-mode').value,
+    added_by:CU.name,project:CP.name
   });
-  btn.textContent=hi?'एंट्री जोड़ें ✓':'Add Entry ✓';btn.disabled=false;
+  btn.textContent=h?'एंट्री जोड़ें ✓':'Add Entry ✓';btn.disabled=false;
   if(error){showToast('Error: '+error.message,true);return;}
   document.getElementById('f-desc').value='';document.getElementById('f-amt').value='';
-  showToast(hi?'खर्च सेव हो गया ✓':'Expense saved ✓');loadFinance();
+  showToast(h?'खर्च सेव हो गया ✓':'Expense saved ✓');loadFinance();
 }
 
-// ── SUBMIT MATERIAL ──
+async function loadFinance(){
+  const h=hi();
+  const {data}=await sb.from('finance').select('*').eq('project',CP.name).order('created_at',{ascending:false});
+  const total=(data||[]).reduce((s,f)=>s+f.amount,0);
+  document.getElementById('fin-total').textContent='₹'+fmtNum(total);
+  const budgetLeft=document.getElementById('budget-left');
+  if(budgetLeft){
+    const bl=CP.total_budget?CP.total_budget-total:null;
+    budgetLeft.textContent=bl!==null?'₹'+fmtNum(Math.max(0,bl)):'—';
+    budgetLeft.style.color=bl<0?'var(--red)':'var(--green)';
+  }
+  // Budget by category chart
+  const finChart=document.getElementById('fin-chart');
+  if(finChart&&data&&data.length>0){
+    const cats={};
+    data.forEach(f=>{cats[f.type]=(cats[f.type]||0)+f.amount;});
+    const maxVal=Math.max(...Object.values(cats));
+    finChart.innerHTML=`<div class="budget-bars">${Object.entries(cats).map(([cat,val])=>`
+      <div class="budget-row">
+        <div class="budget-row-label">${cat}</div>
+        <div class="budget-row-bar"><div class="budget-row-fill" style="width:${Math.round((val/maxVal)*100)}%;background:var(--amber);"></div></div>
+        <div class="budget-row-val">₹${fmtNum(val)}</div>
+      </div>`).join('')}</div>`;
+  } else if(finChart){finChart.innerHTML=`<div class="empty" style="padding:16px 0;"><div class="empty-text">${h?'कोई डेटा नहीं।':'No data yet.'}</div></div>`;}
+  const list=document.getElementById('fin-list');
+  if(!data||data.length===0){list.innerHTML=`<div class="empty" style="padding:24px 0;"><div class="empty-icon">💸</div><div class="empty-text">${h?'कोई एंट्री नहीं।':'No entries yet.'}</div></div>`;return;}
+  list.innerHTML=data.map(f=>`<div class="fi-row"><div><div class="fi-type">${f.type}</div><div class="fi-desc">${f.description}</div><div class="fi-meta">${fmtDate(f.date)} · ${f.payment_mode} · ${f.added_by}</div></div><div class="fi-amt">-₹${fmtNum(f.amount)}</div></div>`).join('');
+}
+
+// ── MATERIALS ──
 async function submitMaterial(){
-  const btn=document.getElementById('mat-btn');
-  const hi=LANG==='hi';
-  const name=document.getElementById('mat-name').value.trim();
-  const qin=document.getElementById('mat-in').value.trim();
-  if(!name||!qin){showToast(hi?'नाम और मात्रा भरें':'Fill name and quantity',true);return;}
-  btn.textContent=hi?'सेव हो रहा है...':'Saving...';btn.disabled=true;
+  const btn=document.getElementById('mat-btn');const h=hi();
+  const name=document.getElementById('mat-name').value.trim();const qin=document.getElementById('mat-in').value.trim();
+  if(!name||!qin){showToast(h?'नाम और मात्रा भरें':'Fill name and quantity',true);return;}
+  btn.textContent=h?'सेव हो रहा है...':'Saving...';btn.disabled=true;
   const {error}=await sb.from('materials').insert({
     date:document.getElementById('mat-date').value,name,qty_in:qin,
     qty_used:document.getElementById('mat-used').value,
     cost:parseFloat(document.getElementById('mat-cost').value)||0,
     vendor:document.getElementById('mat-vendor').value,added_by:CU.name,project:CP.name
   });
-  btn.textContent=hi?'सामग्री दर्ज करें ✓':'Log Material ✓';btn.disabled=false;
+  btn.textContent=h?'सामग्री दर्ज करें ✓':'Log Material ✓';btn.disabled=false;
   if(error){showToast('Error: '+error.message,true);return;}
   ['mat-name','mat-in','mat-used','mat-cost','mat-vendor'].forEach(id=>document.getElementById(id).value='');
-  showToast(hi?'सामग्री दर्ज हो गई ✓':'Material logged ✓');loadMaterials();
+  showToast(h?'सामग्री दर्ज हो गई ✓':'Material logged ✓');loadMaterials();
 }
 
-// ── SUBMIT LABOUR ──
+async function loadMaterials(){
+  const h=hi();
+  const {data}=await sb.from('materials').select('*').eq('project',CP.name).order('created_at',{ascending:false});
+  // Waste tracker
+  const waste=document.getElementById('waste-tracker');
+  if(waste&&data&&data.length>0){
+    const matMap={};
+    data.forEach(m=>{
+      if(!matMap[m.name])matMap[m.name]={in:0,used:0,cost:0};
+      const qIn=parseFloat(m.qty_in)||0;const qUsed=parseFloat(m.qty_used)||0;
+      matMap[m.name].in+=qIn;matMap[m.name].used+=qUsed;matMap[m.name].cost+=m.cost||0;
+    });
+    waste.innerHTML=`<div class="budget-bars">${Object.entries(matMap).map(([name,v])=>{
+      const wastePct=v.in>0?Math.round(((v.in-v.used)/v.in)*100):0;
+      const color=wastePct>30?'var(--red)':wastePct>15?'var(--amber)':'var(--green)';
+      return `<div class="budget-row">
+        <div class="budget-row-label" style="font-size:11px;">${name}</div>
+        <div class="budget-row-bar"><div class="budget-row-fill" style="width:${wastePct}%;background:${color};"></div></div>
+        <div class="budget-row-val" style="color:${color};">${wastePct}% ${h?'बर्बाद':'waste'}</div>
+      </div>`;
+    }).join('')}</div>`;
+  } else if(waste){waste.innerHTML=`<div class="empty" style="padding:12px 0;"><div class="empty-text">${h?'डेटा नहीं।':'No data yet.'}</div></div>`;}
+  const list=document.getElementById('mat-list');
+  if(!data||data.length===0){list.innerHTML=`<div class="empty"><div class="empty-icon">📦</div><div class="empty-text">${h?'कोई सामग्री नहीं।':'No materials yet.'}</div></div>`;return;}
+  list.innerHTML=data.map(m=>`<div class="list-item"><div class="li-header"><div><div class="li-title">${m.name}</div><div class="li-sub">${fmtDate(m.date)} · ${m.vendor||''} · ${m.added_by}</div></div>${m.cost?`<span style="font-size:13px;font-weight:700;color:var(--red);flex-shrink:0;">₹${fmtNum(m.cost)}</span>`:''}</div><div style="display:flex;gap:12px;font-size:12px;color:var(--text2);"><span>📥 ${m.qty_in}</span>${m.qty_used?`<span>🔧 ${m.qty_used}</span>`:''}</div></div>`).join('');
+}
+
+// ── LABOUR ──
 async function submitLabour(){
-  const btn=document.getElementById('lab-btn');
-  const hi=LANG==='hi';
-  const name=document.getElementById('lab-name').value.trim();
-  const amt=document.getElementById('lab-amt').value;
-  if(!name||!amt){showToast(hi?'नाम और राशि भरें':'Fill name and amount',true);return;}
-  btn.textContent=hi?'सेव हो रहा है...':'Saving...';btn.disabled=true;
+  const btn=document.getElementById('lab-btn');const h=hi();
+  const name=document.getElementById('lab-name').value.trim();const amt=document.getElementById('lab-amt').value;
+  if(!name||!amt){showToast(h?'नाम और राशि भरें':'Fill name and amount',true);return;}
+  btn.textContent=h?'सेव हो रहा है...':'Saving...';btn.disabled=true;
   const {error}=await sb.from('labour').insert({
     date:document.getElementById('lab-date').value,worker_name:name,
     role:document.getElementById('lab-role').value,
     amount:parseFloat(amt),days:parseInt(document.getElementById('lab-days').value)||1,
     added_by:CU.name,project:CP.name
   });
-  btn.textContent=hi?'भुगतान दर्ज करें ✓':'Log Payment ✓';btn.disabled=false;
+  btn.textContent=h?'भुगतान दर्ज करें ✓':'Log Payment ✓';btn.disabled=false;
   if(error){showToast('Error: '+error.message,true);return;}
   ['lab-name','lab-amt','lab-days'].forEach(id=>document.getElementById(id).value='');
-  showToast(hi?'मजदूरी दर्ज हो गई ✓':'Labour logged ✓');loadLabour();
+  showToast(h?'मजदूरी दर्ज हो गई ✓':'Labour logged ✓');loadLabour();
+}
+
+async function loadLabour(){
+  const h=hi();
+  const [labData,attData]=await Promise.all([
+    sb.from('labour').select('*').eq('project',CP.name).order('created_at',{ascending:false}),
+    sb.from('attendance').select('worker_name,overtime_hours').eq('project',CP.name)
+  ]);
+  const data=labData.data||[];const att=attData.data||[];
+  const total=data.reduce((s,l)=>s+l.amount,0);
+  // Worker performance
+  const perf=document.getElementById('worker-perf');
+  if(perf&&att.length>0){
+    const wmap={};
+    att.forEach(a=>{if(!wmap[a.worker_name])wmap[a.worker_name]={days:0,ot:0};wmap[a.worker_name].days++;wmap[a.worker_name].ot+=a.overtime_hours||0;});
+    const sorted=Object.entries(wmap).sort((a,b)=>b[1].days-a[1].days).slice(0,5);
+    perf.innerHTML=sorted.map(([name,stats])=>{
+      const initials=name.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
+      return `<div class="worker-stat">
+        <div class="ws-avatar">${initials}</div>
+        <div class="ws-info">
+          <div class="ws-name">${name}</div>
+          <div class="ws-stats">
+            <div class="ws-stat">${h?'दिन':'Days'}: <span>${stats.days}</span></div>
+            <div class="ws-stat">OT: <span>${stats.ot}h</span></div>
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+  } else if(perf){perf.innerHTML=`<div class="empty"><div class="empty-icon">📊</div><div class="empty-text">${h?'हाजिरी डेटा नहीं।':'No attendance data yet.'}</div></div>`;}
+  const list=document.getElementById('lab-list');
+  if(!data||data.length===0){list.innerHTML=`<div class="empty"><div class="empty-icon">👷</div><div class="empty-text">${h?'कोई एंट्री नहीं।':'No entries yet.'}</div></div>`;return;}
+  list.innerHTML=`<div class="card" style="margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;padding:12px 14px;"><span style="font-size:12px;color:var(--text2);">${h?'कुल मजदूरी':'Total Labour'}</span><span style="font-size:17px;font-weight:700;color:var(--red);">₹${fmtNum(total)}</span></div>`+
+    data.map(l=>`<div class="list-item"><div class="li-header"><div><div class="li-title">${l.worker_name}</div><div class="li-sub">${l.role} · ${l.days} ${h?'दिन':'days'} · ${fmtDate(l.date)}</div></div><span style="font-size:14px;font-weight:700;color:var(--red);flex-shrink:0;">₹${fmtNum(l.amount)}</span></div></div>`).join('');
+}
+
+// ── REPORTS ──
+async function loadReports(){
+  const h=hi();
+  const {data}=await sb.from('reports').select('*').eq('project',CP.name).order('created_at',{ascending:false});
+  const list=document.getElementById('rep-list');
+  if(!data||data.length===0){list.innerHTML=`<div class="empty"><div class="empty-icon">📋</div><div class="empty-text">${h?'कोई रिपोर्ट नहीं।':'No reports yet.'}</div></div>`;return;}
+  list.innerHTML=data.map(r=>`
+    <div class="list-item">
+      <div class="li-header"><div><div class="li-title">${fmtDate(r.date)}</div><div class="li-sub">👷 ${r.workers} ${h?'मजदूर':'workers'} · ${r.supervisor}</div></div><span class="tag ${r.issues?'tag-warn':'tag-ok'}">${r.issues?(h?'समस्या':'Issue'):(h?'ठीक':'Clear')}</span></div>
+      <div class="li-body">${r.work_done}</div>
+      ${r.materials?`<div style="font-size:11px;color:var(--text3);margin-bottom:5px;">📦 ${r.materials}</div>`:''}
+      ${r.issues?`<div class="li-issue">⚠️ ${r.issues}</div>`:''}
+      ${r.photos&&r.photos.length>0?`<div class="photos-row">${r.photos.map(p=>`<img src="${p}" class="photo-thumb" onclick="openPM('${p.replace(/'/g,"\\'")}')"/>`).join('')}</div>`:''}
+    </div>`).join('');
+}
+
+// ── PHOTO TIMELINE ──
+async function loadPhotos(){
+  const h=hi();
+  const {data}=await sb.from('reports').select('date,photos,work_done').eq('project',CP.name).order('date',{ascending:false});
+  const list=document.getElementById('photo-timeline');
+  if(!data||data.length===0){list.innerHTML=`<div class="empty"><div class="empty-icon">📸</div><div class="empty-text">${h?'कोई फोटो नहीं।':'No photos yet.'}</div></div>`;return;}
+  const withPhotos=data.filter(r=>r.photos&&r.photos.length>0);
+  if(withPhotos.length===0){list.innerHTML=`<div class="empty"><div class="empty-icon">📸</div><div class="empty-text">${h?'रिपोर्ट में फोटो नहीं।':'No photos in reports yet.'}</div></div>`;return;}
+  list.innerHTML=withPhotos.map(r=>`
+    <div class="timeline-date">${fmtDate(r.date)} · ${r.work_done.substring(0,50)}${r.work_done.length>50?'...':''}</div>
+    <div class="timeline-photos">
+      ${r.photos.map(p=>`<img src="${p}" class="timeline-photo" onclick="openPM('${p.replace(/'/g,"\\'")}')"/>`).join('')}
+    </div>`).join('');
+}
+
+// ── DASHBOARD ──
+async function loadDashboard(){
+  const h=hi();
+  const [rr,fr,ir]=await Promise.all([
+    sb.from('reports').select('*').eq('project',CP.name).order('created_at',{ascending:false}),
+    sb.from('finance').select('*').eq('project',CP.name).order('created_at',{ascending:false}),
+    sb.from('issues').select('*').eq('project',CP.name).eq('status','open').order('created_at',{ascending:false})
+  ]);
+  const reports=rr.data||[],finance=fr.data||[],issues=ir.data||[];
+  const total=finance.reduce((s,f)=>s+f.amount,0);
+  document.getElementById('m-rep').textContent=reports.length;
+  document.getElementById('m-spent').textContent='₹'+fmtNum(total);
+  document.getElementById('m-wrk').textContent=reports.length>0?reports[0].workers:'—';
+  const da=document.getElementById('d-alert');
+  if(reports.length>0&&reports[0].issues){da.style.display='flex';document.getElementById('d-alert-txt').textContent=reports[0].issues;}
+  else da.style.display='none';
+  // Budget tracker
+  const bt=document.getElementById('budget-tracker');
+  if(bt){
+    const budget=CP.total_budget||0;
+    const spent=total;const pct=budget>0?Math.min(100,Math.round((spent/budget)*100)):0;
+    const color=pct>90?'var(--red)':pct>70?'var(--amber)':'var(--green)';
+    bt.innerHTML=budget>0?`
+      <div class="progress-wrap">
+        <div class="progress-label"><span>${h?'खर्च हुआ':'Spent'}: ₹${fmtNum(spent)}</span><span>${h?'बजट':'Budget'}: ₹${fmtNum(budget)}</span></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:${pct}%;background:${color};"></div></div>
+        <div style="font-size:11px;color:${color};margin-top:4px;">${pct}% ${h?'खर्च हो गया':'of budget used'}</div>
+      </div>`:
+      `<div style="font-size:13px;color:var(--text3);">${h?'बजट सेट नहीं किया।':'No budget set for this project.'}</div>`;
+  }
+  // Latest report
+  const dRep=document.getElementById('d-rep');
+  if(reports.length>0){
+    const r=reports[0];
+    dRep.innerHTML=`
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;">
+        <span style="font-size:13px;font-weight:600;">${fmtDate(r.date)}</span>
+        <span class="tag ${r.issues?'tag-warn':'tag-ok'}">${r.issues?(h?'समस्या':'Issue'):(h?'सब ठीक':'All Clear')}</span>
+      </div>
+      <div style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:8px;">${r.work_done}</div>
+      <div style="font-size:11px;color:var(--text3);margin-bottom:4px;">👷 ${r.workers} ${h?'मजदूर':'workers'} · ${r.supervisor}</div>
+      ${r.materials?`<div style="font-size:11px;color:var(--text3);margin-bottom:6px;">📦 ${r.materials}</div>`:''}
+      ${r.issues?`<div class="li-issue">⚠️ ${r.issues}</div>`:''}
+      ${r.photos&&r.photos.length>0?`<div class="photos-row">${r.photos.map(p=>`<img src="${p}" class="photo-thumb" onclick="openPM('${p.replace(/'/g,"\\'")}')"/>`).join('')}</div>`:''}
+    `;
+  } else dRep.innerHTML=`<div class="empty"><div class="empty-icon">📋</div><div class="empty-text">${h?'अभी कोई रिपोर्ट नहीं।':'No reports yet.'}</div></div>`;
+  // Open issues
+  const dIss=document.getElementById('d-issues');
+  if(issues.length>0){
+    dIss.innerHTML=issues.slice(0,3).map(i=>{
+      const pc=i.priority==='high'?'tag-bad':i.priority==='medium'?'tag-warn':'tag-ok';
+      return `<div style="display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--border);">
+        <span style="font-size:13px;">${i.title}</span>
+        <span class="tag ${pc}">${i.priority}</span>
+      </div>`;
+    }).join('')+`${issues.length>3?`<div style="font-size:12px;color:var(--text3);padding:8px 0;">${issues.length-3} ${h?'और समस्याएं':'more issues'}</div>`:''}`;
+  } else dIss.innerHTML=`<div style="font-size:13px;color:var(--green);">✓ ${h?'कोई खुली समस्या नहीं।':'No open issues. All clear!'}</div>`;
 }
 
 // ── TEAM ──
 function togglePerm(key){
-  const item=document.getElementById('pi-'+key);
-  const box=document.getElementById('pb-'+key);
-  const chk=document.getElementById('pc-'+key);
-  const isOn=chk.checked;
-  chk.checked=!isOn;
+  const item=document.getElementById('pi-'+key);const box=document.getElementById('pb-'+key);const chk=document.getElementById('pc-'+key);
+  const isOn=chk.checked;chk.checked=!isOn;
   if(!isOn){item.classList.add('on');box.innerHTML='<span style="color:#0E0D0A;font-size:11px;font-weight:700;">✓</span>';}
   else{item.classList.remove('on');box.innerHTML='';}
 }
 
 async function addTeamMember(){
-  const btn=document.getElementById('tm-btn');
-  const hi=LANG==='hi';
-  const name=document.getElementById('tm-name').value.trim();
-  const pass=document.getElementById('tm-pass').value.trim();
-  if(!name||!pass){showToast(hi?'नाम और पासवर्ड भरें':'Fill name and password',true);return;}
+  const btn=document.getElementById('tm-btn');const h=hi();
+  const name=document.getElementById('tm-name').value.trim();const pass=document.getElementById('tm-pass').value.trim();
+  if(!name||!pass){showToast(h?'नाम और पासवर्ड भरें':'Fill name and password',true);return;}
   const perms=[];
   document.querySelectorAll('#view-team input[type=checkbox]').forEach(inp=>{if(inp.checked)perms.push(inp.dataset.key);});
-  if(perms.length===0){showToast(hi?'कम से कम एक अनुमति चुनें':'Select at least one permission',true);return;}
-  btn.textContent=hi?'जोड़ा जा रहा है...':'Adding...';btn.disabled=true;
-  const {error}=await sb.from('users').insert({
-    name,role:'custom',password:pass,permissions:perms,
-    added_by:CU.name,project:CP.name,active:true
-  });
-  btn.textContent=hi?'सदस्य जोड़ें ✓':'Add Member ✓';btn.disabled=false;
+  if(perms.length===0){showToast(h?'कम से कम एक अनुमति चुनें':'Select at least one permission',true);return;}
+  btn.textContent=h?'जोड़ा जा रहा है...':'Adding...';btn.disabled=true;
+  const {error}=await sb.from('users').insert({name,role:'custom',password:pass,permissions:perms,added_by:CU.name,project:CP.name,active:true});
+  btn.textContent=h?'सदस्य जोड़ें ✓':'Add Member ✓';btn.disabled=false;
   if(error){showToast('Error: '+error.message,true);return;}
   ['tm-name','tm-pass'].forEach(id=>document.getElementById(id).value='');
-  document.querySelectorAll('#view-team input[type=checkbox]').forEach(inp=>{
-    inp.checked=false;
-    document.getElementById('pi-'+inp.dataset.key)?.classList.remove('on');
-    const box=document.getElementById('pb-'+inp.dataset.key);
-    if(box)box.innerHTML='';
-  });
-  showToast(name+(hi?' जोड़ा गया ✓':' added ✓'));loadTeam();
+  document.querySelectorAll('#view-team input[type=checkbox]').forEach(inp=>{inp.checked=false;const pi=document.getElementById('pi-'+inp.dataset.key);const pb=document.getElementById('pb-'+inp.dataset.key);if(pi)pi.classList.remove('on');if(pb)pb.innerHTML='';});
+  showToast(name+(h?' जोड़ा गया ✓':' added ✓'));loadTeam();
 }
 
 async function removeMember(id,name){
@@ -912,104 +1251,27 @@ async function removeMember(id,name){
   showToast(name+' removed');loadTeam();
 }
 
-// ── LOAD FUNCTIONS ──
-async function loadDashboard(){
-  const hi=LANG==='hi';
-  const [rr,fr]=await Promise.all([
-    sb.from('reports').select('*').eq('project',CP.name).order('created_at',{ascending:false}),
-    sb.from('finance').select('*').eq('project',CP.name).order('created_at',{ascending:false})
-  ]);
-  const reports=rr.data||[],finance=fr.data||[];
-  const total=finance.reduce((s,f)=>s+f.amount,0);
-  document.getElementById('m-rep').textContent=reports.length;
-  document.getElementById('m-spent').textContent='₹'+fmtNum(total);
-  document.getElementById('m-wrk').textContent=reports.length>0?reports[0].workers:'—';
-  const da=document.getElementById('d-alert');
-  if(reports.length>0&&reports[0].issues){da.style.display='flex';document.getElementById('d-alert-txt').textContent=reports[0].issues;}
-  else da.style.display='none';
-  const dRep=document.getElementById('d-rep');
-  if(reports.length>0){
-    const r=reports[0];
-    dRep.innerHTML=`
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;">
-        <span style="font-size:13px;font-weight:600;">${fmtDate(r.date)}</span>
-        <span class="tag ${r.issues?'tag-warn':'tag-ok'}">${r.issues?(hi?'समस्या':'Issue'):(hi?'सब ठीक':'All Clear')}</span>
-      </div>
-      <div style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:8px;">${r.work_done}</div>
-      <div style="font-size:11px;color:var(--text3);margin-bottom:4px;">👷 ${r.workers} ${hi?'मजदूर':'workers'} · ${r.supervisor}</div>
-      ${r.materials?`<div style="font-size:11px;color:var(--text3);margin-bottom:6px;">📦 ${r.materials}</div>`:''}
-      ${r.issues?`<div class="li-issue">⚠️ ${r.issues}</div>`:''}
-      ${r.photos&&r.photos.length>0?`<div class="photos-row">${r.photos.map(p=>`<img src="${p}" class="photo-thumb" onclick="openPM('${p.replace(/'/g,"\\'")}')"/>`).join('')}</div>`:''}
-    `;
-  } else dRep.innerHTML=`<div class="empty"><div class="empty-icon">📋</div><div class="empty-text">${hi?'अभी कोई रिपोर्ट नहीं।':'No reports yet.'}</div></div>`;
-  const dFin=document.getElementById('d-fin');
-  if(finance.length>0){
-    dFin.innerHTML=finance.slice(0,3).map(f=>`<div class="fi-row"><div><div class="fi-type">${f.type}</div><div class="fi-desc">${f.description}</div><div class="fi-meta">${fmtDate(f.date)} · ${f.payment_mode}</div></div><div class="fi-amt">-₹${fmtNum(f.amount)}</div></div>`).join('');
-  } else dFin.innerHTML=`<div class="empty"><div class="empty-icon">💰</div><div class="empty-text">${hi?'कोई खर्च नहीं।':'No expenses yet.'}</div></div>`;
-}
-
-async function loadReports(){
-  const hi=LANG==='hi';
-  const {data}=await sb.from('reports').select('*').eq('project',CP.name).order('created_at',{ascending:false});
-  const list=document.getElementById('rep-list');
-  if(!data||data.length===0){list.innerHTML=`<div class="empty"><div class="empty-icon">📋</div><div class="empty-text">${hi?'कोई रिपोर्ट नहीं।':'No reports yet.'}</div></div>`;return;}
-  list.innerHTML=data.map(r=>`
-    <div class="list-item">
-      <div class="li-header"><div><div class="li-title">${fmtDate(r.date)}</div><div class="li-sub">👷 ${r.workers} ${hi?'मजदूर':'workers'} · ${r.supervisor}</div></div><span class="tag ${r.issues?'tag-warn':'tag-ok'}">${r.issues?(hi?'समस्या':'Issue'):(hi?'ठीक':'Clear')}</span></div>
-      <div class="li-body">${r.work_done}</div>
-      ${r.materials?`<div style="font-size:11px;color:var(--text3);margin-bottom:5px;">📦 ${r.materials}</div>`:''}
-      ${r.issues?`<div class="li-issue">⚠️ ${r.issues}</div>`:''}
-      ${r.photos&&r.photos.length>0?`<div class="photos-row">${r.photos.map(p=>`<img src="${p}" class="photo-thumb" onclick="openPM('${p.replace(/'/g,"\\'")}')"/>`).join('')}</div>`:''}
-    </div>`).join('');
-}
-
-async function loadFinance(){
-  const hi=LANG==='hi';
-  const {data}=await sb.from('finance').select('*').eq('project',CP.name).order('created_at',{ascending:false});
-  const total=(data||[]).reduce((s,f)=>s+f.amount,0);
-  document.getElementById('fin-total').textContent='₹'+fmtNum(total);
-  const list=document.getElementById('fin-list');
-  if(!data||data.length===0){list.innerHTML=`<div class="empty" style="padding:24px 0;"><div class="empty-icon">💸</div><div class="empty-text">${hi?'कोई एंट्री नहीं।':'No entries yet.'}</div></div>`;return;}
-  list.innerHTML=data.map(f=>`<div class="fi-row"><div><div class="fi-type">${f.type}</div><div class="fi-desc">${f.description}</div><div class="fi-meta">${fmtDate(f.date)} · ${f.payment_mode} · ${f.added_by}</div></div><div class="fi-amt">-₹${fmtNum(f.amount)}</div></div>`).join('');
-}
-
-async function loadMaterials(){
-  const hi=LANG==='hi';
-  const {data}=await sb.from('materials').select('*').eq('project',CP.name).order('created_at',{ascending:false});
-  const list=document.getElementById('mat-list');
-  if(!data||data.length===0){list.innerHTML=`<div class="empty"><div class="empty-icon">📦</div><div class="empty-text">${hi?'कोई सामग्री नहीं।':'No materials yet.'}</div></div>`;return;}
-  list.innerHTML=data.map(m=>`<div class="list-item"><div class="li-header"><div><div class="li-title">${m.name}</div><div class="li-sub">${fmtDate(m.date)} · ${m.vendor||''} · ${m.added_by}</div></div>${m.cost?`<span style="font-size:13px;font-weight:700;color:var(--red);flex-shrink:0;">₹${fmtNum(m.cost)}</span>`:''}</div><div style="display:flex;gap:12px;font-size:12px;color:var(--text2);"><span>📥 ${m.qty_in}</span>${m.qty_used?`<span>🔧 ${m.qty_used}</span>`:''}</div></div>`).join('');
-}
-
-async function loadLabour(){
-  const hi=LANG==='hi';
-  const {data}=await sb.from('labour').select('*').eq('project',CP.name).order('created_at',{ascending:false});
-  const list=document.getElementById('lab-list');
-  const total=(data||[]).reduce((s,l)=>s+l.amount,0);
-  if(!data||data.length===0){list.innerHTML=`<div class="empty"><div class="empty-icon">👷</div><div class="empty-text">${hi?'कोई एंट्री नहीं।':'No entries yet.'}</div></div>`;return;}
-  list.innerHTML=`<div class="card" style="margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;padding:12px 14px;"><span style="font-size:12px;color:var(--text2);">${hi?'कुल मजदूरी':'Total Labour'}</span><span style="font-size:17px;font-weight:700;color:var(--red);">₹${fmtNum(total)}</span></div>`+
-    data.map(l=>`<div class="list-item"><div class="li-header"><div><div class="li-title">${l.worker_name}</div><div class="li-sub">${l.role} · ${l.days} ${hi?'दिन':'days'} · ${fmtDate(l.date)}</div></div><span style="font-size:14px;font-weight:700;color:var(--red);flex-shrink:0;">₹${fmtNum(l.amount)}</span></div></div>`).join('');
-}
-
 async function loadTeam(){
-  const hi=LANG==='hi';
+  const h=hi();
   const {data}=await sb.from('users').select('*').eq('project',CP.name).eq('active',true).order('created_at');
   const list=document.getElementById('team-list');
-  if(!data||data.length===0){list.innerHTML=`<div class="empty"><div class="empty-icon">👥</div><div class="empty-text">${hi?'कोई सदस्य नहीं।':'No team members yet.'}</div></div>`;return;}
+  if(!data||data.length===0){list.innerHTML=`<div class="empty"><div class="empty-icon">👥</div><div class="empty-text">${h?'कोई सदस्य नहीं।':'No team members yet.'}</div></div>`;return;}
   list.innerHTML=data.map(u=>{
     const isC=u.role==='contractor';
     const perms=u.permissions&&Array.isArray(u.permissions)?u.permissions:[];
     const chips=perms.map(p=>`<span style="font-size:10px;background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border);padding:2px 7px;border-radius:100px;white-space:nowrap;">${TAB_EN[p]||p}</span>`).join('');
-    return `<div class="person-card"><div style="flex:1;min-width:0;"><div class="pc-name">${u.name}</div><div class="pc-pass">${hi?'पासवर्ड':'Password'}: ${u.password}</div>${isC?`<span class="role-badge" style="margin-top:6px;display:inline-block;">${hi?'पूर्ण एक्सेस':'Full Access'}</span>`:''}${perms.length>0?`<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:8px;">${chips}</div>`:''}</div>${!isC?`<button class="btn btn-danger btn-sm" onclick="removeMember(${u.id},'${u.name}')">${hi?'हटाएं':'Remove'}</button>`:''}</div>`;
+    return `<div class="person-card"><div style="flex:1;min-width:0;"><div class="pc-name">${u.name}</div><div class="pc-pass">${h?'पासवर्ड':'Pass'}: ${u.password}</div>${isC?`<span class="role-badge" style="margin-top:6px;display:inline-block;">${h?'पूर्ण एक्सेस':'Full Access'}</span>`:''}${perms.length>0?`<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:8px;">${chips}</div>`:''}</div>${!isC?`<button class="btn btn-danger btn-sm" onclick="removeMember(${u.id},'${u.name}')">${h?'हटाएं':'Remove'}</button>`:''}</div>`;
   }).join('');
 }
 
 // ── LANGUAGE ──
-function toggleLang(){
-  LANG=LANG==='en'?'hi':'en';
-  localStorage.setItem('bw_lang',LANG);
+function setLangBtns(){
   const label=LANG==='en'?'हिंदी':'EN';
   ['lang-btn-login','lang-btn-proj','lang-btn-app'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=label;});
+}
+
+function toggleLang(){
+  LANG=LANG==='en'?'hi':'en';localStorage.setItem('bw_lang',LANG);setLangBtns();
   if(CP){buildTabs();buildViews();switchTab(getUserTabs()[0]);}
   else if(CU){showProjects();}
   else{
@@ -1027,17 +1289,16 @@ function toggleLang(){
 function fmtNum(n){if(!n)return'0';if(n>=100000)return(n/100000).toFixed(1)+'L';if(n>=1000)return(n/1000).toFixed(1)+'K';return Number(n).toLocaleString('en-IN');}
 function fmtDate(d){if(!d)return'—';return new Date(d).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});}
 function showToast(msg,isErr=false){const t=document.getElementById('toast');t.textContent=msg;t.className='toast'+(isErr?' err':'');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);}
-function openPM(src){document.getElementById('pmodal-img').src=src;document.getElementById('pmodal').classList.add('show');}
-function closePM(){document.getElementById('pmodal').classList.remove('show');}
 
 // ── PWA ──
 if('serviceWorker'in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').catch(()=>{}));}
 
 // ── INIT ──
-const _su=localStorage.getItem('bw_u');
-const _sp=localStorage.getItem('bw_cp');
-['lang-btn-login','lang-btn-proj','lang-btn-app'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=LANG==='en'?'हिंदी':'EN';});
+const _su=localStorage.getItem('bw_u');const _sp=localStorage.getItem('bw_cp');
+setLangBtns();
 if(_su){try{CU=JSON.parse(_su);if(_sp){CP=JSON.parse(_sp);openProject(CP);}else showProjects();}catch(e){}}
 </script>
 </body>
 </html>
+HTMLEOF
+echo "Done — $(wc -l < /mnt/user-data/outputs/buildwatch-app.html) lines"
