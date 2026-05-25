@@ -398,6 +398,8 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
   <div id="view-labour"     class="content" style="display:none;"></div>
   <div id="view-workers"    class="content" style="display:none;"></div>
   <div id="view-team"       class="content" style="display:none;"></div>
+  <div id="view-documents"  class="content" style="display:none;"></div>
+  <div id="view-client"     class="content" style="display:none;"></div>
 </div>
 
 <script>
@@ -405,12 +407,12 @@ const SB_URL='https://jmfmbmdedwyuoocatwzn.supabase.co';
 const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImptZm1ibWRlZHd5dW9vY2F0d3puIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk1NTMzODksImV4cCI6MjA5NTEyOTM4OX0.V-CyVbb41q3w4ZdS7mKzyhG_9gCaG_7aam1X9JqFS5w';
 const sb=supabase.createClient(SB_URL,SB_KEY);
 
-const ALL_TABS=['dashboard','milestones','issues','attendance','report','reports','photos','finance','materials','labour','workers','team'];
-const TAB_EN={dashboard:'Dashboard',milestones:'Milestones',issues:'Issues',attendance:'Attendance',report:'Daily Report',reports:'Reports',photos:'Photos',finance:'Finance',materials:'Materials',labour:'Labour',workers:'Workers',team:'Team'};
-const TAB_HI={dashboard:'डैशबोर्ड',milestones:'मील पत्थर',issues:'समस्याएं',attendance:'हाजिरी',report:'दैनिक रिपोर्ट',reports:'रिपोर्ट्स',photos:'फोटो',finance:'वित्त',materials:'सामग्री',labour:'मजदूरी',workers:'मजदूर',team:'टीम'};
+const ALL_TABS=['dashboard','milestones','issues','attendance','report','reports','photos','finance','materials','labour','workers','documents','client','team'];
+const TAB_EN={dashboard:'Dashboard',milestones:'Milestones',issues:'Issues',attendance:'Attendance',report:'Daily Report',reports:'Reports',photos:'Photos',finance:'Finance',materials:'Materials',labour:'Labour',workers:'Workers',documents:'Documents',client:'Client Portal',team:'Team'};
+const TAB_HI={dashboard:'डैशबोर्ड',milestones:'मील पत्थर',issues:'समस्याएं',attendance:'हाजिरी',report:'दैनिक रिपोर्ट',reports:'रिपोर्ट्स',photos:'फोटो',finance:'वित्त',materials:'सामग्री',labour:'मजदूरी',workers:'मजदूर',documents:'दस्तावेज़',client:'क्लाइंट पोर्टल',team:'टीम'};
 
 // Team tab is contractor-only and opens the global team modal
-const CONTRACTOR_TABS=['dashboard','milestones','issues','attendance','report','reports','photos','finance','materials','labour','workers','team'];
+const CONTRACTOR_TABS=['dashboard','milestones','issues','attendance','report','reports','photos','finance','materials','labour','workers','documents','client','team'];
 
 let CU=null,CP=null,photoFiles=[],attState={};
 let LANG=localStorage.getItem('bw_lang')||'en';
@@ -562,6 +564,8 @@ function switchTab(tab){
   if(tab==='materials')loadMaterials();
   if(tab==='labour')loadLabour();
   if(tab==='workers')loadWorkers();
+  if(tab==='documents')loadDocuments();
+  if(tab==='client')loadClientPortal();
 }
 
 // ── BUILD VIEWS ──
@@ -783,6 +787,71 @@ function buildViews(){
       <div style="font-size:15px;font-weight:600;margin-bottom:8px;">${h?'टीम प्रबंधन':'Team Management'}</div>
       <div style="font-size:13px;color:var(--text2);margin-bottom:20px;">${h?'टीम सदस्य जोड़ें और उनकी प्रोजेक्ट एक्सेस सेट करें':'Add members and set their project access'}</div>
       <button class="btn btn-primary" onclick="openTeamMgmt()">${h?'टीम मैनेज करें':'Manage Team'}</button>
+    </div>
+  `;
+
+  // DOCUMENTS
+  document.getElementById('view-documents').innerHTML=`
+    <div class="card">
+      <div class="card-title"><span class="cdot"></span>${h?'दस्तावेज़ अपलोड करें':'Upload Document'}</div>
+      <div class="field"><label>${h?'दस्तावेज़ का नाम':'Document Name'}</label><input type="text" id="doc-name" placeholder="${h?'जैसे: नींव का नक्शा':'e.g. Foundation Drawing'}"/></div>
+      <div class="field"><label>${h?'प्रकार':'Category'}</label>
+        <select id="doc-cat">
+          <option>Drawing</option><option>Contract</option><option>Permit</option>
+          <option>BOQ</option><option>Invoice</option><option>Photo</option><option>Other</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>${h?'फ़ाइल चुनें':'Select File'}</label>
+        <div class="upload-area" onclick="document.getElementById('doc-file').click()">
+          <div style="font-size:24px;margin-bottom:4px;">📎</div>
+          <div style="font-size:12px;color:var(--text2);">${h?'PDF, Image, या कोई भी फ़ाइल':'PDF, Image or any file'}</div>
+          <input type="file" id="doc-file" accept="*/*" onchange="previewDoc(this)" style="display:none;"/>
+        </div>
+        <div id="doc-preview" style="margin-top:10px;font-size:13px;color:var(--green);"></div>
+      </div>
+      <button class="btn btn-primary btn-full" id="doc-btn" onclick="uploadDocument()">${h?'दस्तावेज़ सेव करें ✓':'Save Document ✓'}</button>
+    </div>
+    <div class="sec-label">${h?'सभी दस्तावेज़':'All Documents'}</div>
+    <div id="doc-list"><div class="loading">${h?'लोड हो रहा है...':'Loading...'}</div></div>
+  `;
+
+  // CLIENT PORTAL
+  document.getElementById('view-client').innerHTML=`
+    <div class="card">
+      <div class="card-title"><span class="cdot"></span>${h?'क्लाइंट पोर्टल':'Client Portal'}</div>
+      <div style="font-size:13px;color:var(--text2);margin-bottom:16px;">${h?'अपने क्लाइंट के साथ एक लिंक शेयर करें। वो बिना लॉगिन के प्रोजेक्ट की प्रगति देख सकते हैं।':'Share a link with your client. They can view project progress without logging in.'}</div>
+      <div style="background:var(--surface2);border:1px solid var(--amber-border);border-radius:10px;padding:14px;margin-bottom:14px;">
+        <div style="font-size:11px;color:var(--text3);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.07em;">Client Link</div>
+        <div style="font-size:13px;color:var(--amber);word-break:break-all;" id="client-link-url">Generating...</div>
+      </div>
+      <div style="display:flex;gap:8px;margin-bottom:20px;">
+        <button class="btn btn-primary" style="flex:1;" onclick="copyClientLink()">${h?'लिंक कॉपी करें':'Copy Link'}</button>
+        <button class="btn btn-secondary" style="flex:1;" onclick="openClientLink()">${h?'प्रीव्यू करें':'Preview'}</button>
+      </div>
+      <div class="sec-label">${h?'क्लाइंट को क्या दिखेगा':'What client sees'}</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        ${[
+          {icon:'📸',label:h?'सभी साइट फोटो':'All site photos'},
+          {icon:'🏁',label:h?'मील पत्थर की प्रगति':'Milestone progress'},
+          {icon:'📋',label:h?'दैनिक काम की रिपोर्ट':'Daily work reports'},
+          {icon:'⚠️',label:h?'खुली समस्याओं की स्थिति':'Open issues status'},
+          {icon:'📊',label:h?'प्रोजेक्ट पूर्णता प्रतिशत':'Project completion %'},
+        ].map(i=>`<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--surface2);border-radius:8px;border:1px solid var(--border);"><span style="font-size:18px;">${i.icon}</span><span style="font-size:13px;">${i.label}</span><span style="margin-left:auto;color:var(--green);font-size:12px;font-weight:600;">✓ Visible</span></div>`).join('')}
+        <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--surface2);border-radius:8px;border:1px solid var(--border);"><span style="font-size:18px;">💰</span><span style="font-size:13px;">${h?'वित्त विवरण':'Finance details'}</span><span style="margin-left:auto;color:var(--red);font-size:12px;font-weight:600;">✗ Hidden</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="cdot"></span>${h?'AI सारांश':'AI Summary'}</div>
+      <div style="font-size:13px;color:var(--text2);margin-bottom:14px;">${h?'अपने प्रोजेक्ट का AI-जनित सारांश बनाएं।':'Generate an AI summary of your project status.'}</div>
+      <button class="btn btn-primary btn-full" id="ai-summary-btn" onclick="generateAISummary()">${h?'AI सारांश बनाएं 🤖':'Generate AI Summary 🤖'}</button>
+      <div id="ai-summary-output" style="margin-top:14px;display:none;">
+        <div style="background:var(--surface2);border:1px solid var(--amber-border);border-radius:10px;padding:14px;">
+          <div style="font-size:11px;color:var(--amber);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:8px;">AI Summary</div>
+          <div id="ai-summary-text" style="font-size:13px;color:var(--text);line-height:1.7;"></div>
+        </div>
+        <button class="btn btn-secondary btn-full" onclick="copyAISummary()" style="margin-top:8px;">${h?'कॉपी करें':'Copy Summary'}</button>
+      </div>
     </div>
   `;
 }
@@ -1053,18 +1122,56 @@ async function loadFinance(){
     budgetLeft.textContent=bl!==null?'₹'+fmtNum(Math.max(0,bl)):'—';
     budgetLeft.style.color=bl<0?'var(--red)':'var(--green)';
   }
-  // Budget by category chart
+  // Beautiful finance chart
   const finChart=document.getElementById('fin-chart');
   if(finChart&&data&&data.length>0){
     const cats={};
+    const catColors={'Material':'#F5A623','Labour Payment':'#2DB87A','Vendor':'#4A9EE0','Equipment':'#9B7AE0','Transport':'#E05A4A','Other':'#9B9890'};
     data.forEach(f=>{cats[f.type]=(cats[f.type]||0)+f.amount;});
-    const maxVal=Math.max(...Object.values(cats));
-    finChart.innerHTML=`<div class="budget-bars">${Object.entries(cats).map(([cat,val])=>`
-      <div class="budget-row">
-        <div class="budget-row-label">${cat}</div>
-        <div class="budget-row-bar"><div class="budget-row-fill" style="width:${Math.round((val/maxVal)*100)}%;background:var(--amber);"></div></div>
-        <div class="budget-row-val">₹${fmtNum(val)}</div>
-      </div>`).join('')}</div>`;
+    const entries=Object.entries(cats).sort((a,b)=>b[1]-a[1]);
+    const totalCat=entries.reduce((s,[,v])=>s+v,0);
+
+    // SVG donut chart
+    let offset=0;const r=60;const cx=80;const cy=80;const stroke=28;
+    const circumference=2*Math.PI*r;
+    const segments=entries.map(([cat,val])=>{
+      const pct=val/totalCat;
+      const dash=pct*circumference;
+      const gap=circumference-dash;
+      const color=catColors[cat]||'#666';
+      const seg=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${color}" stroke-width="${stroke}" stroke-dasharray="${dash.toFixed(1)} ${gap.toFixed(1)}" stroke-dashoffset="${-offset*circumference/360}" transform="rotate(-90 ${cx} ${cy})" opacity="0.9"/>`;
+      offset+=pct*360;
+      return seg;
+    });
+
+    finChart.innerHTML=`
+      <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
+        <svg width="160" height="160" viewBox="0 0 160 160" style="flex-shrink:0;">
+          <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="var(--border)" stroke-width="${stroke}"/>
+          ${segments.join('')}
+          <text x="${cx}" y="${cy-8}" text-anchor="middle" fill="var(--text)" font-size="11" font-family="DM Sans,sans-serif" font-weight="600">Total</text>
+          <text x="${cx}" y="${cy+10}" text-anchor="middle" fill="var(--amber)" font-size="13" font-family="DM Sans,sans-serif" font-weight="700">₹${fmtNum(totalCat)}</text>
+        </svg>
+        <div style="flex:1;min-width:140px;">
+          ${entries.map(([cat,val])=>{
+            const pct=Math.round((val/totalCat)*100);
+            const color=catColors[cat]||'#666';
+            return `<div style="margin-bottom:10px;">
+              <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+                <div style="display:flex;align-items:center;gap:6px;">
+                  <div style="width:10px;height:10px;border-radius:50%;background:${color};flex-shrink:0;"></div>
+                  <span style="font-size:12px;color:var(--text2);">${cat}</span>
+                </div>
+                <span style="font-size:12px;font-weight:600;color:var(--text);">${pct}%</span>
+              </div>
+              <div style="height:4px;background:var(--border);border-radius:2px;">
+                <div style="height:4px;width:${pct}%;background:${color};border-radius:2px;"></div>
+              </div>
+              <div style="font-size:11px;color:var(--text3);margin-top:2px;">₹${fmtNum(val)}</div>
+            </div>`;
+          }).join('')}
+        </div>
+      </div>`;
   } else if(finChart){finChart.innerHTML=`<div class="empty" style="padding:16px 0;"><div class="empty-text">${h?'कोई डेटा नहीं।':'No data yet.'}</div></div>`;}
   const list=document.getElementById('fin-list');
   if(!data||data.length===0){list.innerHTML=`<div class="empty" style="padding:24px 0;"><div class="empty-icon">💸</div><div class="empty-text">${h?'कोई एंट्री नहीं।':'No entries yet.'}</div></div>`;return;}
@@ -1299,6 +1406,200 @@ async function loadTeam(){
     const chips=perms.map(p=>`<span style="font-size:10px;background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border);padding:2px 7px;border-radius:100px;white-space:nowrap;">${TAB_EN[p]||p}</span>`).join('');
     return `<div class="person-card"><div style="flex:1;min-width:0;"><div class="pc-name">${u.name}</div><div class="pc-pass">${h?'पासवर्ड':'Pass'}: ${u.password}</div>${isC?`<span class="role-badge" style="margin-top:6px;display:inline-block;">${h?'पूर्ण एक्सेस':'Full Access'}</span>`:''}${perms.length>0?`<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:8px;">${chips}</div>`:''}</div>${!isC?`<button class="btn btn-danger btn-sm" onclick="removeMember(${u.id},'${u.name}')">${h?'हटाएं':'Remove'}</button>`:''}</div>`;
   }).join('');
+}
+
+// ── DOCUMENTS ──
+let docFile=null;
+function previewDoc(input){
+  docFile=input.files[0];
+  if(docFile){
+    document.getElementById('doc-preview').textContent='✓ '+docFile.name+' ('+Math.round(docFile.size/1024)+'KB)';
+  }
+}
+
+async function uploadDocument(){
+  const btn=document.getElementById('doc-btn');
+  const name=document.getElementById('doc-name').value.trim();
+  if(!name){showToast('Enter document name',true);return;}
+  if(!docFile){showToast('Select a file',true);return;}
+  btn.textContent='Saving...';btn.disabled=true;
+
+  // Convert to base64
+  const b64=await new Promise(res=>{
+    const reader=new FileReader();
+    reader.onload=e=>res(e.target.result);
+    reader.readAsDataURL(docFile);
+  });
+
+  const {error}=await sb.from('documents').insert({
+    project:CP.name,
+    name,
+    category:document.getElementById('doc-cat').value,
+    file_data:b64,
+    file_name:docFile.name,
+    file_size:docFile.size,
+    file_type:docFile.type,
+    uploaded_by:CU.name
+  });
+
+  btn.textContent='Save Document ✓';btn.disabled=false;
+  if(error){showToast('Error: '+error.message,true);return;}
+  document.getElementById('doc-name').value='';
+  document.getElementById('doc-preview').textContent='';
+  document.getElementById('doc-file').value='';
+  docFile=null;
+  showToast('Document saved ✓');
+  loadDocuments();
+}
+
+async function loadDocuments(){
+  const h=hi();
+  const {data}=await sb.from('documents').select('*').eq('project',CP.name).order('created_at',{ascending:false});
+  const list=document.getElementById('doc-list');
+  if(!data||data.length===0){
+    list.innerHTML=`<div class="empty"><div class="empty-icon">📁</div><div class="empty-text">${h?'कोई दस्तावेज़ नहीं।':'No documents yet.'}</div></div>`;return;
+  }
+  const catColors={Drawing:'var(--blue)',Contract:'var(--amber)',Permit:'var(--green)',BOQ:'var(--purple)',Invoice:'var(--red)',Photo:'var(--green)',Other:'var(--text3)'};
+  list.innerHTML=data.map(d=>`
+    <div class="list-item" style="cursor:pointer;" onclick="openDocument('${d.id}')">
+      <div class="li-header">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:36px;height:36px;border-radius:8px;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">
+            ${d.file_type&&d.file_type.includes('pdf')?'📄':d.file_type&&d.file_type.includes('image')?'🖼️':'📎'}
+          </div>
+          <div>
+            <div class="li-title">${d.name}</div>
+            <div class="li-sub">${d.file_name} · ${Math.round(d.file_size/1024)}KB · ${d.uploaded_by}</div>
+          </div>
+        </div>
+        <span class="tag" style="background:rgba(0,0,0,0.2);color:${catColors[d.category]||'var(--text3)'};border:1px solid ${catColors[d.category]||'var(--border)'};">${d.category}</span>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:8px;">
+        <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation();downloadDoc(${JSON.stringify(d).replace(/"/g,'&quot;')})">⬇ Download</button>
+        <button class="btn btn-danger btn-sm" onclick="event.stopPropagation();deleteDoc(${d.id})">Delete</button>
+      </div>
+    </div>`).join('');
+}
+
+async function deleteDoc(id){
+  if(!confirm('Delete this document?'))return;
+  await sb.from('documents').delete().eq('id',id);
+  showToast('Document deleted');loadDocuments();
+}
+
+function downloadDoc(doc){
+  const a=document.createElement('a');
+  a.href=doc.file_data;
+  a.download=doc.file_name;
+  a.click();
+}
+
+// ── CLIENT PORTAL ──
+function getClientLink(){
+  const token=btoa(CP.name+'|'+CU.id);
+  return window.location.origin+'/client.html?t='+token+'&p='+encodeURIComponent(CP.name);
+}
+
+function loadClientPortal(){
+  const link=getClientLink();
+  const el=document.getElementById('client-link-url');
+  if(el)el.textContent=link;
+}
+
+function copyClientLink(){
+  const link=getClientLink();
+  navigator.clipboard.writeText(link).then(()=>showToast('Link copied ✓')).catch(()=>{
+    const ta=document.createElement('textarea');ta.value=link;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);showToast('Link copied ✓');
+  });
+}
+
+function openClientLink(){window.open(getClientLink(),'_blank');}
+
+// ── AI SUMMARY ──
+async function generateAISummary(){
+  const btn=document.getElementById('ai-summary-btn');
+  const output=document.getElementById('ai-summary-output');
+  const textEl=document.getElementById('ai-summary-text');
+  const h=hi();
+  btn.textContent=h?'बन रहा है...':'Generating...';btn.disabled=true;
+
+  // Fetch project data
+  const [rr,fr,ir,mr,ar]=await Promise.all([
+    sb.from('reports').select('*').eq('project',CP.name).order('created_at',{ascending:false}).limit(5),
+    sb.from('finance').select('*').eq('project',CP.name),
+    sb.from('issues').select('*').eq('project',CP.name).eq('status','open'),
+    sb.from('milestones').select('*').eq('project',CP.name),
+    sb.from('attendance').select('worker_name,date').eq('project',CP.name).order('date',{ascending:false}).limit(50)
+  ]);
+
+  const reports=rr.data||[];
+  const finance=fr.data||[];
+  const issues=ir.data||[];
+  const milestones=mr.data||[];
+  const attendance=aa=ar.data||[];
+
+  const totalSpent=finance.reduce((s,f)=>s+f.amount,0);
+  const doneMilestones=milestones.filter(m=>m.status==='done').length;
+  const latestReport=reports[0];
+  const uniqueWorkers=[...new Set(attendance.map(a=>a.worker_name))];
+
+  const context=`
+Project: ${CP.name}
+Location: ${CP.location||'Not specified'}
+Client: ${CP.client_name||'Not specified'}
+Budget: ₹${CP.total_budget?fmtNum(CP.total_budget):'Not set'}
+Total Spent: ₹${fmtNum(totalSpent)}
+Progress: ${CP.progress||0}%
+Milestones: ${doneMilestones}/${milestones.length} complete
+Open Issues: ${issues.length}
+Recent Workers: ${uniqueWorkers.slice(0,5).join(', ')||'None recorded'}
+Latest Report Date: ${latestReport?fmtDate(latestReport.date):'No reports yet'}
+Latest Work Done: ${latestReport?latestReport.work_done:'No reports yet'}
+Recent Issues: ${issues.slice(0,3).map(i=>i.title).join(', ')||'None'}
+  `.trim();
+
+  try {
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'x-api-key':'YOUR_CLAUDE_API_KEY',
+        'anthropic-version':'2023-06-01'
+      },
+      body:JSON.stringify({
+        model:'claude-haiku-4-5-20251001',
+        max_tokens:500,
+        system:`You are a construction project assistant. Generate a clear, professional project status summary in ${h?'Hindi (Devanagari script)':'English'}. Be concise, factual, and helpful. Use bullet points. Include: current status, key achievements, concerns, and next steps.`,
+        messages:[{role:'user',content:`Generate a project status summary for:\n${context}`}]
+      })
+    });
+    const data=await res.json();
+    if(data.content&&data.content[0]){
+      textEl.textContent=data.content[0].text;
+      output.style.display='block';
+    } else {
+      // Fallback — generate without AI
+      generateFallbackSummary(context,h,textEl,output);
+    }
+  } catch(e){
+    generateFallbackSummary(context,h,textEl,output);
+  }
+
+  btn.textContent=h?'AI सारांश बनाएं 🤖':'Generate AI Summary 🤖';btn.disabled=false;
+}
+
+function generateFallbackSummary(ctx,h,el,output){
+  const lines=ctx.split('\n').filter(l=>l.trim());
+  const summary=h?
+    `📊 प्रोजेक्ट स्टेटस रिपोर्ट\n\n${lines.map(l=>'• '+l).join('\n')}\n\nNote: AI API key नहीं मिला। ऊपर अपनी Claude API key डालें।`:
+    `📊 Project Status Report\n\n${lines.map(l=>'• '+l).join('\n')}\n\nNote: Add your Claude API key to enable AI summaries.`;
+  el.textContent=summary;
+  output.style.display='block';
+}
+
+function copyAISummary(){
+  const text=document.getElementById('ai-summary-text').textContent;
+  navigator.clipboard.writeText(text).then(()=>showToast('Summary copied ✓')).catch(()=>showToast('Copy failed',true));
 }
 
 // ── GLOBAL TEAM MANAGEMENT ──
