@@ -614,6 +614,14 @@ function buildViews(){
     </div>
     <div class="card"><div class="card-title"><span class="cdot"></span>${h?'ताज़ा रिपोर्ट':'Latest Report'}</div><div id="d-rep"><div class="loading">${h?'लोड हो रहा है...':'Loading...'}</div></div></div>
     <div class="card"><div class="card-title"><span class="cdot"></span>${h?'खुली समस्याएं':'Open Issues'}</div><div id="d-issues"><div class="loading">${h?'लोड हो रहा है...':'Loading...'}</div></div></div>
+    <div class="card" id="ai-summary-card">
+      <div class="card-title"><span class="cdot"></span>${h?'AI प्रोजेक्ट सारांश':'AI Project Summary'}</div>
+      <div id="ai-summary-output" style="display:none;margin-bottom:12px;">
+        <div id="ai-summary-text" style="font-size:13px;color:var(--text);line-height:1.8;"></div>
+        <button class="btn btn-secondary btn-sm btn-full" onclick="copyAISummary()" style="margin-top:10px;">${h?'कॉपी करें':'Copy'}</button>
+      </div>
+      <button class="btn btn-primary btn-full" id="ai-summary-btn" onclick="generateAISummary()">${h?'AI सारांश बनाएं 🤖':'Generate AI Summary 🤖'}</button>
+    </div>
   `;
 
   // MILESTONES
@@ -865,18 +873,6 @@ function buildViews(){
           {icon:'📊',label:h?'प्रोजेक्ट पूर्णता प्रतिशत':'Project completion %'},
         ].map(i=>`<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--surface2);border-radius:8px;border:1px solid var(--border);"><span style="font-size:18px;">${i.icon}</span><span style="font-size:13px;">${i.label}</span><span style="margin-left:auto;color:var(--green);font-size:12px;font-weight:600;">✓ Visible</span></div>`).join('')}
         <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--surface2);border-radius:8px;border:1px solid var(--border);"><span style="font-size:18px;">💰</span><span style="font-size:13px;">${h?'वित्त विवरण':'Finance details'}</span><span style="margin-left:auto;color:var(--red);font-size:12px;font-weight:600;">✗ Hidden</span></div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-title"><span class="cdot"></span>${h?'AI सारांश':'AI Summary'}</div>
-      <div style="font-size:13px;color:var(--text2);margin-bottom:14px;">${h?'अपने प्रोजेक्ट का AI-जनित सारांश बनाएं।':'Generate an AI summary of your project status.'}</div>
-      <button class="btn btn-primary btn-full" id="ai-summary-btn" onclick="generateAISummary()">${h?'AI सारांश बनाएं 🤖':'Generate AI Summary 🤖'}</button>
-      <div id="ai-summary-output" style="margin-top:14px;display:none;">
-        <div style="background:var(--surface2);border:1px solid var(--amber-border);border-radius:10px;padding:14px;">
-          <div style="font-size:11px;color:var(--amber);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:8px;">AI Summary</div>
-          <div id="ai-summary-text" style="font-size:13px;color:var(--text);line-height:1.7;"></div>
-        </div>
-        <button class="btn btn-secondary btn-full" onclick="copyAISummary()" style="margin-top:8px;">${h?'कॉपी करें':'Copy Summary'}</button>
       </div>
     </div>
   `;
@@ -1579,7 +1575,6 @@ async function generateAISummary(){
   const h=hi();
   btn.textContent=h?'बन रहा है...':'Generating...';btn.disabled=true;
 
-  // Fetch project data
   const [rr,fr,ir,mr,ar]=await Promise.all([
     sb.from('reports').select('*').eq('project',CP.name).order('created_at',{ascending:false}).limit(5),
     sb.from('finance').select('*').eq('project',CP.name),
@@ -1592,64 +1587,71 @@ async function generateAISummary(){
   const finance=fr.data||[];
   const issues=ir.data||[];
   const milestones=mr.data||[];
-  const attendance=aa=ar.data||[];
-
+  const attendance=ar.data||[];
   const totalSpent=finance.reduce((s,f)=>s+f.amount,0);
   const doneMilestones=milestones.filter(m=>m.status==='done').length;
-  const latestReport=reports[0];
+  const latestReport=reports[0]||null;
   const uniqueWorkers=[...new Set(attendance.map(a=>a.worker_name))];
 
-  const context=`
-Project: ${CP.name}
-Location: ${CP.location||'Not specified'}
-Client: ${CP.client_name||'Not specified'}
-Budget: ₹${CP.total_budget?fmtNum(CP.total_budget):'Not set'}
-Total Spent: ₹${fmtNum(totalSpent)}
-Progress: ${CP.progress||0}%
-Milestones: ${doneMilestones}/${milestones.length} complete
-Open Issues: ${issues.length}
-Recent Workers: ${uniqueWorkers.slice(0,5).join(', ')||'None recorded'}
-Latest Report Date: ${latestReport?fmtDate(latestReport.date):'No reports yet'}
-Latest Work Done: ${latestReport?latestReport.work_done:'No reports yet'}
-Recent Issues: ${issues.slice(0,3).map(i=>i.title).join(', ')||'None'}
-  `.trim();
+  const summaryData={project:CP,totalSpent,doneMilestones,milestones,issues,latestReport,uniqueWorkers};
 
-  try {
-    const res=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'x-api-key':'YOUR_CLAUDE_API_KEY',
-        'anthropic-version':'2023-06-01'
-      },
-      body:JSON.stringify({
-        model:'claude-haiku-4-5-20251001',
-        max_tokens:500,
-        system:`You are a construction project assistant. Generate a clear, professional project status summary in ${h?'Hindi (Devanagari script)':'English'}. Be concise, factual, and helpful. Use bullet points. Include: current status, key achievements, concerns, and next steps.`,
-        messages:[{role:'user',content:`Generate a project status summary for:\n${context}`}]
-      })
-    });
-    const data=await res.json();
-    if(data.content&&data.content[0]){
-      textEl.textContent=data.content[0].text;
-      output.style.display='block';
-    } else {
-      // Fallback — generate without AI
-      generateFallbackSummary(context,h,textEl,output);
-    }
-  } catch(e){
-    generateFallbackSummary(context,h,textEl,output);
-  }
+  // Always use beautiful fallback (no API key needed)
+  generateFallbackSummary(summaryData,h,textEl,output);
 
   btn.textContent=h?'AI सारांश बनाएं 🤖':'Generate AI Summary 🤖';btn.disabled=false;
 }
 
-function generateFallbackSummary(ctx,h,el,output){
-  const lines=ctx.split('\n').filter(l=>l.trim());
-  const summary=h?
-    `📊 प्रोजेक्ट स्टेटस रिपोर्ट\n\n${lines.map(l=>'• '+l).join('\n')}\n\nNote: AI API key नहीं मिला। ऊपर अपनी Claude API key डालें।`:
-    `📊 Project Status Report\n\n${lines.map(l=>'• '+l).join('\n')}\n\nNote: Add your Claude API key to enable AI summaries.`;
-  el.textContent=summary;
+function generateFallbackSummary(data,h,el,output){
+  const {project,totalSpent,doneMilestones,milestones,issues,latestReport,uniqueWorkers}=data;
+  const budget=project.total_budget||0;
+  const budgetUsedPct=budget>0?Math.round((totalSpent/budget)*100):0;
+  const status=budgetUsedPct>90?'⚠️ Budget Critical':issues.length>3?'⚠️ Multiple Issues Open':doneMilestones===milestones.length&&milestones.length>0?'✅ On Track':'🔄 In Progress';
+
+  const lines=[
+    `<div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--border);">
+      <div style="font-size:24px;">📊</div>
+      <div>
+        <div style="font-size:14px;font-weight:700;">${project.name}</div>
+        <div style="font-size:12px;color:var(--text2);">${status}</div>
+      </div>
+    </div>`,
+
+    `<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
+      <div style="background:var(--surface2);border-radius:8px;padding:10px;">
+        <div style="font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:3px;">Progress</div>
+        <div style="font-size:18px;font-weight:700;color:var(--amber);">${project.progress||0}%</div>
+        <div style="height:3px;background:var(--border);border-radius:2px;margin-top:5px;"><div style="height:3px;width:${project.progress||0}%;background:var(--amber);border-radius:2px;"></div></div>
+      </div>
+      <div style="background:var(--surface2);border-radius:8px;padding:10px;">
+        <div style="font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:3px;">Budget Used</div>
+        <div style="font-size:18px;font-weight:700;color:${budgetUsedPct>90?'var(--red)':'var(--green)'};">${budget>0?budgetUsedPct+'%':'—'}</div>
+        ${budget>0?`<div style="font-size:11px;color:var(--text3);margin-top:3px;">₹${fmtNum(totalSpent)} of ₹${fmtNum(budget)}</div>`:'<div style="font-size:11px;color:var(--text3);margin-top:3px;">No budget set</div>'}
+      </div>
+    </div>`,
+
+    `<div style="margin-bottom:12px;">
+      <div style="font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px;">Status</div>
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        <div style="display:flex;justify-content:space-between;font-size:13px;"><span style="color:var(--text2);">Milestones complete</span><span style="font-weight:600;">${doneMilestones}/${milestones.length}</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;"><span style="color:var(--text2);">Open issues</span><span style="font-weight:600;color:${issues.length>0?'var(--red)':'var(--green)'};">${issues.length}</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;"><span style="color:var(--text2);">Latest update</span><span style="font-weight:600;">${latestReport?fmtDate(latestReport.date):'No reports'}</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;"><span style="color:var(--text2);">Total spent</span><span style="font-weight:600;color:var(--red);">₹${fmtNum(totalSpent)}</span></div>
+      </div>
+    </div>`,
+
+    latestReport?`<div style="background:var(--surface2);border-radius:8px;padding:12px;">
+      <div style="font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;">Latest Work</div>
+      <div style="font-size:13px;color:var(--text);line-height:1.55;">${latestReport.work_done}</div>
+      <div style="font-size:11px;color:var(--text3);margin-top:6px;">👷 ${latestReport.workers} workers · ${latestReport.supervisor}</div>
+    </div>`:'',
+
+    issues.length>0?`<div style="margin-top:12px;">
+      <div style="font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;">Open Issues</div>
+      ${issues.slice(0,3).map(i=>`<div style="font-size:12px;color:var(--red);padding:5px 0;border-bottom:1px solid var(--border);">⚠️ ${i.title}</div>`).join('')}
+    </div>`:''
+  ];
+
+  el.innerHTML=lines.filter(Boolean).join('');
   output.style.display='block';
 }
 
