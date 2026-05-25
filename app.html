@@ -409,6 +409,9 @@ const ALL_TABS=['dashboard','milestones','issues','attendance','report','reports
 const TAB_EN={dashboard:'Dashboard',milestones:'Milestones',issues:'Issues',attendance:'Attendance',report:'Daily Report',reports:'Reports',photos:'Photos',finance:'Finance',materials:'Materials',labour:'Labour',workers:'Workers',team:'Team'};
 const TAB_HI={dashboard:'डैशबोर्ड',milestones:'मील पत्थर',issues:'समस्याएं',attendance:'हाजिरी',report:'दैनिक रिपोर्ट',reports:'रिपोर्ट्स',photos:'फोटो',finance:'वित्त',materials:'सामग्री',labour:'मजदूरी',workers:'मजदूर',team:'टीम'};
 
+// Team tab is contractor-only and opens the global team modal
+const CONTRACTOR_TABS=['dashboard','milestones','issues','attendance','report','reports','photos','finance','materials','labour','workers','team'];
+
 let CU=null,CP=null,photoFiles=[],attState={};
 let LANG=localStorage.getItem('bw_lang')||'en';
 const hi=()=>LANG==='hi';
@@ -416,8 +419,10 @@ const tl=(k)=>hi()?TAB_HI[k]||TAB_EN[k]:TAB_EN[k];
 
 function getUserTabs(){
   if(!CU)return[];
-  if(CU.role==='contractor')return ALL_TABS;
-  if(CU.permissions&&Array.isArray(CU.permissions)&&CU.permissions.length>0)return CU.permissions.filter(p=>ALL_TABS.includes(p));
+  if(CU.role==='contractor')return CONTRACTOR_TABS;
+  // Team members — filter to only their permissions, exclude team tab
+  if(CU.permissions&&Array.isArray(CU.permissions)&&CU.permissions.length>0)
+    return CU.permissions.filter(p=>ALL_TABS.includes(p)&&p!=='team');
   if(CU.role==='supervisor')return['attendance','report','reports','issues'];
   if(CU.role==='store')return['materials'];
   if(CU.role==='accountant')return['finance','labour'];
@@ -537,7 +542,13 @@ function buildTabs(){
 function switchTab(tab){
   const tabs=getUserTabs();
   if(!tabs.includes(tab))return;
+  // Team tab opens global modal instead of a view
+  if(tab==='team'){
+    openTeamMgmt();
+    return;
+  }
   tabs.forEach(tk=>{
+    if(tk==='team')return;
     document.getElementById('view-'+tk).style.display=tk===tab?'block':'none';
     const el=document.getElementById('tab-'+tk);if(el)el.classList.toggle('active',tk===tab);
   });
@@ -551,7 +562,6 @@ function switchTab(tab){
   if(tab==='materials')loadMaterials();
   if(tab==='labour')loadLabour();
   if(tab==='workers')loadWorkers();
-  if(tab==='team')loadTeam();
 }
 
 // ── BUILD VIEWS ──
@@ -767,36 +777,13 @@ function buildViews(){
   `;
 
   // TEAM
-  const permOpts=[
-    {key:'dashboard',label:h?'डैशबोर्ड':'Dashboard'},
-    {key:'milestones',label:h?'मील पत्थर':'Milestones'},
-    {key:'issues',label:h?'समस्याएं':'Issues'},
-    {key:'attendance',label:h?'हाजिरी':'Attendance'},
-    {key:'report',label:h?'रिपोर्ट भेजें':'Submit Report'},
-    {key:'reports',label:h?'रिपोर्ट देखें':'View Reports'},
-    {key:'photos',label:h?'फोटो':'Photos'},
-    {key:'finance',label:h?'वित्त':'Finance'},
-    {key:'materials',label:h?'सामग्री':'Materials'},
-    {key:'labour',label:h?'मजदूरी':'Labour'},
-    {key:'workers',label:h?'मजदूर':'Workers'},
-  ];
   document.getElementById('view-team').innerHTML=`
-    <div class="card">
-      <div class="card-title"><span class="cdot"></span>${h?'सदस्य जोड़ें':'Add Team Member'}</div>
-      <div class="form-row">
-        <div class="field"><label>${h?'पूरा नाम':'Full Name'}</label><input type="text" id="tm-name" placeholder="e.g. Raju Kumar"/></div>
-        <div class="field"><label>${h?'पासवर्ड':'Password'}</label><input type="text" id="tm-pass" placeholder="e.g. raju2026"/></div>
-      </div>
-      <div class="field">
-        <label style="margin-bottom:10px;display:block;">${h?'क्या देख/कर सकते हैं?':'What can they access?'}</label>
-        <div class="perm-grid">
-          ${permOpts.map(p=>`<div class="perm-item" id="pi-${p.key}" onclick="togglePerm('${p.key}')"><div class="perm-box" id="pb-${p.key}"></div><span class="perm-label">${p.label}</span><input type="checkbox" style="display:none;" data-key="${p.key}" id="pc-${p.key}"/></div>`).join('')}
-        </div>
-      </div>
-      <button class="btn btn-primary btn-full" id="tm-btn" onclick="addTeamMember()" style="margin-top:14px;">${h?'सदस्य जोड़ें ✓':'Add Member ✓'}</button>
+    <div class="card" style="text-align:center;padding:32px;">
+      <div style="font-size:36px;margin-bottom:12px;">👥</div>
+      <div style="font-size:15px;font-weight:600;margin-bottom:8px;">${h?'टीम प्रबंधन':'Team Management'}</div>
+      <div style="font-size:13px;color:var(--text2);margin-bottom:20px;">${h?'टीम सदस्य जोड़ें और उनकी प्रोजेक्ट एक्सेस सेट करें':'Add members and set their project access'}</div>
+      <button class="btn btn-primary" onclick="openTeamMgmt()">${h?'टीम मैनेज करें':'Manage Team'}</button>
     </div>
-    <div class="sec-label">${h?'टीम सदस्य':'Team Members'}</div>
-    <div id="team-list"><div class="loading">${h?'लोड हो रहा है...':'Loading...'}</div></div>
   `;
 }
 
