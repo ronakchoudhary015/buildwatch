@@ -1553,8 +1553,7 @@ function downloadDoc(doc){
 
 // ── CLIENT PORTAL ──
 function getClientLink(){
-  const token=btoa(CP.name+'|'+CU.id);
-  return window.location.origin+'/client.html?t='+token+'&p='+encodeURIComponent(CP.name);
+  return window.location.origin+'/client.html?p='+encodeURIComponent(CP.name);
 }
 
 function loadClientPortal(){
