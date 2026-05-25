@@ -310,13 +310,51 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
         <div style="font-size:18px;font-weight:700;" id="proj-greeting">My Projects</div>
         <div style="font-size:12px;color:var(--text2);margin-top:2px;" id="proj-sub">Select a site to manage</div>
       </div>
+      <button id="team-mgmt-btn" onclick="openTeamMgmt()" style="display:none;background:var(--surface2);border:1px solid var(--border2);color:var(--text2);padding:8px 14px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;">👥 Team</button>
     </div>
     <div id="projects-list"><div class="loading">Loading...</div></div>
     <button class="new-project-btn" id="new-proj-btn" onclick="showModal('new-proj-modal')">+ New Project</button>
   </div>
 </div>
 
-<!-- ── NEW PROJECT MODAL ── -->
+<!-- ── TEAM MANAGEMENT MODAL ── -->
+<div class="modal-overlay" id="team-mgmt-modal">
+  <div class="modal-sheet" style="max-height:90vh;overflow-y:auto;">
+    <div class="modal-title">Team Management <span class="modal-close" onclick="hideModal('team-mgmt-modal')">✕</span></div>
+    <!-- Add member form -->
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-title"><span class="cdot"></span>Add Team Member</div>
+      <div class="form-row">
+        <div class="field"><label>Full Name</label><input type="text" id="gtm-name" placeholder="e.g. Raju Kumar"/></div>
+        <div class="field"><label>Password</label><input type="text" id="gtm-pass" placeholder="e.g. raju2026"/></div>
+      </div>
+      <div class="field">
+        <label style="margin-bottom:10px;display:block;">Project Access</label>
+        <div id="gtm-projects-list" style="display:flex;flex-direction:column;gap:8px;"></div>
+      </div>
+      <div class="field" style="margin-top:12px;">
+        <label style="margin-bottom:10px;display:block;">Feature Permissions</label>
+        <div class="perm-grid" id="gtm-perms">
+          <div class="perm-item" id="gpi-dashboard" onclick="toggleGPerm('dashboard')"><div class="perm-box" id="gpb-dashboard"></div><span class="perm-label">Dashboard</span><input type="checkbox" style="display:none;" data-key="dashboard" id="gpc-dashboard"/></div>
+          <div class="perm-item" id="gpi-milestones" onclick="toggleGPerm('milestones')"><div class="perm-box" id="gpb-milestones"></div><span class="perm-label">Milestones</span><input type="checkbox" style="display:none;" data-key="milestones" id="gpc-milestones"/></div>
+          <div class="perm-item" id="gpi-issues" onclick="toggleGPerm('issues')"><div class="perm-box" id="gpb-issues"></div><span class="perm-label">Issues</span><input type="checkbox" style="display:none;" data-key="issues" id="gpc-issues"/></div>
+          <div class="perm-item" id="gpi-attendance" onclick="toggleGPerm('attendance')"><div class="perm-box" id="gpb-attendance"></div><span class="perm-label">Attendance</span><input type="checkbox" style="display:none;" data-key="attendance" id="gpc-attendance"/></div>
+          <div class="perm-item" id="gpi-report" onclick="toggleGPerm('report')"><div class="perm-box" id="gpb-report"></div><span class="perm-label">Submit Report</span><input type="checkbox" style="display:none;" data-key="report" id="gpc-report"/></div>
+          <div class="perm-item" id="gpi-reports" onclick="toggleGPerm('reports')"><div class="perm-box" id="gpb-reports"></div><span class="perm-label">View Reports</span><input type="checkbox" style="display:none;" data-key="reports" id="gpc-reports"/></div>
+          <div class="perm-item" id="gpi-photos" onclick="toggleGPerm('photos')"><div class="perm-box" id="gpb-photos"></div><span class="perm-label">Photos</span><input type="checkbox" style="display:none;" data-key="photos" id="gpc-photos"/></div>
+          <div class="perm-item" id="gpi-finance" onclick="toggleGPerm('finance')"><div class="perm-box" id="gpb-finance"></div><span class="perm-label">Finance</span><input type="checkbox" style="display:none;" data-key="finance" id="gpc-finance"/></div>
+          <div class="perm-item" id="gpi-materials" onclick="toggleGPerm('materials')"><div class="perm-box" id="gpb-materials"></div><span class="perm-label">Materials</span><input type="checkbox" style="display:none;" data-key="materials" id="gpc-materials"/></div>
+          <div class="perm-item" id="gpi-labour" onclick="toggleGPerm('labour')"><div class="perm-box" id="gpb-labour"></div><span class="perm-label">Labour</span><input type="checkbox" style="display:none;" data-key="labour" id="gpc-labour"/></div>
+          <div class="perm-item" id="gpi-workers" onclick="toggleGPerm('workers')"><div class="perm-box" id="gpb-workers"></div><span class="perm-label">Workers</span><input type="checkbox" style="display:none;" data-key="workers" id="gpc-workers"/></div>
+        </div>
+      </div>
+      <button class="btn btn-primary btn-full" id="gtm-btn" onclick="addGlobalTeamMember()" style="margin-top:14px;">Add Member ✓</button>
+    </div>
+    <!-- Existing members -->
+    <div class="sec-label">Team Members</div>
+    <div id="gtm-list"><div class="loading">Loading...</div></div>
+  </div>
+</div>
 <div class="modal-overlay" id="new-proj-modal">
   <div class="modal-sheet">
     <div class="modal-title">Create New Project <span class="modal-close" onclick="hideModal('new-proj-modal')">✕</span></div>
@@ -418,16 +456,29 @@ async function showProjects(){
   document.getElementById('proj-sub').textContent=hi()?'साइट चुनें':'Select a site';
   document.getElementById('new-proj-btn').style.display=CU.role==='contractor'?'block':'none';
   document.getElementById('new-proj-btn').textContent=hi()?'+ नया प्रोजेक्ट':'+ New Project';
+  const tmBtn=document.getElementById('team-mgmt-btn');
+  if(tmBtn)tmBtn.style.display=CU.role==='contractor'?'block':'none';
   await loadProjects();
 }
 
 async function loadProjects(){
   const list=document.getElementById('projects-list');
   list.innerHTML=`<div class="loading">${hi()?'लोड हो रहा है...':'Loading...'}</div>`;
-  let q=sb.from('projects').select('*').eq('active',true).order('created_at',{ascending:false});
-  if(CU.role==='contractor')q=q.eq('contractor_id',CU.id.toString());
-  else q=q.eq('contractor_id',CU.added_by||'');
-  const {data}=await q;
+  let data,error;
+  if(CU.role==='contractor'){
+    // Contractor sees all their own projects
+    const r=await sb.from('projects').select('*').eq('active',true).eq('contractor_id',CU.id.toString()).order('created_at',{ascending:false});
+    data=r.data;error=r.error;
+  } else {
+    // Team member — sees only projects assigned to them via project_ids array
+    const projectIds=CU.project_ids&&Array.isArray(CU.project_ids)?CU.project_ids:[];
+    if(projectIds.length===0){
+      list.innerHTML=`<div class="empty"><div class="empty-icon">🏗️</div><div class="empty-text">${hi()?'कोई प्रोजेक्ट नहीं।\nठेकेदार से संपर्क करें।':'No projects assigned.\nContact your contractor.'}</div></div>`;
+      return;
+    }
+    const r=await sb.from('projects').select('*').eq('active',true).in('id',projectIds).order('created_at',{ascending:false});
+    data=r.data;error=r.error;
+  }
   if(!data||data.length===0){
     list.innerHTML=`<div class="empty"><div class="empty-icon">🏗️</div><div class="empty-text">${hi()?'कोई प्रोजेक्ट नहीं।':'No projects yet. Tap + to create one.'}</div></div>`;return;
   }
@@ -1261,6 +1312,133 @@ async function loadTeam(){
     const chips=perms.map(p=>`<span style="font-size:10px;background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border);padding:2px 7px;border-radius:100px;white-space:nowrap;">${TAB_EN[p]||p}</span>`).join('');
     return `<div class="person-card"><div style="flex:1;min-width:0;"><div class="pc-name">${u.name}</div><div class="pc-pass">${h?'पासवर्ड':'Pass'}: ${u.password}</div>${isC?`<span class="role-badge" style="margin-top:6px;display:inline-block;">${h?'पूर्ण एक्सेस':'Full Access'}</span>`:''}${perms.length>0?`<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:8px;">${chips}</div>`:''}</div>${!isC?`<button class="btn btn-danger btn-sm" onclick="removeMember(${u.id},'${u.name}')">${h?'हटाएं':'Remove'}</button>`:''}</div>`;
   }).join('');
+}
+
+// ── GLOBAL TEAM MANAGEMENT ──
+async function openTeamMgmt(){
+  showModal('team-mgmt-modal');
+  // Load contractor's projects as checkboxes
+  const {data:projects}=await sb.from('projects').select('id,name').eq('contractor_id',CU.id.toString()).eq('active',true);
+  const projList=document.getElementById('gtm-projects-list');
+  if(projects&&projects.length>0){
+    projList.innerHTML=projects.map(p=>`
+      <label style="display:flex;align-items:center;gap:10px;background:var(--surface2);border:1px solid var(--border2);border-radius:8px;padding:10px 12px;cursor:pointer;" id="gpl-${p.id}" onclick="toggleGProject(${p.id},'gpl-${p.id}')">
+        <div style="width:20px;height:20px;border-radius:5px;border:2px solid var(--border2);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;" id="gpb-proj-${p.id}"></div>
+        <span style="font-size:13px;font-weight:500;">${p.name}</span>
+        <input type="checkbox" style="display:none;" data-projid="${p.id}" id="gpc-proj-${p.id}"/>
+      </label>`).join('');
+  } else {
+    projList.innerHTML=`<div style="font-size:13px;color:var(--text3);">No projects yet.</div>`;
+  }
+  loadGlobalTeam();
+}
+
+function toggleGProject(id,lblId){
+  const box=document.getElementById('gpb-proj-'+id);
+  const chk=document.getElementById('gpc-proj-'+id);
+  const lbl=document.getElementById(lblId);
+  const isOn=chk.checked;
+  chk.checked=!isOn;
+  if(!isOn){
+    box.style.background='var(--amber)';box.style.borderColor='var(--amber)';
+    box.innerHTML='<span style="color:#0E0D0A;font-size:11px;font-weight:700;">✓</span>';
+    lbl.style.borderColor='var(--amber-border)';lbl.style.background='var(--amber-bg)';
+  } else {
+    box.style.background='transparent';box.style.borderColor='var(--border2)';
+    box.innerHTML='';lbl.style.borderColor='var(--border2)';lbl.style.background='var(--surface2)';
+  }
+}
+
+function toggleGPerm(key){
+  const item=document.getElementById('gpi-'+key);const box=document.getElementById('gpb-'+key);const chk=document.getElementById('gpc-'+key);
+  const isOn=chk.checked;chk.checked=!isOn;
+  if(!isOn){item.classList.add('on');box.innerHTML='<span style="color:#0E0D0A;font-size:11px;font-weight:700;">✓</span>';}
+  else{item.classList.remove('on');box.innerHTML='';}
+}
+
+async function addGlobalTeamMember(){
+  const btn=document.getElementById('gtm-btn');
+  const name=document.getElementById('gtm-name').value.trim();
+  const pass=document.getElementById('gtm-pass').value.trim();
+  if(!name||!pass){showToast('Fill name and password',true);return;}
+
+  // Collect project IDs
+  const projIds=[];
+  document.querySelectorAll('#gtm-projects-list input[type=checkbox]').forEach(inp=>{
+    if(inp.checked)projIds.push(parseInt(inp.dataset.projid));
+  });
+  if(projIds.length===0){showToast('Select at least one project',true);return;}
+
+  // Collect permissions
+  const perms=[];
+  document.querySelectorAll('#gtm-perms input[type=checkbox]').forEach(inp=>{
+    if(inp.checked)perms.push(inp.dataset.key);
+  });
+  if(perms.length===0){showToast('Select at least one permission',true);return;}
+
+  btn.textContent='Adding...';btn.disabled=true;
+  const {error}=await sb.from('users').insert({
+    name, role:'custom', password:pass,
+    permissions:perms, project_ids:projIds,
+    added_by:CU.name, project:CU.id.toString(), active:true
+  });
+  btn.textContent='Add Member ✓';btn.disabled=false;
+  if(error){showToast('Error: '+error.message,true);return;}
+
+  // Reset form
+  document.getElementById('gtm-name').value='';
+  document.getElementById('gtm-pass').value='';
+  document.querySelectorAll('#gtm-projects-list input[type=checkbox]').forEach(inp=>{
+    inp.checked=false;
+    const box=document.getElementById('gpb-proj-'+inp.dataset.projid);
+    const lbl=document.getElementById('gpl-'+inp.dataset.projid);
+    if(box){box.style.background='transparent';box.style.borderColor='var(--border2)';box.innerHTML='';}
+    if(lbl){lbl.style.borderColor='var(--border2)';lbl.style.background='var(--surface2)';}
+  });
+  document.querySelectorAll('#gtm-perms input[type=checkbox]').forEach(inp=>{
+    inp.checked=false;
+    const pi=document.getElementById('gpi-'+inp.dataset.key);
+    const pb=document.getElementById('gpb-'+inp.dataset.key);
+    if(pi)pi.classList.remove('on');if(pb)pb.innerHTML='';
+  });
+
+  showToast(name+' added to team ✓');
+  loadGlobalTeam();
+}
+
+async function loadGlobalTeam(){
+  const {data}=await sb.from('users').select('*').eq('project',CU.id.toString()).eq('active',true).order('created_at');
+  const list=document.getElementById('gtm-list');
+  if(!data||data.length===0){list.innerHTML='<div class="empty"><div class="empty-icon">👥</div><div class="empty-text">No team members yet.</div></div>';return;}
+
+  // Get all projects for name lookup
+  const {data:projects}=await sb.from('projects').select('id,name').eq('contractor_id',CU.id.toString());
+  const projMap={};
+  (projects||[]).forEach(p=>projMap[p.id]=p.name);
+
+  list.innerHTML=data.map(u=>{
+    const perms=u.permissions&&Array.isArray(u.permissions)?u.permissions:[];
+    const projIds=u.project_ids&&Array.isArray(u.project_ids)?u.project_ids:[];
+    const projChips=projIds.map(id=>`<span style="font-size:10px;background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-border);padding:2px 7px;border-radius:100px;white-space:nowrap;">${projMap[id]||'Project '+id}</span>`).join('');
+    const permChips=perms.map(p=>`<span style="font-size:10px;background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border);padding:2px 7px;border-radius:100px;white-space:nowrap;">${TAB_EN[p]||p}</span>`).join('');
+    return `<div class="person-card" style="flex-direction:column;align-items:flex-start;">
+      <div style="display:flex;justify-content:space-between;width:100%;align-items:flex-start;">
+        <div>
+          <div class="pc-name">${u.name}</div>
+          <div class="pc-pass">Password: ${u.password}</div>
+        </div>
+        <button class="btn btn-danger btn-sm" onclick="removeGlobalMember(${u.id},'${u.name}')">Remove</button>
+      </div>
+      ${projIds.length>0?`<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:8px;">${projChips}</div>`:''}
+      ${perms.length>0?`<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:6px;">${permChips}</div>`:''}
+    </div>`;
+  }).join('');
+}
+
+async function removeGlobalMember(id,name){
+  if(!confirm('Remove '+name+'?'))return;
+  await sb.from('users').update({active:false}).eq('id',id);
+  showToast(name+' removed');loadGlobalTeam();
 }
 
 // ── LANGUAGE ──
