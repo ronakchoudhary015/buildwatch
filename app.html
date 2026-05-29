@@ -29,7 +29,7 @@ html{-webkit-font-smoothing:antialiased;font-size:16px;}
 body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden;}
 
 /* LOGIN */
-#login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:16px;}
+#login-screen{min-height:100vh;display:none;align-items:center;justify-content:center;padding:16px;}
 .login-box{width:100%;max-width:360px;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:32px 24px;}
 .logo-wrap{display:flex;align-items:center;gap:10px;margin-bottom:24px;}
 .logo-icon{width:38px;height:38px;background:#111009;border-radius:9px;border:1px solid var(--amber-border);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
@@ -1959,9 +1959,60 @@ function showToast(msg,isErr=false){const t=document.getElementById('toast');t.t
 if('serviceWorker'in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').catch(()=>{}));}
 
 // ── INIT ──
-const _su=localStorage.getItem('bw_u');const _sp=localStorage.getItem('bw_cp');
-setLangBtns();
-if(_su){try{CU=JSON.parse(_su);if(_sp){CP=JSON.parse(_sp);openProject(CP);}else showProjects();}catch(e){}}
+function hideAllScreens(){
+  const login=document.getElementById('login-screen');
+  const projects=document.getElementById('projects-screen');
+  const app=document.getElementById('app');
+  if(login)login.style.display='none';
+  if(projects)projects.style.display='none';
+  if(app)app.style.display='none';
+}
+
+window.addEventListener('DOMContentLoaded', async()=>{
+  hideAllScreens();
+  setLangBtns();
+
+  const savedUser=localStorage.getItem('bw_u');
+  const savedProject=localStorage.getItem('bw_cp');
+
+  if(!savedUser){
+    const login=document.getElementById('login-screen');
+    login.style.display='flex';
+    return;
+  }
+
+  try{
+    CU=JSON.parse(savedUser);
+  }catch(e){
+    localStorage.removeItem('bw_u');
+    localStorage.removeItem('bw_cp');
+    document.getElementById('login-screen').style.display='flex';
+    return;
+  }
+
+  if(savedProject){
+    try{
+      CP=JSON.parse(savedProject);
+      // IMPORTANT: do not call openProject() on refresh because openProject assumes
+      // the projects screen is visible. Build the project screen directly instead.
+      document.getElementById('login-screen').style.display='none';
+      document.getElementById('projects-screen').style.display='none';
+      const app=document.getElementById('app');
+      app.style.display='flex';
+      app.style.flexDirection='column';
+      document.getElementById('nav-project').textContent=CP.name;
+      document.getElementById('nav-name').textContent=CU.name;
+      buildTabs();
+      buildViews();
+      switchTab(getUserTabs()[0]);
+      return;
+    }catch(e){
+      localStorage.removeItem('bw_cp');
+    }
+  }
+
+  showProjects();
+});
 </script>
 </body>
 </html>
