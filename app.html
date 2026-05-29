@@ -37,6 +37,36 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .logo-text{font-size:19px;font-weight:700;letter-spacing:-0.5px;}
 .logo-text span{color:var(--amber);}
 
+
+/* OWNER HQ DASHBOARD */
+.owner-hq{display:none;margin-bottom:16px;}
+.hq-hero{background:linear-gradient(135deg,rgba(245,166,35,0.13),rgba(45,184,122,0.05));border:1px solid var(--amber-border);border-radius:16px;padding:18px;margin-bottom:12px;}
+.hq-greet{font-size:12px;color:var(--text2);margin-bottom:4px;}
+.hq-title{font-size:22px;font-weight:800;letter-spacing:-0.8px;line-height:1.1;}
+.hq-sub{font-size:12px;color:var(--text2);margin-top:7px;line-height:1.5;}
+.hq-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:12px;}
+.hq-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:13px;}
+.hq-card.full{grid-column:1/-1;}
+.hq-label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px;}
+.hq-value{font-size:21px;font-weight:800;line-height:1;}
+.hq-note{font-size:10px;color:var(--text3);margin-top:4px;}
+.hq-green{color:var(--green)}.hq-amber{color:var(--amber)}.hq-red{color:var(--red)}.hq-blue{color:var(--blue)}
+.hq-section-title{font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.09em;margin:16px 0 8px;}
+.hq-project-row,.hq-alert-row{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:8px;}
+.hq-project-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px;}
+.hq-project-name{font-size:13px;font-weight:700;}
+.hq-project-meta{font-size:11px;color:var(--text3);margin-top:2px;}
+.hq-health{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;border-radius:999px;padding:4px 8px;}
+.hq-health.ok{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border);}
+.hq-health.warn{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border);}
+.hq-health.bad{background:var(--red-bg);color:var(--red);border:1px solid var(--red-border);}
+.hq-alert-row{border-left:3px solid var(--amber);}
+.hq-alert-row.bad{border-left-color:var(--red);}
+.hq-alert-title{font-size:13px;font-weight:700;}
+.hq-alert-body{font-size:12px;color:var(--text2);margin-top:4px;line-height:1.5;}
+.hq-empty{font-size:13px;color:var(--text3);background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center;}
+@media(min-width:700px){.hq-grid{grid-template-columns:repeat(4,1fr);}}
+
 /* PROJECTS */
 #projects-screen{min-height:100vh;display:none;flex-direction:column;}
 .projects-nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 16px;height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
@@ -312,6 +342,24 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
       </div>
       <button id="team-mgmt-btn" onclick="openTeamMgmt()" style="display:none;background:var(--surface2);border:1px solid var(--border2);color:var(--text2);padding:8px 14px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;">👥 Team</button>
     </div>
+    <div id="owner-dashboard" class="owner-hq">
+      <div class="hq-hero">
+        <div class="hq-greet" id="hq-greet">Good evening</div>
+        <div class="hq-title" id="hq-title">BuildWatch HQ</div>
+        <div class="hq-sub" id="hq-sub">Company-wide status across all active sites.</div>
+      </div>
+      <div class="hq-grid">
+        <div class="hq-card"><div class="hq-label">Active Projects</div><div class="hq-value hq-amber" id="hq-active-projects">—</div><div class="hq-note">Running sites</div></div>
+        <div class="hq-card"><div class="hq-label">Workers Today</div><div class="hq-value hq-green" id="hq-workers-today">—</div><div class="hq-note">From latest reports</div></div>
+        <div class="hq-card"><div class="hq-label">Spent</div><div class="hq-value hq-red" id="hq-total-spent">—</div><div class="hq-note">All projects</div></div>
+        <div class="hq-card"><div class="hq-label">Open Issues</div><div class="hq-value hq-blue" id="hq-open-issues">—</div><div class="hq-note">Need attention</div></div>
+      </div>
+      <div class="hq-section-title">Attention Required</div>
+      <div id="hq-alerts"><div class="hq-empty">Loading company health...</div></div>
+      <div class="hq-section-title">Project Health</div>
+      <div id="hq-project-health"><div class="hq-empty">Loading projects...</div></div>
+    </div>
+    <div class="hq-section-title" id="projects-section-title" style="display:none;">All Projects</div>
     <div id="projects-list"><div class="loading">Loading...</div></div>
     <button class="new-project-btn" id="new-proj-btn" onclick="showModal('new-proj-modal')">+ New Project</button>
   </div>
@@ -465,7 +513,10 @@ async function showProjects(){
   document.getElementById('new-proj-btn').textContent=hi()?'+ नया प्रोजेक्ट':'+ New Project';
   const tmBtn=document.getElementById('team-mgmt-btn');
   if(tmBtn)tmBtn.style.display=CU.role==='contractor'?'block':'none';
+  const od=document.getElementById('owner-dashboard'); if(od) od.style.display=CU.role==='contractor'?'block':'none';
+  const pst=document.getElementById('projects-section-title'); if(pst) pst.style.display=CU.role==='contractor'?'block':'none';
   await loadProjects();
+  if(CU.role==='contractor') await loadOwnerDashboard();
 }
 
 async function loadProjects(){
@@ -559,6 +610,97 @@ async function createProject(){
   if(error){showToast('Error: '+error.message,true);return;}
   ['np-name','np-location','np-client','np-budget'].forEach(id=>document.getElementById(id).value='');
   hideModal('new-proj-modal');showToast(hi()?'प्रोजेक्ट बन गया ✓':'Project created ✓');loadProjects();
+}
+
+
+// ── OWNER DASHBOARD ──
+function getGreeting(){
+  const hour=new Date().getHours();
+  if(hour<12)return hi()?'सुप्रभात':'Good morning';
+  if(hour<17)return hi()?'नमस्ते':'Good afternoon';
+  return hi()?'शुभ संध्या':'Good evening';
+}
+function projectHealth(project,reports,issues,spent){
+  const pct=Number(project.progress||0);
+  const budget=Number(project.total_budget||0);
+  const budgetPct=budget>0?(spent/budget)*100:0;
+  const latest=reports[0];
+  const daysSince=latest?Math.floor((Date.now()-new Date(latest.created_at||latest.date).getTime())/86400000):999;
+  const hasReportIssue=latest&&latest.issues;
+  const highIssues=issues.filter(i=>i.priority==='high').length;
+  if(highIssues>0||budgetPct>=95||daysSince>=3)return {level:'bad',label:hi()?'Critical':'Critical',reason:highIssues>0?(hi()?'High priority issue open':'High priority issue open'):budgetPct>=95?(hi()?'Budget almost used':'Budget almost used'):(hi()?'No recent site report':'No recent site report')};
+  if(issues.length>0||budgetPct>=75||hasReportIssue||pct<25)return {level:'warn',label:hi()?'Attention':'Attention',reason:issues.length>0?(hi()?'Open issues pending':'Open issues pending'):budgetPct>=75?(hi()?'Budget usage high':'Budget usage high'):hasReportIssue?(hi()?'Latest report has issue':'Latest report has issue'):(hi()?'Progress still low':'Progress still low')};
+  return {level:'ok',label:hi()?'Healthy':'Healthy',reason:hi()?'No major risk detected':'No major risk detected'};
+}
+async function loadOwnerDashboard(){
+  const h=hi();
+  const wrap=document.getElementById('owner-dashboard');
+  const title=document.getElementById('projects-section-title');
+  if(!wrap)return;
+  wrap.style.display='block';
+  if(title)title.style.display='block';
+  document.getElementById('hq-greet').textContent=`${getGreeting()}, ${CU.name}`;
+  document.getElementById('hq-title').textContent=h?'BuildWatch HQ':'BuildWatch HQ';
+  document.getElementById('hq-sub').textContent=h?'सभी साइट्स का लाइव कंपनी सारांश।':'Company-wide status across all active sites.';
+  const {data:projects,error}=await sb.from('projects').select('*').eq('active',true).eq('contractor_id',CU.id.toString()).order('created_at',{ascending:false});
+  if(error||!projects){return;}
+  const names=projects.map(p=>p.name);
+  let reports=[], finance=[], issues=[];
+  if(names.length){
+    const [rr,fr,ir]=await Promise.all([
+      sb.from('reports').select('*').in('project',names).order('created_at',{ascending:false}),
+      sb.from('finance').select('*').in('project',names),
+      sb.from('issues').select('*').in('project',names).eq('status','open').order('created_at',{ascending:false})
+    ]);
+    reports=rr.data||[];finance=fr.data||[];issues=ir.data||[];
+  }
+  const latestByProject={};
+  reports.forEach(r=>{if(!latestByProject[r.project])latestByProject[r.project]=r;});
+  const reportsByProject={};
+  const issuesByProject={};
+  projects.forEach(p=>{reportsByProject[p.name]=[];issuesByProject[p.name]=[];});
+  reports.forEach(r=>{(reportsByProject[r.project]||(reportsByProject[r.project]=[])).push(r);});
+  issues.forEach(i=>{(issuesByProject[i.project]||(issuesByProject[i.project]=[])).push(i);});
+  const spentByProject={};
+  finance.forEach(f=>{spentByProject[f.project]=(spentByProject[f.project]||0)+Number(f.amount||0);});
+  const activeProjects=projects.filter(p=>(p.status||'active')==='active').length;
+  const workersToday=Object.values(latestByProject).reduce((s,r)=>s+Number(r.workers||0),0);
+  const totalSpent=finance.reduce((s,f)=>s+Number(f.amount||0),0);
+  document.getElementById('hq-active-projects').textContent=activeProjects;
+  document.getElementById('hq-workers-today').textContent=workersToday||'—';
+  document.getElementById('hq-total-spent').textContent='₹'+fmtNum(totalSpent);
+  document.getElementById('hq-open-issues').textContent=issues.length;
+  const healthRows=projects.map(p=>{
+    const pr=reportsByProject[p.name]||[];
+    const pi=issuesByProject[p.name]||[];
+    const spent=spentByProject[p.name]||0;
+    const health=projectHealth(p,pr,pi,spent);
+    return {project:p,health,latest:pr[0],issues:pi,spent};
+  });
+  const alerts=healthRows.filter(r=>r.health.level!=='ok').slice(0,5);
+  const alertsEl=document.getElementById('hq-alerts');
+  alertsEl.innerHTML=alerts.length?alerts.map(r=>`
+    <div class="hq-alert-row ${r.health.level==='bad'?'bad':''}" onclick='openProject(${JSON.stringify(r.project).replace(/'/g,"&#39;")})'>
+      <div class="hq-alert-title">${r.project.name} · ${r.health.label}</div>
+      <div class="hq-alert-body">${r.health.reason}${r.latest&&r.latest.work_done?`<br>Latest: ${String(r.latest.work_done).substring(0,85)}${String(r.latest.work_done).length>85?'...':''}`:''}</div>
+    </div>`).join(''):`<div class="hq-empty">✓ ${h?'सभी प्रोजेक्ट ठीक चल रहे हैं।':'All projects look healthy right now.'}</div>`;
+  const healthEl=document.getElementById('hq-project-health');
+  healthEl.innerHTML=healthRows.length?healthRows.map(r=>{
+    const pct=Number(r.project.progress||0);
+    const budget=Number(r.project.total_budget||0);
+    const budgetPct=budget>0?Math.min(100,Math.round((r.spent/budget)*100)):0;
+    return `<div class="hq-project-row" onclick='openProject(${JSON.stringify(r.project).replace(/'/g,"&#39;")})'>
+      <div class="hq-project-top">
+        <div><div class="hq-project-name">${r.project.name}</div><div class="hq-project-meta">${r.project.location||''}${r.project.client_name?' · '+r.project.client_name:''}</div></div>
+        <span class="hq-health ${r.health.level}">${r.health.label}</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill ${r.health.level==='bad'?'red':r.health.level==='warn'?'amber':'green'}" style="width:${pct}%"></div></div>
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text3);margin-top:6px;">
+        <span>${pct}% ${h?'प्रगति':'progress'}</span>
+        <span>${budget>0?`${budgetPct}% ${h?'बजट इस्तेमाल':'budget used'}`:h?'बजट सेट नहीं':'No budget'}</span>
+      </div>
+    </div>`;
+  }).join(''):`<div class="hq-empty">${h?'अभी कोई प्रोजेक्ट नहीं।':'No projects yet.'}</div>`;
 }
 
 // ── TABS ──
